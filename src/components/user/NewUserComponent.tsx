@@ -189,6 +189,8 @@ const NewUserComponent = () => {
       setEmployeeId(e.target.value);
     } else if (type == "email") {
       setEmail(e.target.value);
+      // setEmail(e.target.onreset());
+
     } else if (type == "firstName") {
       setFirstName(e.target.value);
     } else if (type == "lastName") {
@@ -442,6 +444,7 @@ const NewUserComponent = () => {
                       ? errors?.employeeId.message
                       : null
                   }
+                  
                 />
 
                 <InputText
@@ -457,6 +460,12 @@ const NewUserComponent = () => {
                       : null
                   }
                 />
+                 <Typography
+                  variant="caption"
+                  color={newUserDetails.error.errorEmail ? 'red' : 'black'}
+                >
+                  Please enter email for exapmle "xyz@ibm.com"
+                </Typography>
 
                 <InputText
                   label={UIConstants.firstNameLabel}
@@ -481,8 +490,9 @@ const NewUserComponent = () => {
                     errors.lastName
                       ? errors?.lastName.message
                       : null
-                  }
+                   }
                 />
+
 
 
                 {/* <TextField
@@ -519,6 +529,7 @@ const NewUserComponent = () => {
                 >
                   Please enter email for exapmle "xyz@ibm.com"
                 </Typography> */}
+
                 {/* <TextField
                 margin="dense"
                 label="Employee Name"
@@ -669,6 +680,7 @@ const NewUserComponent = () => {
                       onChange={handleUserDropdownChange}
                       options={mapAPItoUIDocTypeDropdown(allRole, 'id', 'name')}
                       selectAnOption
+                      style={{ marginTop: '10px' }}
                       helperText={
                         errors.roleId
                           ? errors?.roleId.message
@@ -840,7 +852,10 @@ const NewUserComponent = () => {
                   variant="contained"
                   className="login-btn"
                   type="submit"
-                >
+                
+               >
+                   
+
                   Add
                 </Button>
 
