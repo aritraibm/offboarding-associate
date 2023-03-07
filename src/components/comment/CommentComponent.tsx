@@ -31,10 +31,10 @@ import Loader from '../common/Loader';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import { UIConstants } from '../constants/UIConstants';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { addCommentValidationSchema, CommentValidationSchema } from '../document/FilterUploadDocument.validation';
 import { useForm } from 'react-hook-form';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 import { InputText } from '../core/InputText/InputText';
+import { CommentValidationSchema, addCommentValidationSchema, addCommentDefaultValues } from './Comment.validation';
 
 const CommentComponent = (props: any) => {
   const BASE_URL = 'http://localhost:9003/';
@@ -119,6 +119,7 @@ const CommentComponent = (props: any) => {
 
   const handleClose = () => {
     setOpen(false);
+    cmtReset(addCommentDefaultValues);
   };
 
 
@@ -175,7 +176,7 @@ const CommentComponent = (props: any) => {
   // };
 
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, getValues, formState: { errors } } = useForm({
     mode: 'all',
     resolver: yupResolver(CommentValidationSchema),
   })
@@ -188,11 +189,13 @@ const CommentComponent = (props: any) => {
   const cmtHandleSubmit = cmtForm.handleSubmit;
   const cmtErrors = cmtForm.formState.errors;
   const cmtGetValues = cmtForm.getValues;
+  const cmtReset = cmtForm.reset;
 
   const saveComments = (data: any) => {
+    const fullName = user.firstName + user.lastName;
     let updatedComments = {
-      empId: empId,
-      who: user.name,
+      // empId: empId,
+      who: fullName,
       role: user.role,
       // comments: comment,
       date: moment(new Date()).format(),
@@ -205,25 +208,23 @@ const CommentComponent = (props: any) => {
           headers: { Authorization: 'Bearer ' + userToken },
         })
         .then((result) => {
-          if (result.data)
-            dispatch(
-              comments({
-                comments: [result.data, ...allComments],
-              })
-            );
+          cmtReset(addCommentDefaultValues);
+          callOnchangeAPI(getValues('associateName'));
+          // if (result.data)
+          //   dispatch(
+          //     comments({
+          //       comments: [result.data, ...allComments],
+          //     })
+          //   );
         });
      
       setOpen(false);
   }
 
-  const handleAssociateDropdownChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
-     // alert(cmtGetValues('comments'))
-     const onChangeValue= e.target.value;
-     Object.freeze(onChangeValue);
-
-     if(onChangeValue !== null && onChangeValue !== ''){
+  const callOnchangeAPI = (value: string) =>{
+      if(value !== null && value !== ''){
       axios
-      .get('http://localhost:9094/comment/' + e.target.value, {
+      .get('http://localhost:9094/comment/' + value, {
         headers: { Authorization: 'Bearer ' + userToken },
       })
       .then((result) => {
@@ -243,7 +244,41 @@ const CommentComponent = (props: any) => {
         })
       );
      }
-    
+     }
+
+  const handleAssociateDropdownChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
+     // alert(cmtGetValues('comments'))
+     const onChangeValue= e.target.value;
+     Object.freeze(onChangeValue);
+
+     callOnchangeAPI(onChangeValue);
+    //  if(onChangeValue !== null && onChangeValue !== ''){
+    //   axios
+    //   .get('http://localhost:9094/comment/' + e.target.value, {
+    //     headers: { Authorization: 'Bearer ' + userToken },
+    //   })
+    //   .then((result) => {
+    //     if (result.data) {
+    //       dispatch(
+    //         comments({
+    //           comments: result.data,
+    //         })
+    //       );
+    //       setLoader(false);
+    //     }
+    //   }); // eslint-disable-next-line react-hooks/exhaustive-deps
+    //  }else{
+    //   dispatch(
+    //     comments({
+    //       comments: [],
+    //     })
+    //   );
+    //  }
+  }
+
+
+
+  const handleNewCommentDropdownChange=(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string)=>{
 
   }
 
@@ -391,11 +426,15 @@ const CommentComponent = (props: any) => {
                                             style={{ fontSize: 13 }}
                                           />
                                         )}
+                                        
                                       </Tooltip>
+                                      
                                     </Grid>
+                                    
                                   </Grid>
                                 </>
                               )}
+                              
                             </Grid>
                             <Grid item xs={6} style={{ textAlign: 'end' }}>
                               <span style={{ fontSize: '10px' }}>
@@ -403,6 +442,7 @@ const CommentComponent = (props: any) => {
                               </span>
                             </Grid>
                           </Grid>
+                          
                         </Typography>
                       </>
                     }
@@ -441,14 +481,14 @@ const CommentComponent = (props: any) => {
 
           <Dropdown
               label={UIConstants.selectAnAssociate}
-              {...cmtRegister("ssssss")}
-              error={!!cmtErrors?.ssssss}
-              onChange={handleAssociateDropdownChange}
-              options={mapAPItoUIDocTypeDropdown(assocaiteList, 'ibmId', 'associateName')}
+              {...cmtRegister("empId")}
+              error={!!cmtErrors?.empId}
+              onChange={handleNewCommentDropdownChange}
+              options={mapAPItoUIDocTypeDropdown(assocaiteList, 'associateId', 'associateName')}
               selectanoption
               helperText={
-                cmtErrors.ssssss
-                  ? cmtErrors?.ssssss.message
+                cmtErrors.empId
+                  ? cmtErrors?.empId.message
                   : null
               }
             />
