@@ -36,6 +36,8 @@ const slice = createSlice({
     reviewers: [],
     roles: [],
     recordings: [],
+    // documentTypes: [1, 2, 3],
+    documentTypes: [{ "id": 1, "name": "Select" }, { "id": 2, "name": "BEEKEEPER FAKE" }, { "id": 3, "name": "Checkpoint Goals FAKE" }, { "id": 4, "name": "Day-1 - Non_Disclosure FAKE" }]
   },
   reducers: {
     increment: (state) => {
@@ -80,6 +82,9 @@ const slice = createSlice({
     recordings: (state, action) => {
       state.recordings = action.payload.recordings;
     },
+    documentTypes: (state, action) => {
+      state.documentTypes = { ...state, ...action.payload.documentTypes };
+    },
   },
 });
 
@@ -98,6 +103,7 @@ export const {
   roles,
   associateList,
   recordings,
+  documentTypes,
 } = slice.actions;
 export const selectedTab = (state) => state.activeTab;
 export const userDetails = (state) => state.userDetails;
@@ -109,4 +115,5 @@ export const allRoles = (state) => state.roles;
 export const allManagers = (state) => state.managers;
 export const allReviewers = (state) => state.reviewers;
 export const allRecordings = (state) => state.recordings;
+export const allDocumentTypes = (state) => state.documentTypes;
 export const { reducer } = slice;

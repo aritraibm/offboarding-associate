@@ -11,7 +11,7 @@ import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import './UploadDocument.css';
 // import SelectBox from '../core/Select';
-import { token, userDetails } from '../../store';
+import { token, userDetails, documentTypes } from '../../store';
 import { useSelector } from 'react-redux';
 import DocumentTable from './DocumentTable';
 import Loader from '../common/Loader';
@@ -30,6 +30,7 @@ import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 const UploadDocumentSection = () => {
   const BASE_URL = 'http://localhost:9003/';
   const userToken = useSelector(token);
+  const allDocumentTypes = useSelector((state: any) => state.documentTypes);
   const location = useLocation();
 
   const { forAssociate } = location.state;
@@ -287,7 +288,7 @@ const UploadDocumentSection = () => {
               {...register("documentType")}
               error={!!errors?.documentType}
               onChange={handleDocumentType}
-              options={mapAPItoUIDocTypeDropdown<any>(options, 'id', 'name')}
+              options={mapAPItoUIDocTypeDropdown<any>(allDocumentTypes, 'id', 'name')}
               helperText={
                 errors.documentType
                   ? errors?.documentType.message
