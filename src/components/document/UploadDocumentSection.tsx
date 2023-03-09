@@ -89,7 +89,7 @@ const UploadDocumentSection = () => {
 
   useEffect(() => {
     // fetchDocumentTypes();
-    // fetchAllAssociates();
+    fetchAllAssociates();
   }, []);
 
   const callUploadAPI = () => {
@@ -149,21 +149,21 @@ const UploadDocumentSection = () => {
     setSnakBarOpen(false);
   };
 
-  const fetchDocumentTypes = () => {
-    const role = user.role;
-    // console.log("role >>>>> " + role);
-    axios
-      .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
-      .then((res: any) => {
-        // console.log("res >>>>> "+JSON.stringify(res));
-        setOptions([...res.data]);
-        setOptionselect('1');
-        setLoader(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const fetchDocumentTypes = () => {
+  //   const role = user.role;
+  //   // console.log("role >>>>> " + role);
+  //   axios
+  //     .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
+  //     .then((res: any) => {
+  //       // console.log("res >>>>> "+JSON.stringify(res));
+  //       setOptions([...res.data]);
+  //       setOptionselect('1');
+  //       setLoader(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
 
   const fetchAllAssociates = () => {

@@ -84,7 +84,7 @@ const slice = createSlice({
       state.recordings = action.payload.recordings;
     },
     documentTypes: (state, action) => {
-      state.documentTypes = { ...action.payload };
+      state.documentTypes = action.payload;
       console.log("FINAL state is: ::::>" + JSON.stringify(state))
 
     },
