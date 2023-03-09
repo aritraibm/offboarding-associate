@@ -1,7 +1,15 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
-import { documentTypes, updateDocumentTypes } from '../reducers'
+import { takeLatest } from 'redux-saga/effects'
+import { finalDocumentTypeList, invokeDocumentTypeSaga } from '../reducers'
 import { handleAllDocumentType } from "./handlers/handleAllDocumentType";
 
 export function* watcherSaga() {
-    yield takeLatest(updateDocumentTypes.type, handleAllDocumentType);
+    console.log("invokeDocumentTypeSaga.type :::::::: >>>>>>" + invokeDocumentTypeSaga.type)
+
+    switch (invokeDocumentTypeSaga.type) {
+        case 'Offboarding/invokeDocumentTypeSaga':
+            yield takeLatest(invokeDocumentTypeSaga.type, handleAllDocumentType);
+        default:
+            console.log(":::::::::::: NO SAGA WATCHER DEFINED ::::::::::::")
+    }
+
 }

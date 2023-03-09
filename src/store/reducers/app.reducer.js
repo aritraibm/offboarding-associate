@@ -24,7 +24,7 @@ const newUserInitState = {
 };
 
 const slice = createSlice({
-  name: 'count',
+  name: 'Offboarding',
   initialState: {
     count: 0,
     activeTab: 'Default',
@@ -36,9 +36,8 @@ const slice = createSlice({
     reviewers: [],
     roles: [],
     recordings: [],
-    // documentTypes: [1, 2, 3],
-    documentTypes: [{ "id": 1, "name": "Select" }, { "id": 2, "name": "BEEKEEPER FAKE" }, { "id": 3, "name": "Checkpoint Goals FAKE" }, { "id": 4, "name": "Day-1 - Non_Disclosure FAKE" }],
-    updateDocumentTypes: [{ "id": 1, "name": "Select" }, { "id": 2, "name": "BEEKEEPER FAKE 2" }, { "id": 3, "name": "Checkpoint Goals FAKE 2" }, { "id": 4, "name": "Day-1 - Non_Disclosure FAKE 2" }]
+    finalDocumentTypeList: [{ "id": 1, "name": "Select" }, { "id": 2, "name": "BEEKEEPER FAKE" }, { "id": 3, "name": "Checkpoint Goals FAKE" }, { "id": 4, "name": "Day-1 - Non_Disclosure FAKE" }],
+    invokeDocumentTypeSaga: [{ "id": 1, "name": "Select" }, { "id": 2, "name": "BEEKEEPER FAKE 2" }, { "id": 3, "name": "Checkpoint Goals FAKE 2" }, { "id": 4, "name": "Day-1 - Non_Disclosure FAKE 2" }]
   },
   reducers: {
     increment: (state) => {
@@ -83,15 +82,11 @@ const slice = createSlice({
     recordings: (state, action) => {
       state.recordings = action.payload.recordings;
     },
-    documentTypes: (state, action) => {
-      state.documentTypes = action.payload;
-      console.log("FINAL state is: ::::>" + JSON.stringify(state))
-
+    finalDocumentTypeList: (state, action) => {
+      state.finalDocumentTypeList = action.payload;
     },
-    updateDocumentTypes: (state, action) => {
-      // console.log("state is: ::::>" + JSON.stringify(state))
-      // console.log("action.payload.updateDocumentTypes is: ::::>" + JSON.stringify(action.payload.updateDocumentTypes))
-      state = { ...state, ...action.payload.updateDocumentTypes };
+    invokeDocumentTypeSaga: (state, action) => {
+      state = { ...state, ...action.payload.invokeDocumentTypeSaga };
     },
   },
 });
@@ -111,8 +106,8 @@ export const {
   roles,
   associateList,
   recordings,
-  documentTypes,
-  updateDocumentTypes,
+  finalDocumentTypeList,
+  invokeDocumentTypeSaga,
 } = slice.actions;
 export const selectedTab = (state) => state.activeTab;
 export const userDetails = (state) => state.userDetails;
@@ -124,6 +119,6 @@ export const allRoles = (state) => state.roles;
 export const allManagers = (state) => state.managers;
 export const allReviewers = (state) => state.reviewers;
 export const allRecordings = (state) => state.recordings;
-export const allDocumentTypes = (state) => state.documentTypes;
-export const allUpdateDocumentTypes = (state) => state.updateDocumentTypes;
+export const allDocumentTypes = (state) => state.finalDocumentTypeList;
+export const allUpdateDocumentTypes = (state) => state.invokeDocumentTypeSaga;
 export const { reducer } = slice;

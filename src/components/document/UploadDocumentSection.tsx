@@ -11,7 +11,7 @@ import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import './UploadDocument.css';
 // import SelectBox from '../core/Select';
-import { token, userDetails, documentTypes, updateDocumentTypes } from '../../store';
+import { token, userDetails, finalDocumentTypeList, invokeDocumentTypeSaga } from '../../store';
 import { useSelector, useDispatch } from 'react-redux';
 import DocumentTable from './DocumentTable';
 import Loader from '../common/Loader';
@@ -32,15 +32,15 @@ const UploadDocumentSection = () => {
   // const dispatch = useDispatch();
   const location = useLocation();
   const userToken = useSelector(token);
-  const allDocumentTypes = useSelector((state: any) => state.documentTypes);
-  const allUpdatedDocumentTypes = useSelector((state: any) => state.updateDocumentTypes);
+  const allDocumentTypes = useSelector((state: any) => state.finalDocumentTypeList);
+  //const allUpdatedDocumentTypes = useSelector((state: any) => state.invokeDocumentTypeSaga);
   console.log("allDocumentTypes :::::::::: >>" + JSON.stringify(allDocumentTypes));
   //console.log("allUpdatedDocumentTypes :::::::::: >>" + JSON.stringify(allUpdatedDocumentTypes));
 
   const dispatch = useDispatch();
   useEffect(() => {
     console.log("effect invoked :::::::::::::")
-    dispatch(updateDocumentTypes({ test: "hi", id: 1 }));
+    dispatch(invokeDocumentTypeSaga({ test: "hi", id: 1 }));
   }, []);
 
 
