@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { reducer } from "./reducers";
 import createSagaMiddleware from 'redux-saga'
-import { watcherSaga } from "./sagas/rootSaga"
+import { watcherSaga } from "./sagas/rootWatcherSaga"
 
 import {
   persistStore,

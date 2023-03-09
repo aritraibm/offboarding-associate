@@ -9,7 +9,7 @@ export function* watcherSaga() {
         case 'Offboarding/invokeDocumentTypeSaga':
             yield takeLatest(invokeDocumentTypeSaga.type, handleAllDocumentType);
         default:
-            console.log(":::::::::::: NO SAGA WATCHER DEFINED ::::::::::::")
+            console.log(":::::::::::: NO WATCHER SAGA DEFINED ::::::::::::")
     }
 
 }

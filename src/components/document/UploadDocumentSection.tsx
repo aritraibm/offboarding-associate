@@ -41,6 +41,7 @@ const UploadDocumentSection = () => {
   useEffect(() => {
     console.log("effect invoked :::::::::::::")
     dispatch(invokeDocumentTypeSaga({ test: "hi", id: 1 }));
+    fetchAllAssociates();
   }, []);
 
 
@@ -87,10 +88,10 @@ const UploadDocumentSection = () => {
     optionChanged(e.target.value);
   };
 
-  useEffect(() => {
-    // fetchDocumentTypes();
-    fetchAllAssociates();
-  }, []);
+  // useEffect(() => {
+  //   fetchDocumentTypes();
+  //   fetchAllAssociates();
+  // }, []);
 
   const callUploadAPI = () => {
     var input: any = document.getElementById('myfile');
