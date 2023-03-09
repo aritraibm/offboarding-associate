@@ -1,26 +1,26 @@
 import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import { useLocation } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+// import Dialog from '@mui/material/Dialog';
+// import DialogActions from '@mui/material/DialogActions';
+// import DialogContent from '@mui/material/DialogContent';
+// import DialogContentText from '@mui/material/DialogContentText';
+// import DialogTitle from '@mui/material/DialogTitle';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import './UploadDocument.css';
 // import SelectBox from '../core/Select';
-import { token, userDetails, documentTypes } from '../../store';
-import { useSelector } from 'react-redux';
+import { token, userDetails, documentTypes, updateDocumentTypes } from '../../store';
+import { useSelector, useDispatch } from 'react-redux';
 import DocumentTable from './DocumentTable';
 import Loader from '../common/Loader';
 import { FilterUploadDocumentValidationSchema } from './FilterUploadDocument.validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Box, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
-import { error } from 'console';
-import { InputText } from '../core/InputText/InputText';
+// import { Box, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
+// import { error } from 'console';
+// import { InputText } from '../core/InputText/InputText';
 // import NewSelectBox from '../core/NewSelect';
 import { UIConstants } from '../constants/UIConstants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
@@ -29,9 +29,20 @@ import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 
 const UploadDocumentSection = () => {
   const BASE_URL = 'http://localhost:9003/';
+  // const dispatch = useDispatch();
+  const location = useLocation();
   const userToken = useSelector(token);
   const allDocumentTypes = useSelector((state: any) => state.documentTypes);
-  const location = useLocation();
+  const allUpdatedDocumentTypes = useSelector((state: any) => state.updateDocumentTypes);
+  console.log("allDocumentTypes :::::::::: >>" + JSON.stringify(allDocumentTypes));
+  //console.log("allUpdatedDocumentTypes :::::::::: >>" + JSON.stringify(allUpdatedDocumentTypes));
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("effect invoked :::::::::::::")
+    dispatch(updateDocumentTypes({ test: "hi", id: 1 }));
+  }, []);
+
 
   const { forAssociate } = location.state;
   const [documents, setDocuments] = useState([]);
@@ -77,8 +88,8 @@ const UploadDocumentSection = () => {
   };
 
   useEffect(() => {
-    fetchDocumentTypes();
-    fetchAllAssociates();
+    // fetchDocumentTypes();
+    // fetchAllAssociates();
   }, []);
 
   const callUploadAPI = () => {
@@ -140,7 +151,7 @@ const UploadDocumentSection = () => {
 
   const fetchDocumentTypes = () => {
     const role = user.role;
-    console.log("role >>>>> " + role);
+    // console.log("role >>>>> " + role);
     axios
       .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
       .then((res: any) => {

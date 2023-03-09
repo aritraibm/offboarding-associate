@@ -140,7 +140,7 @@ const UploadDocument = () => {
 
   const fetchDocumentTypes = () => {
     const role = user.role;
-    console.log("role >>>>> " + role);
+    // console.log("role >>>>> " + role);
     axios
       .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
       .then((res: any) => {

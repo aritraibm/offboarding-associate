@@ -37,7 +37,8 @@ const slice = createSlice({
     roles: [],
     recordings: [],
     // documentTypes: [1, 2, 3],
-    documentTypes: [{ "id": 1, "name": "Select" }, { "id": 2, "name": "BEEKEEPER FAKE" }, { "id": 3, "name": "Checkpoint Goals FAKE" }, { "id": 4, "name": "Day-1 - Non_Disclosure FAKE" }]
+    documentTypes: [{ "id": 1, "name": "Select" }, { "id": 2, "name": "BEEKEEPER FAKE" }, { "id": 3, "name": "Checkpoint Goals FAKE" }, { "id": 4, "name": "Day-1 - Non_Disclosure FAKE" }],
+    updateDocumentTypes: [{ "id": 1, "name": "Select" }, { "id": 2, "name": "BEEKEEPER FAKE 2" }, { "id": 3, "name": "Checkpoint Goals FAKE 2" }, { "id": 4, "name": "Day-1 - Non_Disclosure FAKE 2" }]
   },
   reducers: {
     increment: (state) => {
@@ -83,7 +84,14 @@ const slice = createSlice({
       state.recordings = action.payload.recordings;
     },
     documentTypes: (state, action) => {
-      state.documentTypes = { ...state, ...action.payload.documentTypes };
+      state.documentTypes = { ...action.payload };
+      console.log("FINAL state is: ::::>" + JSON.stringify(state))
+
+    },
+    updateDocumentTypes: (state, action) => {
+      // console.log("state is: ::::>" + JSON.stringify(state))
+      // console.log("action.payload.updateDocumentTypes is: ::::>" + JSON.stringify(action.payload.updateDocumentTypes))
+      state = { ...state, ...action.payload.updateDocumentTypes };
     },
   },
 });
@@ -104,6 +112,7 @@ export const {
   associateList,
   recordings,
   documentTypes,
+  updateDocumentTypes,
 } = slice.actions;
 export const selectedTab = (state) => state.activeTab;
 export const userDetails = (state) => state.userDetails;
@@ -116,4 +125,5 @@ export const allManagers = (state) => state.managers;
 export const allReviewers = (state) => state.reviewers;
 export const allRecordings = (state) => state.recordings;
 export const allDocumentTypes = (state) => state.documentTypes;
+export const allUpdateDocumentTypes = (state) => state.updateDocumentTypes;
 export const { reducer } = slice;
