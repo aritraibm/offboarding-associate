@@ -34,7 +34,7 @@ const UploadDocumentSection = () => {
   const userToken = useSelector(token);
   const allDocumentTypes = useSelector((state: any) => state.finalDocumentTypeList);
   //const allUpdatedDocumentTypes = useSelector((state: any) => state.invokeDocumentTypeSaga);
-  console.log("allDocumentTypes :::::::::: >>" + JSON.stringify(allDocumentTypes));
+  // console.log("allDocumentTypes :::::::::: >>" + JSON.stringify(allDocumentTypes));
   //console.log("allUpdatedDocumentTypes :::::::::: >>" + JSON.stringify(allUpdatedDocumentTypes));
 
   const dispatch = useDispatch();
