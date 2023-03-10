@@ -72,16 +72,16 @@ const UploadDocumentSection = () => {
   const childRefReviewed = useRef<any>(null);
   const childRefNonReviewed = useRef<any>(null);
 
-  const [ibmId, setIbmId] = useState("AAA");
-  const [empId, setEmpId] = useState("");
-  const [password, setPswd] = useState("");
-  const [error, setError] = useState(false);
+  // const [ibmId, setIbmId] = useState("AAA");
+  // const [empId, setEmpId] = useState("");
+  // const [password, setPswd] = useState("");
+  // const [error, setError] = useState(false);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
-    setError(false);
-    if (type === "empId") setEmpId(e.target.value);
-    else if (type === "password") setPswd(e.target.value);
-  };
+  // const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
+  //   setError(false);
+  //   if (type === "empId") setEmpId(e.target.value);
+  //   else if (type === "password") setPswd(e.target.value);
+  // };
 
   const handleDocumentType = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
 

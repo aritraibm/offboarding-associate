@@ -3,7 +3,7 @@ import { finalDocumentTypeList, invokeDocumentTypeSaga } from '../reducers'
 import { handleAllDocumentType } from "./handlers/handleAllDocumentType";
 
 export function* watcherSaga() {
-    console.log("invokeDocumentTypeSaga.type :::::::: >>>>>>" + invokeDocumentTypeSaga.type)
+    // console.log("invokeDocumentTypeSaga.type :::::::: >>>>>>" + invokeDocumentTypeSaga.type)
 
     switch (invokeDocumentTypeSaga.type) {
         case 'Offboarding/invokeDocumentTypeSaga':
