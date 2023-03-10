@@ -13,3 +13,17 @@ export const requestAllDocumentType = () => {
     },
   });
 }
+
+
+export const requestAllAsociate = () => {
+
+  const userToken = store.getState().token;
+
+  return axios.request({
+    method: "get",
+    url: "http://localhost:9092/pru-associate/get-all-associates",
+    headers: {
+      "Authorization": `Bearer ${userToken}`
+    },
+  });
+}

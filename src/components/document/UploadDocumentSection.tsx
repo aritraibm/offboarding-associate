@@ -37,10 +37,10 @@ const UploadDocumentSection = () => {
   // console.log("allDocumentTypes :::::::::: >>" + JSON.stringify(allDocumentTypes));
   //console.log("allUpdatedDocumentTypes :::::::::: >>" + JSON.stringify(allUpdatedDocumentTypes));
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    fetchAllAssociates();
-  }, []);
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   fetchAllAssociates();
+  // }, []);
 
 
   const { forAssociate } = location.state;
@@ -61,7 +61,7 @@ const UploadDocumentSection = () => {
   const [openUpdate, setUpdateDialogStatus] = useState(false);
   const user = useSelector(userDetails);
   const [revieweddocuments, setReviewedDocuments] = useState([]);
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
   // const [associateObj, setAssociate] = useState({
   //   name: 'astik', role: 'ROLE_ASSOCIATE', reviewer: {empId: 'reviewer1', reviewerName: 'Arindam'},
   //   manager: {empId: 'manager1', managerName: 'Arindam'}, empId: '000U2M747'

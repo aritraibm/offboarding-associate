@@ -36,8 +36,10 @@ const slice = createSlice({
     reviewers: [],
     roles: [],
     recordings: [],
+    invokeDocumentTypeSaga: [],
     finalDocumentTypeList: [],
-    invokeDocumentTypeSaga: []
+    invokeAssociatesSaga: [],
+    finalAssociatesList: [],
   },
   reducers: {
     increment: (state) => {
@@ -82,11 +84,17 @@ const slice = createSlice({
     recordings: (state, action) => {
       state.recordings = action.payload.recordings;
     },
+    invokeDocumentTypeSaga: (state, action) => {
+      state = { ...state, ...action.payload.invokeDocumentTypeSaga };
+    },
     finalDocumentTypeList: (state, action) => {
       state.finalDocumentTypeList = action.payload;
     },
-    invokeDocumentTypeSaga: (state, action) => {
-      state = { ...state, ...action.payload.invokeDocumentTypeSaga };
+    invokeAssociatesSaga: (state, action) => {
+      state = { ...state, ...action.payload.invokeAssociatesSaga };
+    },
+    finalAssociatesList: (state, action) => {
+      state.finalAssociatesList = action.payload;
     },
   },
 });
@@ -106,8 +114,10 @@ export const {
   roles,
   associateList,
   recordings,
-  finalDocumentTypeList,
   invokeDocumentTypeSaga,
+  finalDocumentTypeList,
+  invokeAssociatesSaga,
+  finalAssociatesList
 } = slice.actions;
 export const selectedTab = (state) => state.activeTab;
 export const userDetails = (state) => state.userDetails;
@@ -119,6 +129,8 @@ export const allRoles = (state) => state.roles;
 export const allManagers = (state) => state.managers;
 export const allReviewers = (state) => state.reviewers;
 export const allRecordings = (state) => state.recordings;
-export const allDocumentTypes = (state) => state.finalDocumentTypeList;
 export const allUpdateDocumentTypes = (state) => state.invokeDocumentTypeSaga;
+export const allDocumentTypes = (state) => state.finalDocumentTypeList;
+export const allUpdateAssociates = (state) => state.invokeAssociatesSaga;
+export const allAssociates = (state) => state.finalAssociatesList;
 export const { reducer } = slice;

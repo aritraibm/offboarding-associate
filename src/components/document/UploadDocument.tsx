@@ -11,7 +11,7 @@ import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import './UploadDocument.css';
 // import SelectBox from '../core/Select';
-import { token, userDetails, invokeDocumentTypeSaga } from '../../store';
+import { token, userDetails, invokeDocumentTypeSaga, invokeAssociatesSaga } from '../../store';
 import { useSelector, useDispatch } from 'react-redux';
 import DocumentTable from './DocumentTable';
 import Loader from '../common/Loader';
@@ -34,6 +34,7 @@ const UploadDocument = () => {
   const userToken = useSelector(token);
   const location = useLocation();
   const allDocumentTypes = useSelector((state: any) => state.finalDocumentTypeList);
+  const allAssociates = useSelector((state: any) => state.finalAssociatesList);
 
   const dispatch = useDispatch();
   const { forAssociate } = location.state;
@@ -54,7 +55,7 @@ const UploadDocument = () => {
   const [openUpdate, setUpdateDialogStatus] = useState(false);
   const user = useSelector(userDetails);
   const [revieweddocuments, setReviewedDocuments] = useState([]);
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
   // const [associateObj, setAssociate] = useState({
   //   name: 'astik', role: 'ROLE_ASSOCIATE', reviewer: {empId: 'reviewer1', reviewerName: 'Arindam'},
   //   manager: {empId: 'manager1', managerName: 'Arindam'}, empId: '000U2M747'
@@ -81,9 +82,11 @@ const UploadDocument = () => {
 
   useEffect(() => {
     if (allDocumentTypes.length === 0) {
-      dispatch(invokeDocumentTypeSaga({ test: "hi", id: 1 }));
+      dispatch(invokeDocumentTypeSaga({ test: "test", id: 1 }));
     }
-    fetchAllAssociates();
+    if (allAssociates.length === 0) {
+      dispatch(invokeAssociatesSaga({ test: "test", id: 1 }));
+    }
   }, []);
 
   const callUploadAPI = () => {
@@ -344,7 +347,7 @@ const UploadDocument = () => {
                       {...register("associateName")}
                       error={!!errors?.associateName}
                       onChange={handleAssociateDropdownChange}
-                      options={mapAPItoUIDocTypeDropdown(assocaiteList, 'ibmId', 'associateName')}
+                      options={mapAPItoUIDocTypeDropdown(allAssociates, 'ibmId', 'associateName')}
                       selectAnOption
                       helperText={
                         errors.associateName

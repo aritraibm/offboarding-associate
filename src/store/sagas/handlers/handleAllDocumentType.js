@@ -1,13 +1,22 @@
 import { call, put } from "redux-saga/effects";
-import { allUpdateDocumentTypes, invokeDocumentTypeSaga, finalDocumentTypeList } from "../../reducers/app.reducer";
-import { requestAllDocumentType } from "../requests/getAllDocumentType";
+import { finalAssociatesList, finalDocumentTypeList } from "../../reducers/app.reducer";
+import { requestAllDocumentType, requestAllAsociate } from "../requests/getAllDocumentType";
 
 export function* handleAllDocumentType(action) {
   try {
     const response = yield call(requestAllDocumentType);
     const { data } = response;
-    //console.log("API response is::::::::: >>>" + JSON.stringify(data))
     yield put(finalDocumentTypeList(data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* handleAllAssociate(action) {
+  try {
+    const response = yield call(requestAllAsociate);
+    const { data } = response;
+    yield put(finalAssociatesList(data));
   } catch (error) {
     console.log(error);
   }

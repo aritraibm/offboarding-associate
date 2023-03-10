@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { reducer } from "./reducers";
 import createSagaMiddleware from 'redux-saga'
 import { watcherSaga } from "./sagas/rootWatcherSaga"
@@ -32,11 +32,6 @@ const store = configureStore({
         ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }).concat(sagaMiddleware),
-  // middleware: [...getDefaultMiddleware({
-  //   serializableCheck: {
-  //     ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-  //   },
-  // }), sagaMiddleware]
 });
 
 sagaMiddleware.run(watcherSaga);
