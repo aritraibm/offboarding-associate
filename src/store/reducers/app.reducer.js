@@ -36,8 +36,8 @@ const slice = createSlice({
     reviewers: [],
     roles: [],
     recordings: [],
-    finalDocumentTypeList: [{ "id": 1, "name": "Select" }, { "id": 2, "name": "BEEKEEPER FAKE" }, { "id": 3, "name": "Checkpoint Goals FAKE" }, { "id": 4, "name": "Day-1 - Non_Disclosure FAKE" }],
-    invokeDocumentTypeSaga: [{ "id": 1, "name": "Select" }, { "id": 2, "name": "BEEKEEPER FAKE 2" }, { "id": 3, "name": "Checkpoint Goals FAKE 2" }, { "id": 4, "name": "Day-1 - Non_Disclosure FAKE 2" }]
+    finalDocumentTypeList: [],
+    invokeDocumentTypeSaga: []
   },
   reducers: {
     increment: (state) => {

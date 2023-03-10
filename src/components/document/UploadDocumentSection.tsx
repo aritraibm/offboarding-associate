@@ -39,8 +39,6 @@ const UploadDocumentSection = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("effect invoked :::::::::::::")
-    dispatch(invokeDocumentTypeSaga({ test: "hi", id: 1 }));
     fetchAllAssociates();
   }, []);
 

@@ -11,8 +11,8 @@ import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import './UploadDocument.css';
 // import SelectBox from '../core/Select';
-import { token, userDetails } from '../../store';
-import { useSelector } from 'react-redux';
+import { token, userDetails, invokeDocumentTypeSaga } from '../../store';
+import { useSelector, useDispatch } from 'react-redux';
 import DocumentTable from './DocumentTable';
 import Loader from '../common/Loader';
 import { SelectAssociateValidationSchema } from './FilterUploadDocument.validation';
@@ -28,11 +28,14 @@ import { FlexRow } from '../common/Application.style';
 import UploadDocumentSection from './UploadDocumentSection';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 
+
 const UploadDocument = () => {
   const BASE_URL = 'http://localhost:9003/';
   const userToken = useSelector(token);
   const location = useLocation();
+  const allDocumentTypes = useSelector((state: any) => state.finalDocumentTypeList);
 
+  const dispatch = useDispatch();
   const { forAssociate } = location.state;
   const [documents, setDocuments] = useState([]);
   const [openSnakBar, setSnakBarOpen] = useState(false);
@@ -77,7 +80,9 @@ const UploadDocument = () => {
   };
 
   useEffect(() => {
-    fetchDocumentTypes();
+    if (allDocumentTypes.length === 0) {
+      dispatch(invokeDocumentTypeSaga({ test: "hi", id: 1 }));
+    }
     fetchAllAssociates();
   }, []);
 
