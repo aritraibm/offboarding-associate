@@ -1,6 +1,6 @@
 import { call, put } from "redux-saga/effects";
 import { finalAssociatesList, finalDocumentTypeList } from "../../reducers/app.reducer";
-import { requestAllDocumentType, requestAllAsociate } from "../requests/getAllDocumentType";
+import { requestAllDocumentType, requestAllAsociate } from "../requests/httpRequestSaga";
 
 export function* handleAllDocumentType(action) {
   try {

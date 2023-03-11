@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { token } from '../store';
 import { useSelector } from 'react-redux';
+import store from '../store/store'
 
-const UserToken = () => useSelector(token);
-
+const UserToken = () => store.getState().token;
 // axios instance for making requests
 const AxiosInstance = axios.create();
 
@@ -11,7 +11,7 @@ const AxiosInstance = axios.create();
 AxiosInstance.interceptors.request.use(
     config => {
         if (UserToken) {
-            config.headers['Authorization'] = 'Bearer ' + UserToken
+            config.headers['Authorization'] = 'Bearer ' + UserToken()
             config.headers['Content-Type'] = 'application/json';
         }
         return config

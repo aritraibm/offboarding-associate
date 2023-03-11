@@ -1,6 +1,6 @@
 import { takeLatest } from 'redux-saga/effects'
 import { invokeAssociatesSaga, invokeDocumentTypeSaga } from '../reducers'
-import { handleAllDocumentType, handleAllAssociate } from "./handlers/handleAllDocumentType";
+import { handleAllDocumentType, handleAllAssociate } from "./handlers/handlerSaga";
 
 export function* watcherSaga() {
     console.log("invokeDocumentTypeSaga.type :::::::: >>>>>>" + invokeDocumentTypeSaga.type)
