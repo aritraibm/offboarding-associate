@@ -1,6 +1,4 @@
 import axios from 'axios'
-import { token } from '../store';
-import { useSelector } from 'react-redux';
 import store from '../store/store'
 
 const UserToken = () => store.getState().token;
