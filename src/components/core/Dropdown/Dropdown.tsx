@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { DropdownIdName, DropdownType } from "../../../helper/type";
-import { UIConstants } from "../../../helper/UIConstants";
+import { UIConstants } from "../../../helper/constants";
 import { SelectInput } from "./Dropdown.styles";
 
 const formControlDefaultProps = {

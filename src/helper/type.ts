@@ -126,15 +126,24 @@ export interface NewUserInitialState {
     showPassword: boolean,
     isLoginButonDisabled: boolean,
     isGeneratedButtonDisabled: boolean,
-    error: {
-        errorEmail: boolean,
-        errorEmployeeId: boolean,
-        errorReviewerName: boolean,
-        errorManagerName: boolean,
-        errorRole: boolean,
-        errorUserName: boolean,
-        errorPassword: boolean,
-        errorGeneratebutton: boolean,
-    },
+    error: UserInitiationErrorDetails,
 }
 
+export interface UserInitiationErrorDetails {
+    errorEmail: boolean,
+    errorEmployeeId: boolean,
+    errorReviewerName: boolean,
+    errorManagerName: boolean,
+    errorRole: boolean,
+    errorUserName: boolean,
+    errorPassword: boolean,
+    errorGeneratebutton: boolean,
+}
+
+export interface MenuGeneratorProps {
+    isTabActive?: string,
+    label: string,
+    linkTo: string,
+    tabClicked?: string,
+    state?: any,
+}

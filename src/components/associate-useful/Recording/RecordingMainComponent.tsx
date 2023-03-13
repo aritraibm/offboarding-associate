@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Loader from '../../common/Loader';
 import RecordingService from '../../../services/hooks/RecordingService';
-import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../../../helper/UIConstants';
+import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../../../helper/constants';
 
 const RecordingMainComponent = () => {
   const userToken = useSelector(token);

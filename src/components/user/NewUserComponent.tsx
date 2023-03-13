@@ -41,7 +41,7 @@ import { newUserFormDefaultValues, NewUserValidationSchema } from './NewUserComp
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
-import { ROLE_ASSOCIATE, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../../helper/UIConstants';
+import { ROLE_ASSOCIATE, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../../helper/constants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import React from 'react';
 import { saveNewUser } from '../../services/NewUserService';
@@ -368,7 +368,7 @@ const NewUserComponent = () => {
     setPassword(newUserFormDefaultValues.password);
     // setValue('roleId', '');
     resetField('roleId')
-    trigger('roleId');
+    // trigger('roleId');
   }
 
   const { register, trigger, reset, resetField, getValues, setValue, setFocus, handleSubmit, watch, formState: { errors } } = useForm({

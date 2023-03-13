@@ -2,10 +2,10 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, Outlet } from 'react-router-dom';
 import { tabSelected, appStore } from '../../store';
-import { SAMPLE_DOCUMENTS_TAB } from '../UIConstants';
 import { Button } from '../../components/core';
+import { MenuGeneratorProps } from '../type';
 
-const MenuGenerator = () => {
+const MenuGenerator = (props: MenuGeneratorProps) => {
 
     const dispatch = useDispatch();
     const store = useSelector(appStore);
@@ -14,11 +14,11 @@ const MenuGenerator = () => {
     const tabClicked = (tab: string) => dispatch(tabSelected({ tab }));
 
     return (
-        <li className={isTabActive(SAMPLE_DOCUMENTS_TAB)}>
-            <Link to="/sampleDocuments">
+        <li className={isTabActive(props.label)}>
+            <Link to={props.linkTo} state={props.state}>
                 <Button
-                    label={SAMPLE_DOCUMENTS_TAB}
-                    clickHandler={() => tabClicked(SAMPLE_DOCUMENTS_TAB)}
+                    label={props.label}
+                    clickHandler={() => tabClicked(props.label)}
                 />
             </Link>
         </li>
