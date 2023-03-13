@@ -22,7 +22,7 @@ import { Box, Card, CardActions, CardContent, Grid, Typography } from '@mui/mate
 import { error } from 'console';
 import { InputText } from '../core/InputText/InputText';
 // import NewSelectBox from '../core/NewSelect';
-import { UIConstants } from '../constants/UIConstants';
+import { ROLE_ASSOCIATE, UIConstants } from '../constants/UIConstants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import { FlexRow } from '../common/Application.style';
 import UploadDocumentSection from './UploadDocumentSection';
@@ -57,7 +57,7 @@ const UploadDocument = () => {
   const [revieweddocuments, setReviewedDocuments] = useState([]);
   const [loader, setLoader] = useState(false);
   // const [associateObj, setAssociate] = useState({
-  //   name: 'astik', role: 'ROLE_ASSOCIATE', reviewer: {empId: 'reviewer1', reviewerName: 'Arindam'},
+  //   name: 'astik', role: ROLE_ASSOCIATE, reviewer: {empId: 'reviewer1', reviewerName: 'Arindam'},
   //   manager: {empId: 'manager1', managerName: 'Arindam'}, empId: '000U2M747'
   // });
 
@@ -96,9 +96,9 @@ const UploadDocument = () => {
     const jsonData = {
       document_type: optionselect,
       employeeId:
-        user.role === 'ROLE_ASSOCIATE' ? user.empId : forAssociate.empId,
+        user.role === ROLE_ASSOCIATE ? user.empId : forAssociate.empId,
       role: user.role,
-      reviewerId: user.role === 'ROLE_ASSOCIATE' ? '' : user.empId,
+      reviewerId: user.role === ROLE_ASSOCIATE ? '' : user.empId,
     };
     var formdata = new FormData();
 
@@ -121,7 +121,7 @@ const UploadDocument = () => {
         updateDialogClose();
         setSnakBarOpen(true);
         setUploadStatus(true);
-        if (user.role === 'ROLE_ASSOCIATE') {
+        if (user.role === ROLE_ASSOCIATE) {
           childRefNonReviewed.current?.fetchChildDocuments();
         } else {
           childRefReviewed.current?.fetchChildDocuments();
@@ -198,7 +198,7 @@ const UploadDocument = () => {
     const updateFileName = yy.files[0].name;
     //var filteredObj = [];
     var isPopupDisplay: boolean | undefined = false;
-    if (user.role === 'ROLE_ASSOCIATE') {
+    if (user.role === ROLE_ASSOCIATE) {
       isPopupDisplay = validateUploadFile(documents, updateFileName);
     } else {
       isPopupDisplay = validateUploadFile(revieweddocuments, updateFileName);
@@ -378,7 +378,7 @@ const UploadDocument = () => {
         fetchDocumentURL="http://localhost:9003/files/employee"
       />
 
-      {user.role !== 'ROLE_ASSOCIATE' && (
+      {user.role !== ROLE_ASSOCIATE && (
         <DocumentTable
           forAssociate={forAssociate}
           options={options}

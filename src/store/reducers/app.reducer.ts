@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { AssociateDetailResponse, DropdownIdName, NewUserInitialState } from "../../components/constants/type";
+import { DEFAULT_TAB } from '../../components/constants/UIConstants';
 
-const newUserInitState = {
+const newUserInitState: NewUserInitialState = {
   email: '',
   employeeId: '',
   reviewerName: '',
@@ -27,7 +29,7 @@ const slice = createSlice({
   name: 'Offboarding',
   initialState: {
     count: 0,
-    activeTab: 'Default',
+    activeTab: DEFAULT_TAB,
     token: null,
     userDetails: null,
     comments: [],
@@ -42,12 +44,6 @@ const slice = createSlice({
     finalAssociatesList: [],
   },
   reducers: {
-    increment: (state) => {
-      state.count += 1;
-    },
-    decrement: (state) => {
-      state.count -= 1;
-    },
     tabSelected: (state, action) => {
       state.activeTab = action.payload.tab;
     },
@@ -78,9 +74,9 @@ const slice = createSlice({
     reviewers: (state, action) => {
       state.reviewers = action.payload.reviewers;
     },
-    associateList: (state, action) => {
-      state.associateList = action.payload.associateList;
-    },
+    // associateList: (state, action) => {
+    //   state.associateList = action.payload.associateList;
+    // },
     recordings: (state, action) => {
       state.recordings = action.payload.recordings;
     },
@@ -99,10 +95,8 @@ const slice = createSlice({
   },
 });
 
-export const appStore = (state) => state;
+export const appStore = (state: any) => state;
 export const {
-  increment,
-  decrement,
   tabSelected,
   login,
   logout,
@@ -112,25 +106,25 @@ export const {
   managers,
   reviewers,
   roles,
-  associateList,
+  //associateList,
   recordings,
   invokeDocumentTypeSaga,
   finalDocumentTypeList,
   invokeAssociatesSaga,
   finalAssociatesList
 } = slice.actions;
-export const selectedTab = (state) => state.activeTab;
-export const userDetails = (state) => state.userDetails;
-export const associates = (state) => state.associateList;
-export const token = (state) => state.token;
-export const userComments = (state) => state.comments;
-export const createNewUser = (state) => state.createNewUserDetailsData;
-export const allRoles = (state) => state.roles;
-export const allManagers = (state) => state.managers;
-export const allReviewers = (state) => state.reviewers;
-export const allRecordings = (state) => state.recordings;
-export const allUpdateDocumentTypes = (state) => state.invokeDocumentTypeSaga;
-export const allDocumentTypes = (state) => state.finalDocumentTypeList;
-export const allUpdateAssociates = (state) => state.invokeAssociatesSaga;
-export const allAssociates = (state) => state.finalAssociatesList;
+export const selectedTab = (state: { activeTab: string; }) => state.activeTab;
+export const userDetails = (state: { userDetails: any; }) => state.userDetails;
+// export const associates = (state: { associateList: any; }) => state.associateList;
+export const token = (state: { token: string; }) => state.token;
+export const userComments = (state: { comments: any; }) => state.comments;
+export const createNewUser = (state: { createNewUserDetailsData: any; }) => state.createNewUserDetailsData;
+export const allRoles = (state: { roles: any; }) => state.roles;
+export const allManagers = (state: { managers: any; }) => state.managers;
+export const allReviewers = (state: { reviewers: any; }) => state.reviewers;
+export const allRecordings = (state: { recordings: any; }) => state.recordings;
+export const allUpdateDocumentTypes = (state: { invokeDocumentTypeSaga: any; }) => state.invokeDocumentTypeSaga;
+export const allDocumentTypes = (state: { finalDocumentTypeList: any; }) => state.finalDocumentTypeList;
+export const allUpdateAssociates = (state: { invokeAssociatesSaga: any; }) => state.invokeAssociatesSaga;
+export const allAssociates = (state: { finalAssociatesList: any; }) => state.finalAssociatesList;
 export const { reducer } = slice;

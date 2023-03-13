@@ -23,6 +23,7 @@ import axios from '../../config/interceptor'
 
 import './UploadDocument.css';
 import Loader from '../common/Loader';
+import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../constants/UIConstants';
 
 const SampleDocuments = () => {
   const BASE_URL = 'http://localhost:9003/';
@@ -218,8 +219,8 @@ const SampleDocuments = () => {
 
   return (
     <div className="upload-doc-container">
-      {(user.role === 'ROLE_ONBOARDING_MANAGER' ||
-        user.role === 'ROLE_ONBOARDING_REVIEWER') && (
+      {(user.role === ROLE_ONBOARDING_MANAGER ||
+        user.role === ROLE_ONBOARDING_REVIEWER) && (
           <div>
             <h2>Upload Documents</h2>
             <div className="input-fieldbox">
@@ -291,7 +292,7 @@ const SampleDocuments = () => {
                     <TableCell>S.No.</TableCell>
                     <TableCell>Name</TableCell>
                     <TableCell>Document Type</TableCell>
-                    {user.role === 'ROLE_ONBOARDING_MANAGER' && (
+                    {user.role === ROLE_ONBOARDING_MANAGER && (
                       <TableCell>Delete</TableCell>
                     )}
                     <TableCell>Download</TableCell>
@@ -312,7 +313,7 @@ const SampleDocuments = () => {
                       <TableCell component="th" scope="row">
                         {doc.documentType.name}
                       </TableCell>
-                      {user.role === 'ROLE_ONBOARDING_MANAGER' && (
+                      {user.role === ROLE_ONBOARDING_MANAGER && (
                         <TableCell>
                           <Button
                             color="secondary"

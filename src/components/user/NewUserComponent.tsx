@@ -41,7 +41,7 @@ import { newUserFormDefaultValues, NewUserValidationSchema } from './NewUserComp
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
-import { UIConstants } from '../constants/UIConstants';
+import { ROLE_ASSOCIATE, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../constants/UIConstants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import React from 'react';
 import { saveNewUser } from '../../services/NewUserService';
@@ -88,10 +88,10 @@ const NewUserComponent = () => {
 
 
   const assosiateRoleId = allRole.find((data: any) => {
-    return data.name == 'ROLE_ASSOCIATE';
+    return data.name == ROLE_ASSOCIATE;
   });
   const reviewerRoleId = allRole.find((data: any) => {
-    return data.name == 'ROLE_ONBOARDING_REVIEWER';
+    return data.name == ROLE_ONBOARDING_REVIEWER;
   });
   const allManager = useSelector(allManagers).filter(
     (item: any) => item.empId !== 'N/A'
@@ -315,7 +315,7 @@ const NewUserComponent = () => {
   //       axios
   //         .post('http://localhost:9099/user_add', requestData)
   //         .then((response) => {
-  //           if (response.data.role.name === 'ROLE_ASSOCIATE') {
+  //           if (response.data.role.name === ROLE_ASSOCIATE) {
   //             const saveAssociateReq = {
   //               associateName: response.data.userName,
   //               ibmId: response.data.employeeId,
@@ -399,7 +399,7 @@ const NewUserComponent = () => {
     //     console.log("response is ::::: >>>>" + JSON.stringify(response));
     //     setSnakBarOpen(true);
 
-    //     if (response.data.role.name === 'ROLE_ASSOCIATE') {
+    //     if (response.data.role.name === ROLE_ASSOCIATE) {
     //       const saveAssociateReq = {
     //         associateName: response.data.userName,
     //         ibmId: response.data.employeeId,

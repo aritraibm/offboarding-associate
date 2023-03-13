@@ -114,3 +114,27 @@ export interface AssociateDetailResponse {
     planInCaseOfExtensionAmendmentRejection: String,
     activeInactive: String
 }
+
+export interface NewUserInitialState {
+    email: string,
+    employeeId: string,
+    reviewerName: string,
+    managerName: string,
+    role: string,
+    userName: string,
+    password: string,
+    showPassword: boolean,
+    isLoginButonDisabled: boolean,
+    isGeneratedButtonDisabled: boolean,
+    error: {
+        errorEmail: boolean,
+        errorEmployeeId: boolean,
+        errorReviewerName: boolean,
+        errorManagerName: boolean,
+        errorRole: boolean,
+        errorUserName: boolean,
+        errorPassword: boolean,
+        errorGeneratebutton: boolean,
+    },
+}
+
