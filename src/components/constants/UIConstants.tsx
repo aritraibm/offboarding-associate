@@ -62,3 +62,14 @@ export const projectBandwidthAvailbleLabelValues: Record<string, any>[] = [
         value: "Option 3",
     },
 ];
+
+export const DEFAULT_TAB = "Default";
+export const SAMPLE_DOCUMENTS_TAB = "Sample Documents";
+export const UPLOAD_DOCUMENTS_TAB = "Upload Documents";
+export const RECORDINGS_TAB = "Recordings";
+export const NEW_USER_TAB = "New User";
+
+
+export const ROLE_ASSOCIATE = "ROLE_ASSOCIATE";
+export const ROLE_ONBOARDING_REVIEWER = "ROLE_ONBOARDING_REVIEWER";
+export const ROLE_ONBOARDING_MANAGER = "ROLE_ONBOARDING_MANAGER";

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, Outlet } from 'react-router-dom';
+import { NEW_USER_TAB, RECORDINGS_TAB, ROLE_ASSOCIATE, ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER, SAMPLE_DOCUMENTS_TAB, UPLOAD_DOCUMENTS_TAB } from '../components/constants/UIConstants';
 import { Button } from '../components/core';
 import { tabSelected, appStore } from '../store';
 
@@ -8,81 +9,81 @@ export default function Offboarding() {
   const dispatch = useDispatch();
   const store = useSelector(appStore);
   const { activeTab, userDetails: user } = store || {};
-  const isTabActive = (label: string) => (activeTab === label ? 'active-tab' : '');
+  const isTabActive = (tabName: string) => (activeTab === tabName ? 'active-tab' : '');
   const tabClicked = (tab: string) => dispatch(tabSelected({ tab }));
 
   const loginFormRender = () => {
     return (
       <ul className="nav-links">
         {user &&
-          (user.role === 'ROLE_ONBOARDING_REVIEWER' ||
-            user.role === 'ROLE_ONBOARDING_MANAGER') && (
+          (user.role === ROLE_ONBOARDING_REVIEWER ||
+            user.role === ROLE_ONBOARDING_MANAGER) && (
             <>
-              <li className={isTabActive('NewUser')}>
-                <Link to="/NewUser">
+              <li className={isTabActive(NEW_USER_TAB)}>
+                <Link to="/newUser">
                   <Button
-                    label="NewUser"
-                    clickHandler={() => tabClicked('NewUser')}
+                    label={NEW_USER_TAB}
+                    clickHandler={() => tabClicked(NEW_USER_TAB)}
                   />
                 </Link>
               </li>
-              <li className={isTabActive('Recordings')}>
+              <li className={isTabActive(RECORDINGS_TAB)}>
                 <Link to="/recording">
                   <Button
-                    label="Recordings"
-                    clickHandler={() => tabClicked('Recordings')}
+                    label={RECORDINGS_TAB}
+                    clickHandler={() => tabClicked(RECORDINGS_TAB)}
                   />
                 </Link>
               </li>
-              <li className={isTabActive('Sample Documents')}>
+              <li className={isTabActive(SAMPLE_DOCUMENTS_TAB)}>
                 <Link to="/sampleDocuments">
                   <Button
-                    label="Sample Documents"
-                    clickHandler={() => tabClicked('Sample Documents')}
+                    label={SAMPLE_DOCUMENTS_TAB}
+                    clickHandler={() => tabClicked(SAMPLE_DOCUMENTS_TAB)}
                   />
                 </Link>
               </li>
-              <li className={isTabActive('Upload Documents')}>
+              <li className={isTabActive(UPLOAD_DOCUMENTS_TAB)}>
                 <Link to="/uploadDocuments" state={{ forAssociate: { empId: user.empId } }}>
                   <Button
-                    label="Upload Documents"
-                    clickHandler={() => tabClicked('Upload Documents')}
+                    label={UPLOAD_DOCUMENTS_TAB}
+                    clickHandler={() => tabClicked(UPLOAD_DOCUMENTS_TAB)}
                   />
                 </Link>
               </li>
             </>
           )}
-        {user && user.role === 'ROLE_ASSOCIATE' && (
+        {user && user.role === ROLE_ASSOCIATE && (
           <>
-            <li className={isTabActive('NewUser')}>
-              <Link to="/NewUser">
+            <li className={isTabActive(NEW_USER_TAB)}>
+              <Link to="/newUser">
                 <Button
-                  label="NewUser"
-                  clickHandler={() => tabClicked('NewUser')}
+                  label={NEW_USER_TAB}
+                  clickHandler={() => tabClicked(NEW_USER_TAB)}
                 />
               </Link>
             </li>
-            <li className={isTabActive('Sample Documents')}>
+            <li className={isTabActive(SAMPLE_DOCUMENTS_TAB)}>
               <Link to="/sampleDocuments">
                 <Button
-                  label="Sample Documents"
-                  clickHandler={() => tabClicked('Sample Documents')}
+                  label={SAMPLE_DOCUMENTS_TAB}
+                  clickHandler={() => tabClicked(SAMPLE_DOCUMENTS_TAB)}
                 />
               </Link>
             </li>
-            <li className={isTabActive('Upload Documents')}>
+            <li className={isTabActive(UPLOAD_DOCUMENTS_TAB)}>
               <Link to="/uploadDocuments" state={{ forAssociate: {} }}>
                 <Button
-                  label="Upload Documents"
-                  clickHandler={() => tabClicked('Upload Documents')}
+                  label={UPLOAD_DOCUMENTS_TAB}
+                  clickHandler={() => tabClicked(UPLOAD_DOCUMENTS_TAB)}
                 />
               </Link>
             </li>
-            <li className={isTabActive('Recordings')}>
+            <li className={isTabActive(RECORDINGS_TAB)}>
               <Link to="/recording">
                 <Button
-                  label="Recordings"
-                  clickHandler={() => tabClicked('Recordings')}
+                  label={RECORDINGS_TAB}
+                  clickHandler={() => tabClicked(RECORDINGS_TAB)}
                 />
               </Link>
             </li>

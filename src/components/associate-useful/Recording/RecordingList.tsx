@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import RecordingService from '../../../services/hooks/RecordingService';
 //import { allRecordings, userDetails } from '../../../store';
 import { token, userDetails } from '../../../store';
+import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../../constants/UIConstants';
 
 const tableHeader = ['Recording Description', 'Recording Link'];
 const RecordingList = (props: any) => {
@@ -70,7 +71,7 @@ const RecordingList = (props: any) => {
                   <br />
                   Password : {item.recordLinkPassword}
                 </TableCell>
-                {(user.role === 'ROLE_ONBOARDING_REVIEWER' || user.role === 'ROLE_ONBOARDING_MANAGER') && (
+                {(user.role === ROLE_ONBOARDING_REVIEWER || user.role === ROLE_ONBOARDING_MANAGER) && (
                   <>
                     <TableCell>
                       <Button
