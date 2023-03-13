@@ -23,7 +23,7 @@ import axios from '../../config/interceptor'
 
 import './UploadDocument.css';
 import Loader from '../common/Loader';
-import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../constants/UIConstants';
+import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../../helper/UIConstants';
 
 const SampleDocuments = () => {
   const BASE_URL = 'http://localhost:9003/';

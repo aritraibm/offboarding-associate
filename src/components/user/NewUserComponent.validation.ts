@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { UIConstants } from "../constants/UIConstants";
+import { UIConstants } from "../../helper/UIConstants";
 
 export const NewUserValidationSchema = yup.object().shape({
     employeeId: yup

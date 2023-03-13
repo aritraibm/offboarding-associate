@@ -23,7 +23,7 @@ import { Typography } from '@mui/material';
 import { token, userDetails } from '../../store';
 import { useSelector } from 'react-redux';
 import Loader from '../common/Loader';
-import { ROLE_ASSOCIATE } from '../constants/UIConstants';
+import { ROLE_ASSOCIATE } from '../../helper/UIConstants';
 
 const DocumentTable = ((props: any) => {
   const userToken = useSelector(token);

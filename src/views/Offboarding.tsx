@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, Outlet } from 'react-router-dom';
-import { NEW_USER_TAB, RECORDINGS_TAB, ROLE_ASSOCIATE, ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER, SAMPLE_DOCUMENTS_TAB, UPLOAD_DOCUMENTS_TAB } from '../components/constants/UIConstants';
+import { NEW_USER_TAB, RECORDINGS_TAB, ROLE_ASSOCIATE, ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER, SAMPLE_DOCUMENTS_TAB, UPLOAD_DOCUMENTS_TAB } from '../helper/UIConstants';
 import { Button } from '../components/core';
 import { tabSelected, appStore } from '../store';
 

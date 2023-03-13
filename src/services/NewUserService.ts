@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
-import { ROLE_ASSOCIATE } from "../components/constants/UIConstants";
+import { ROLE_ASSOCIATE } from "../helper/UIConstants";
 
 const BASE_URL = 'http://localhost:9099/';
 const ASSO_BASE_URL = 'http://localhost:9092/';

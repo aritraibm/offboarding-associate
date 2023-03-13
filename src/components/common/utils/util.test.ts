@@ -1,5 +1,5 @@
 
-import { RegExTestCaseType } from "../../constants/type";
+import { RegExTestCaseType } from "../../../helper/type";
 import { validateRegExValue } from "./test-helper";
 import { alphaNumeric, alphaNumericSpecialCharacter } from "./util";
 

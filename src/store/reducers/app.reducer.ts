@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AssociateDetailResponse, DropdownIdName, NewUserInitialState } from "../../components/constants/type";
-import { DEFAULT_TAB } from '../../components/constants/UIConstants';
+import { AssociateDetailResponse, DropdownIdName, NewUserInitialState } from "../../helper/type";
+import { DEFAULT_TAB } from '../../helper/UIConstants';
 
 const newUserInitState: NewUserInitialState = {
   email: '',

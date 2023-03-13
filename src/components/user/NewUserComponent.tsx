@@ -41,7 +41,7 @@ import { newUserFormDefaultValues, NewUserValidationSchema } from './NewUserComp
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
-import { ROLE_ASSOCIATE, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../constants/UIConstants';
+import { ROLE_ASSOCIATE, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../../helper/UIConstants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import React from 'react';
 import { saveNewUser } from '../../services/NewUserService';

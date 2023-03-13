@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { call, put } from "redux-saga/effects";
-import { AssociateDetailResponse, DropdownIdName } from "../../../components/constants/type";
+import { AssociateDetailResponse, DropdownIdName } from "../../../helper/type";
 import { finalAssociatesList, finalDocumentTypeList } from "../../reducers/app.reducer";
 import { requestAllDocumentType, requestAllAsociate } from "../requests/httpRequestSaga";
 
