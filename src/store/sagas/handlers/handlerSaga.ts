@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { call, put } from "redux-saga/effects";
-import { AssociateDetailResponse, DropdownIdName } from "../../../helper/type";
+import { AllRoleType, AssociateDetailResponse, DropdownIdName } from "../../../helper/type";
 import { finalAssociatesList, finalDocumentTypeList, finalRoleList } from "../../reducers/app.reducer";
 import { requestAllDocumentType, requestAllAsociate, requestAllRoles } from "../requests/httpRequestSaga";
 
@@ -26,7 +26,7 @@ export function* handleAllAssociate(action: any) {
 
 export function* handleAllRoles(action: any) {
   try {
-    const response: AxiosResponse<any> = yield call(requestAllRoles);
+    const response: AxiosResponse<AllRoleType[]> = yield call(requestAllRoles);
     const { data } = response;
     yield put(finalRoleList(data));
   } catch (error) {
