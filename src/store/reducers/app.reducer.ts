@@ -42,6 +42,8 @@ const slice = createSlice({
     finalDocumentTypeList: [],
     invokeAssociatesSaga: [],
     finalAssociatesList: [],
+    invokeAllRoleSaga: [],
+    finalRoleList: [],
   },
   reducers: {
     tabSelected: (state, action) => {
@@ -92,6 +94,12 @@ const slice = createSlice({
     finalAssociatesList: (state, action) => {
       state.finalAssociatesList = action.payload;
     },
+    invokeAllRoleSaga: (state, action) => {
+      state = { ...state, ...action.payload.invokeAllRoleSaga };
+    },
+    finalRoleList: (state, action) => {
+      state.finalRoleList = action.payload;
+    },
   },
 });
 
@@ -111,7 +119,9 @@ export const {
   invokeDocumentTypeSaga,
   finalDocumentTypeList,
   invokeAssociatesSaga,
-  finalAssociatesList
+  finalAssociatesList,
+  invokeAllRoleSaga,
+  finalRoleList
 } = slice.actions;
 export const selectedTab = (state: { activeTab: string; }) => state.activeTab;
 export const userDetails = (state: { userDetails: any; }) => state.userDetails;
@@ -119,12 +129,14 @@ export const userDetails = (state: { userDetails: any; }) => state.userDetails;
 export const token = (state: { token: string; }) => state.token;
 export const userComments = (state: { comments: any; }) => state.comments;
 export const createNewUser = (state: { createNewUserDetailsData: any; }) => state.createNewUserDetailsData;
-export const allRoles = (state: { roles: any; }) => state.roles;
+// export const allRoles = (state: { roles: any; }) => state.roles;
 export const allManagers = (state: { managers: any; }) => state.managers;
 export const allReviewers = (state: { reviewers: any; }) => state.reviewers;
 export const allRecordings = (state: { recordings: any; }) => state.recordings;
-export const allUpdateDocumentTypes = (state: { invokeDocumentTypeSaga: any; }) => state.invokeDocumentTypeSaga;
+// export const allUpdateDocumentTypes = (state: { invokeDocumentTypeSaga: any; }) => state.invokeDocumentTypeSaga;
 export const allDocumentTypes = (state: { finalDocumentTypeList: any; }) => state.finalDocumentTypeList;
-export const allUpdateAssociates = (state: { invokeAssociatesSaga: any; }) => state.invokeAssociatesSaga;
+// export const allUpdateAssociates = (state: { invokeAssociatesSaga: any; }) => state.invokeAssociatesSaga;
 export const allAssociates = (state: { finalAssociatesList: any; }) => state.finalAssociatesList;
+// export const invokeUpdateRoleSaga = (state: { invokeAllRoleSaga: any; }) => state.invokeAllRoleSaga;
+export const allRoles = (state: { finalRoleList: any; }) => state.finalRoleList;
 export const { reducer } = slice;
