@@ -151,7 +151,7 @@ export interface MenuGeneratorProps {
 export interface GlobalStoreType {
     activeTab: string,
     token: string | null,
-    userDetails: string | null,
+    userDetails: any,
     comments: [],
     createNewUserDetailsData: NewUserInitialState,
     managers: [],

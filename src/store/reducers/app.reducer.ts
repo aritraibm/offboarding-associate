@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AssociateDetailResponse, DropdownIdName, NewUserInitialState } from "../../helper/type";
+import { AllRoleType, AssociateDetailResponse, DropdownIdName, GlobalStoreType, NewUserInitialState } from "../../helper/type";
 import { DEFAULT_TAB } from '../../helper/constants';
 
 const newUserInitState: NewUserInitialState = {
@@ -45,64 +45,64 @@ const slice = createSlice({
     finalRoleList: [],
   },
   reducers: {
-    tabSelected: (state, action) => {
+    tabSelected: (state: any, action) => {
       state.activeTab = action.payload.tab;
     },
-    createNewUserDetails: (state, action) => {
+    createNewUserDetails: (state: any, action) => {
       state.createNewUserDetailsData = action.payload.createNewUser;
     },
-    login: (state, action) => {
+    login: (state: any, action) => {
       state.token = action.payload.token;
       state.userDetails = action.payload.userDetails;
     },
-    logout: (state) => {
+    logout: (state: any) => {
       state.token = null;
       state.userDetails = null;
       state.comments = [];
     },
-    comments: (state, action) => {
+    comments: (state: any, action) => {
       state.comments = action.payload.comments;
     },
-    resetCreateNewUserDetails: (state) => {
+    resetCreateNewUserDetails: (state: any) => {
       state.createNewUserDetailsData = newUserInitState;
     },
-    roles: (state, action) => {
+    roles: (state: any, action) => {
       state.roles = action.payload.roles;
     },
-    managers: (state, action) => {
+    managers: (state: any, action) => {
       state.managers = action.payload.managers;
     },
-    reviewers: (state, action) => {
+    reviewers: (state: any, action) => {
       state.reviewers = action.payload.reviewers;
     },
     // associateList: (state, action) => {
     //   state.associateList = action.payload.associateList;
     // },
-    recordings: (state, action) => {
+    recordings: (state: any, action) => {
       state.recordings = action.payload.recordings;
     },
-    invokeDocumentTypeSaga: (state, action) => {
+    invokeDocumentTypeSaga: (state: any, action) => {
       state = { ...state, ...action.payload.invokeDocumentTypeSaga };
     },
-    finalDocumentTypeList: (state, action) => {
+    finalDocumentTypeList: (state: any, action) => {
       state.finalDocumentTypeList = action.payload;
     },
-    invokeAssociatesSaga: (state, action) => {
+    invokeAssociatesSaga: (state: any, action) => {
       state = { ...state, ...action.payload.invokeAssociatesSaga };
     },
-    finalAssociatesList: (state, action) => {
+    finalAssociatesList: (state: any, action) => {
       state.finalAssociatesList = action.payload;
     },
-    invokeAllRoleSaga: (state, action) => {
+    invokeAllRoleSaga: (state: any, action) => {
       state = { ...state, ...action.payload.invokeAllRoleSaga };
     },
-    finalRoleList: (state, action) => {
+    finalRoleList: (state: any, action) => {
       state.finalRoleList = action.payload;
     },
   },
 });
 
-export const appStore = (state: any) => state;
+export const appStore = (state: GlobalStoreType) => state;
 export const {
   tabSelected,
   login,
@@ -137,5 +137,5 @@ export const allDocumentTypes = (state: { finalDocumentTypeList: any; }) => stat
 // export const allUpdateAssociates = (state: { invokeAssociatesSaga: any; }) => state.invokeAssociatesSaga;
 export const allAssociates = (state: { finalAssociatesList: any; }) => state.finalAssociatesList;
 // export const invokeUpdateRoleSaga = (state: { invokeAllRoleSaga: any; }) => state.invokeAllRoleSaga;
-export const allRoles = (state: { finalRoleList: any; }) => state.finalRoleList;
+export const allRoles = (state: { finalRoleList: AllRoleType[]; }) => state.finalRoleList;
 export const { reducer } = slice;
