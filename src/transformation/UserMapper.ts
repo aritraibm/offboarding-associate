@@ -1,4 +1,4 @@
-import { DropdownValues } from "../components/constants/type";
+import { DropdownValues } from "../helper/type";
 import { saveNewUser } from "../services/NewUserService";
 
 

@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import { FormProvider } from "react-hook-form";
 import { validateAttributeVisibility } from "../common/utils/test-helper";
 import { withForm } from "../common/utils/withForm";
-import { LabelVisibilityTestCaseType } from "../constants/type";
+import { LabelVisibilityTestCaseType } from "../../helper/type";
 import NewUserComponent from "./NewUserComponent";
 import { NewUserValidationSchema } from "./NewUserComponent.validation";
 // import { LabelVisibilityTestCaseType } from "../../Constants/application.type";

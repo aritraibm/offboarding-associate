@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import RecordingService from '../../../services/hooks/RecordingService';
 //import { allRecordings, userDetails } from '../../../store';
 import { token, userDetails } from '../../../store';
-import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../../constants/UIConstants';
+import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../../../helper/constants';
 
 const tableHeader = ['Recording Description', 'Recording Link'];
 const RecordingList = (props: any) => {

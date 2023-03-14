@@ -16,3 +16,12 @@ export const requestAllAsociate = () => {
     url: "http://localhost:9092/pru-associate/get-all-associates",
   });
 }
+
+
+export const requestAllRoles = () => {
+
+  return axios.request({
+    method: "get",
+    url: "http://localhost:9099/roles",
+  });
+}

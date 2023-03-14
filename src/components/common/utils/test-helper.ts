@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react";
-import { LabelVisibilityTestCaseType, RegExTestCaseType } from "../../constants/type";
+import { LabelVisibilityTestCaseType, RegExTestCaseType } from "../../../helper/type";
 
 
 export const validateAttributeVisibility = ({

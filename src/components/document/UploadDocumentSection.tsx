@@ -22,7 +22,7 @@ import { useForm } from 'react-hook-form';
 // import { error } from 'console';
 // import { InputText } from '../core/InputText/InputText';
 // import NewSelectBox from '../core/NewSelect';
-import { ROLE_ASSOCIATE, UIConstants } from '../constants/UIConstants';
+import { ROLE_ASSOCIATE, UIConstants } from '../../helper/constants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import { FlexRow } from '../common/Application.style';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
