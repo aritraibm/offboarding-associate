@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { UIConstants } from "../constants/UIConstants";
+import { UIConstants } from "../../helper/constants";
 
 export const NewUserValidationSchema = yup.object().shape({
     employeeId: yup
@@ -11,7 +11,7 @@ export const NewUserValidationSchema = yup.object().shape({
         .string()
         .email(`Please enter ${UIConstants.emailIdLabel} in valid format, i.e. 'xyz@ibm.com'`)
         .matches(
-            /^gg@ibm.com$/,
+            /([a-zA-Z0-9]+)([\_\.\-{1}])?([a-zA-Z0-9]+)(?:.|@)(?:in.ibm|ibm|Ibm|IN.IBM|IBM)([\.])([a-zA-Z\.]+)/,
             `${UIConstants.emailIdLabel} must be IBM email, i.e. 'xyz@ibm.com / xyz@in.ibm.com'`
         )
         .required(`Please enter ${UIConstants.emailIdLabel}`),

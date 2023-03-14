@@ -126,15 +126,44 @@ export interface NewUserInitialState {
     showPassword: boolean,
     isLoginButonDisabled: boolean,
     isGeneratedButtonDisabled: boolean,
-    error: {
-        errorEmail: boolean,
-        errorEmployeeId: boolean,
-        errorReviewerName: boolean,
-        errorManagerName: boolean,
-        errorRole: boolean,
-        errorUserName: boolean,
-        errorPassword: boolean,
-        errorGeneratebutton: boolean,
-    },
+    error: UserInitiationErrorDetails,
 }
 
+export interface UserInitiationErrorDetails {
+    errorEmail: boolean,
+    errorEmployeeId: boolean,
+    errorReviewerName: boolean,
+    errorManagerName: boolean,
+    errorRole: boolean,
+    errorUserName: boolean,
+    errorPassword: boolean,
+    errorGeneratebutton: boolean,
+}
+
+export interface MenuGeneratorProps {
+    isTabActive?: string,
+    label: string,
+    linkTo: string,
+    tabClicked?: string,
+    state?: any,
+}
+
+export interface GlobalStoreType {
+    activeTab: string,
+    token: string | null,
+    userDetails: string | null,
+    comments: [],
+    createNewUserDetailsData: NewUserInitialState,
+    managers: [],
+    reviewers: [],
+    roles: [],
+    recordings: [],
+    invokeDocumentTypeSaga: [],
+    finalDocumentTypeList: [],
+    invokeAssociatesSaga: [],
+    finalAssociatesList: [],
+    invokeAllRoleSaga: [],
+    finalRoleList: [],
+}
+
+export type AllRoleType = DropdownValues;

@@ -1,3 +1,4 @@
+import React from 'react';
 import { InfoRounded, Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Alert,
@@ -8,10 +9,10 @@ import {
   Grid,
   IconButton,
   InputAdornment,
-  MenuItem,
-  Select,
+  // MenuItem,
+  // Select,
   Snackbar,
-  TextField,
+  // TextField,
   Tooltip,
   useTheme,
   Typography,
@@ -27,7 +28,8 @@ import {
   // createFristName,
   // createLastName,
   createNewUser,
-  createNewUserDetails,
+  invokeAllRoleSaga,
+  invokeDocumentTypeSaga,
   managers,
   resetCreateNewUserDetails,
   reviewers,
@@ -41,11 +43,12 @@ import { newUserFormDefaultValues, NewUserValidationSchema } from './NewUserComp
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
-import { ROLE_ASSOCIATE, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../constants/UIConstants';
+import { ROLE_ASSOCIATE, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../../helper/constants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
-import React from 'react';
+
 import { saveNewUser } from '../../services/NewUserService';
 import { mapNewUserModel_UItoAPI } from '../../transformation/UserMapper';
+import { AllRoleType, GlobalStoreType } from '../../helper/type';
 
 
 const NewUserComponent = () => {
@@ -57,21 +60,24 @@ const NewUserComponent = () => {
   // const FristName=useSelector(createFristName);
   // const LastName=useSelector(createLastName);
   const newUserDetails = useSelector(createNewUser);
-  const allRole = useSelector(allRoles);
+  // const allRole = useSelector(allRoles);
 
 
-  const [employeeId, setEmployeeId] = useState("");
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  // const [employeeId, setEmployeeId] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [firstName, setFirstName] = useState("");
+  // const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [attribteType, setAttribteType] = useState('password');
   const [userRoleName, setUserRoleName] = useState('');
-  const [openSnakBar, setSnakBarOpen] = useState(false);
+  //const [openSnakBar, setSnakBarOpen] = useState(false);
 
 
-  const isEmail = (email: any) =>
-    /^[A-Z0-9._%+-]+@[IBM,ibm]+\.[COM,com]{2,4}$/i.test(email);
+  // const isEmail = (email: any) =>
+  //   /^[A-Z0-9._%+-]+@[IBM,ibm]+\.[COM,com]{2,4}$/i.test(email);
+
+
+  const allRoles = useSelector((state: GlobalStoreType) => state.finalRoleList);
 
   // const getRoleName = (roleId: string) => {
   //   allRole.filter((data: any) => {
@@ -82,17 +88,17 @@ const NewUserComponent = () => {
   //   })
   // };
 
-  const getRoleName = (roleId: string) => {
-    return allRole.filter((data: any) => data.id == roleId)
+  const getRoleName = (roleId: string): AllRoleType[] => {
+    return allRoles.filter((data: AllRoleType) => data.id == roleId)
   }
 
 
-  const assosiateRoleId = allRole.find((data: any) => {
-    return data.name == ROLE_ASSOCIATE;
-  });
-  const reviewerRoleId = allRole.find((data: any) => {
-    return data.name == ROLE_ONBOARDING_REVIEWER;
-  });
+  // const assosiateRoleId = allRoles.find((data: any) => {
+  //   return data.name == ROLE_ASSOCIATE;
+  // });
+  // const reviewerRoleId = allRoles.find((data: any) => {
+  //   return data.name == ROLE_ONBOARDING_REVIEWER;
+  // });
   const allManager = useSelector(allManagers).filter(
     (item: any) => item.empId !== 'N/A'
   );
@@ -102,12 +108,17 @@ const NewUserComponent = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect((): any => {
-    axios.get('http://localhost:9099/roles').then((response) => {
-      if (response.data) {
-        dispatch(roles({ roles: response.data }));
-        console.log("response.data :::::: >>>>> " + JSON.stringify(response.data))
-      } else console.log('No Roles');
-    });
+
+    if (allRoles.length === 0) {
+      dispatch(invokeAllRoleSaga({ test: "test", id: 1 }));
+    }
+
+    // axios.get('http://localhost:9099/roles').then((response) => {
+    //   if (response.data) {
+    //     dispatch(roles({ roles: response.data }));
+    //     console.log("response.data :::::: >>>>> " + JSON.stringify(response.data))
+    //   } else console.log('No Roles');
+    // });
     axios.get('http://localhost:9099/managers').then((response) => {
       if (response.data) dispatch(managers({ managers: response.data }));
       else console.log('No managers');
@@ -368,7 +379,7 @@ const NewUserComponent = () => {
     setPassword(newUserFormDefaultValues.password);
     // setValue('roleId', '');
     resetField('roleId')
-    trigger('roleId');
+    // trigger('roleId');
   }
 
   const { register, trigger, reset, resetField, getValues, setValue, setFocus, handleSubmit, watch, formState: { errors } } = useForm({
@@ -679,7 +690,7 @@ const NewUserComponent = () => {
                 >
                   Please generate password
                 </Typography> */}
-                {allRole && (
+                {allRoles && (
                   <>
 
                     <Dropdown
@@ -687,7 +698,7 @@ const NewUserComponent = () => {
                       {...register("roleId")}
                       error={!!errors?.roleId}
                       onChange={handleUserDropdownChange}
-                      options={mapAPItoUIDocTypeDropdown(allRole, 'id', 'name')}
+                      options={mapAPItoUIDocTypeDropdown(allRoles, 'id', 'name')}
                       selectAnOption
                       helperText={
                         errors.roleId

@@ -1,4 +1,4 @@
-import { DropdownValues } from "../components/constants/type";
+import { DropdownValues } from "../helper/type";
 
 
 export const mapAPItoUIDocTypeDropdown = <T>(allDocType: T[], idSrc: string, nameSrc: string): DropdownValues[] => {

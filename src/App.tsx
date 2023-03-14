@@ -42,7 +42,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Offboarding />}>
-            <Route path="/" element={<Welcome />} />
+            {/* <Route path="/" element={<Welcome />} /> */}
             {user && (
               <>
                 <Route path="/newUser" element={<NewUserComponent />} />
