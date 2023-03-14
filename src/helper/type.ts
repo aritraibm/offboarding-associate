@@ -1,3 +1,4 @@
+import { ROLE_ASSOCIATE, ROLE_ONBOARDING_REVIEWER, ROLE_ONBOARDING_MANAGER } from '../helper/constants'
 
 export type LoginRequest = {
     empId: string;
@@ -148,10 +149,21 @@ export interface MenuGeneratorProps {
     state?: any,
 }
 
+type AllApplicationRoles = typeof ROLE_ASSOCIATE | typeof ROLE_ONBOARDING_REVIEWER | typeof ROLE_ONBOARDING_MANAGER;
+
+
+export interface LoggedInUserDetails {
+    name: string,
+    role: AllApplicationRoles,
+    reviewer: string,
+    manager: string,
+    empId: string
+}
+
 export interface GlobalStoreType {
     activeTab: string,
     token: string | null,
-    userDetails: any,
+    userDetails: LoggedInUserDetails,
     comments: [],
     createNewUserDetailsData: NewUserInitialState,
     managers: [],
