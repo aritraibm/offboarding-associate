@@ -28,7 +28,6 @@ const newUserInitState: NewUserInitialState = {
 const slice = createSlice({
   name: 'Offboarding',
   initialState: {
-    count: 0,
     activeTab: DEFAULT_TAB,
     token: null,
     userDetails: null,

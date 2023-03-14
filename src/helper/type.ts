@@ -147,3 +147,23 @@ export interface MenuGeneratorProps {
     tabClicked?: string,
     state?: any,
 }
+
+export interface GlobalStoreType {
+    activeTab: string,
+    token: string | null,
+    userDetails: string | null,
+    comments: [],
+    createNewUserDetailsData: NewUserInitialState,
+    managers: [],
+    reviewers: [],
+    roles: [],
+    recordings: [],
+    invokeDocumentTypeSaga: [],
+    finalDocumentTypeList: [],
+    invokeAssociatesSaga: [],
+    finalAssociatesList: [],
+    invokeAllRoleSaga: [],
+    finalRoleList: [],
+}
+
+export type AllRoleType = DropdownValues;

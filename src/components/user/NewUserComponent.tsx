@@ -1,3 +1,4 @@
+import React from 'react';
 import { InfoRounded, Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Alert,
@@ -8,10 +9,10 @@ import {
   Grid,
   IconButton,
   InputAdornment,
-  MenuItem,
-  Select,
+  // MenuItem,
+  // Select,
   Snackbar,
-  TextField,
+  // TextField,
   Tooltip,
   useTheme,
   Typography,
@@ -44,9 +45,10 @@ import { useForm } from 'react-hook-form';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 import { ROLE_ASSOCIATE, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../../helper/constants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
-import React from 'react';
+
 import { saveNewUser } from '../../services/NewUserService';
 import { mapNewUserModel_UItoAPI } from '../../transformation/UserMapper';
+import { AllRoleType, GlobalStoreType } from '../../helper/type';
 
 
 const NewUserComponent = () => {
@@ -75,7 +77,7 @@ const NewUserComponent = () => {
   //   /^[A-Z0-9._%+-]+@[IBM,ibm]+\.[COM,com]{2,4}$/i.test(email);
 
 
-  const allRoles = useSelector((state: any) => state.finalRoleList);
+  const allRoles = useSelector((state: GlobalStoreType) => state.finalRoleList);
 
   // const getRoleName = (roleId: string) => {
   //   allRole.filter((data: any) => {
@@ -86,17 +88,17 @@ const NewUserComponent = () => {
   //   })
   // };
 
-  const getRoleName = (roleId: string) => {
-    return allRoles.filter((data: any) => data.id == roleId)
+  const getRoleName = (roleId: string): AllRoleType[] => {
+    return allRoles.filter((data: AllRoleType) => data.id == roleId)
   }
 
 
-  const assosiateRoleId = allRoles.find((data: any) => {
-    return data.name == ROLE_ASSOCIATE;
-  });
-  const reviewerRoleId = allRoles.find((data: any) => {
-    return data.name == ROLE_ONBOARDING_REVIEWER;
-  });
+  // const assosiateRoleId = allRoles.find((data: any) => {
+  //   return data.name == ROLE_ASSOCIATE;
+  // });
+  // const reviewerRoleId = allRoles.find((data: any) => {
+  //   return data.name == ROLE_ONBOARDING_REVIEWER;
+  // });
   const allManager = useSelector(allManagers).filter(
     (item: any) => item.empId !== 'N/A'
   );

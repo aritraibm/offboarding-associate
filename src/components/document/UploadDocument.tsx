@@ -27,14 +27,15 @@ import { Dropdown } from '../core/Dropdown/Dropdown';
 import { FlexRow } from '../common/Application.style';
 import UploadDocumentSection from './UploadDocumentSection';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
+import { GlobalStoreType } from '../../helper/type';
 
 
 const UploadDocument = () => {
   const BASE_URL = 'http://localhost:9003/';
   const userToken = useSelector(token);
   const location = useLocation();
-  const allDocumentTypes = useSelector((state: any) => state.finalDocumentTypeList);
-  const allAssociates = useSelector((state: any) => state.finalAssociatesList);
+  const allDocumentTypes = useSelector((state: GlobalStoreType) => state.finalDocumentTypeList);
+  const allAssociates = useSelector((state: GlobalStoreType) => state.finalAssociatesList);
 
   const dispatch = useDispatch();
   const { forAssociate } = location.state;
@@ -146,44 +147,44 @@ const UploadDocument = () => {
     setSnakBarOpen(false);
   };
 
-  const fetchDocumentTypes = () => {
-    const role = user.role;
-    // console.log("role >>>>> " + role);
-    axios
-      .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
-      .then((res: any) => {
-        // console.log("res >>>>> "+JSON.stringify(res));
-        setOptions([...res.data]);
-        setOptionselect('1');
-        setLoader(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const fetchDocumentTypes = () => {
+  //   const role = user.role;
+  //   // console.log("role >>>>> " + role);
+  //   axios
+  //     .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
+  //     .then((res: any) => {
+  //       // console.log("res >>>>> "+JSON.stringify(res));
+  //       setOptions([...res.data]);
+  //       setOptionselect('1');
+  //       setLoader(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
 
-  const fetchAllAssociates = () => {
+  // const fetchAllAssociates = () => {
 
-    axios
-      .get("http://localhost:9092/pru-associate/get-all-associates", { headers: { Authorization: 'Bearer ' + userToken } })
-      .then((result: any) => {
-        // console.log("result ==== >"+JSON.stringify(result));
+  //   axios
+  //     .get("http://localhost:9092/pru-associate/get-all-associates", { headers: { Authorization: 'Bearer ' + userToken } })
+  //     .then((result: any) => {
+  //       // console.log("result ==== >"+JSON.stringify(result));
 
-        setAssocaiteList([...result.data]);
-        setAllAssoOptionSelect('1');
-        setLoader(false);
+  //       setAssocaiteList([...result.data]);
+  //       setAllAssoOptionSelect('1');
+  //       setLoader(false);
 
-      });
-  }
+  //     });
+  // }
 
-  const allAssociatesOptionChanged = (childData: any) => {
-    setAllAssoOptionSelect(childData);
-  };
+  // const allAssociatesOptionChanged = (childData: any) => {
+  //   setAllAssoOptionSelect(childData);
+  // };
 
-  const optionChanged = (childData: any) => {
-    setOptionselect(childData);
-  };
+  // const optionChanged = (childData: any) => {
+  //   setOptionselect(childData);
+  // };
 
   const resetFields = () => {
     var input: any = document.getElementById('myfile');
