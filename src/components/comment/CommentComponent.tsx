@@ -17,16 +17,15 @@ import {
   List,
   ListItem,
   ListItemText,
-  TextField,
   Tooltip,
   Typography,
 } from '@mui/material';
-import { ChangeEvent, Fragment, SetStateAction, useState } from 'react';
+import { ChangeEvent, Fragment, useState } from 'react';
 import moment from 'moment/moment.js';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { comments, userComments, userDetails, token, associateList } from '../../store';
+import { comments, userComments, userDetails, token } from '../../store';
 import Loader from '../common/Loader';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import { UIConstants } from '../constants/UIConstants';
@@ -52,8 +51,8 @@ const CommentComponent = (props: any) => {
   const allComments = useSelector(userComments);
   const empId: any = props.empId ? props.empId : user.empId;
   const [loader, setLoader] = useState(true);
-  const [associateName, setAssociateName] = useState();
-  const [ibmId, setIbmId] = useState('');
+  // const [associateName, setAssociateName] = useState();
+  // const [ibmId, setIbmId] = useState('');
   const [assocaiteList, setAssocaiteList] = useState<any>([]);
 
   useEffect(() => {
@@ -85,7 +84,9 @@ const CommentComponent = (props: any) => {
       .then((res: any) => {
         // console.log("res >>>>> "+JSON.stringify(res));
         setOptions([...res.data]);
+        console.log("options", options)
         setOptionselect('1');
+        console.log("optionselect",optionselect)
         setLoader(false);
       })
       .catch((err) => {
@@ -103,6 +104,7 @@ const CommentComponent = (props: any) => {
 
         setAssocaiteList([...result.data]);
         setAllAssoOptionSelect('1');
+        console.log("allAssoOptionSelect",allAssoOptionSelect)
         setLoader(false);
 
       });
@@ -111,7 +113,9 @@ const CommentComponent = (props: any) => {
 
   const handleClickOpen = () => {
     setError(false);
+    console.log("error",error)
     setComment('');
+    console.log("comment",comment)
     setOpen(true);
   };
 
@@ -142,9 +146,10 @@ const CommentComponent = (props: any) => {
 
 
 
-  const handleComment = (event: { target: { value: SetStateAction<string>; }; }) => {
-    setComment(event.target.value);
-  };
+  // const handleComment = (event: { target: { value: SetStateAction<string>; }; }) => {
+  //   setComment(event.target.value);
+  //   console.log("comment",comment)
+  // };
 
 
 
@@ -188,7 +193,7 @@ const CommentComponent = (props: any) => {
   const cmtRegister = cmtForm.register;
   const cmtHandleSubmit = cmtForm.handleSubmit;
   const cmtErrors = cmtForm.formState.errors;
-  const cmtGetValues = cmtForm.getValues;
+  // const cmtGetValues = cmtForm.getValues;
   const cmtReset = cmtForm.reset;
 
   const saveComments = (data: any) => {
