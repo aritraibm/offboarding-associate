@@ -1,6 +1,7 @@
+import { AxiosResponse } from 'axios';
 import axios from '../../../config/interceptor';
 
-export const requestAllDocumentType = () => {
+export const requestAllDocumentType = (): Promise<AxiosResponse<any, any>> => {
 
   return axios.request({
     method: "get",
@@ -9,7 +10,7 @@ export const requestAllDocumentType = () => {
 }
 
 
-export const requestAllAsociate = () => {
+export const requestAllAsociate = (): Promise<AxiosResponse<any, any>> => {
 
   return axios.request({
     method: "get",
@@ -18,10 +19,27 @@ export const requestAllAsociate = () => {
 }
 
 
-export const requestAllRoles = () => {
+export const requestAllRoles = (): Promise<AxiosResponse<any, any>> => {
 
   return axios.request({
     method: "get",
     url: "http://localhost:9099/roles",
+  });
+}
+
+
+export const requestAllManagers = (): Promise<AxiosResponse<any, any>> => {
+
+  return axios.request({
+    method: "get",
+    url: "http://localhost:9099/managers",
+  });
+}
+
+export const requestAllReviewers = (): Promise<AxiosResponse<any, any>> => {
+
+  return axios.request({
+    method: "get",
+    url: "http://localhost:9099/managers",
   });
 }

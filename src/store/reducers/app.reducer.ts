@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AllRoleType, AssociateDetailResponse, DropdownIdName, GlobalStoreType, NewUserInitialState } from "../../helper/type";
+import { AllManagerType, AllReviewerType, AllRoleType, AssociateDetailResponse, DropdownIdName, GlobalStoreType, NewUserInitialState } from "../../helper/type";
 import { DEFAULT_TAB } from '../../helper/constants';
 
 const newUserInitState: NewUserInitialState = {
@@ -43,6 +43,10 @@ const slice = createSlice({
     finalAssociatesList: [],
     invokeAllRoleSaga: [],
     finalRoleList: [],
+    invokeAllManagerSaga: [],
+    finalAllManagerList: [],
+    invokeAllReviewerSaga: [],
+    finalAllReviewerList: [],
   },
   reducers: {
     tabSelected: (state: any, action) => {
@@ -99,6 +103,18 @@ const slice = createSlice({
     finalRoleList: (state: any, action) => {
       state.finalRoleList = action.payload;
     },
+    invokeAllManagerSaga: (state: any, action) => {
+      state = { ...state, ...action.payload.invokeAllManagerSaga };
+    },
+    finalAllManagerList: (state: any, action) => {
+      state.finalAllManagerList = action.payload;
+    },
+    invokeAllReviewerSaga: (state: any, action) => {
+      state = { ...state, ...action.payload.invokeAllReviewerSaga };
+    },
+    finalAllReviewerList: (state: any, action) => {
+      state.finalAllReviewerList = action.payload;
+    },
   },
 });
 
@@ -120,7 +136,11 @@ export const {
   invokeAssociatesSaga,
   finalAssociatesList,
   invokeAllRoleSaga,
-  finalRoleList
+  finalRoleList,
+  invokeAllManagerSaga,
+  finalAllManagerList,
+  invokeAllReviewerSaga,
+  finalAllReviewerList
 } = slice.actions;
 export const selectedTab = (state: { activeTab: string; }) => state.activeTab;
 export const userDetails = (state: { userDetails: any; }) => state.userDetails;
@@ -129,8 +149,8 @@ export const token = (state: { token: string; }) => state.token;
 export const userComments = (state: { comments: any; }) => state.comments;
 export const createNewUser = (state: { createNewUserDetailsData: any; }) => state.createNewUserDetailsData;
 // export const allRoles = (state: { roles: any; }) => state.roles;
-export const allManagers = (state: { managers: any; }) => state.managers;
-export const allReviewers = (state: { reviewers: any; }) => state.reviewers;
+// export const allManagers = (state: { managers: any; }) => state.managers;
+// export const allReviewers = (state: { reviewers: any; }) => state.reviewers;
 export const allRecordings = (state: { recordings: any; }) => state.recordings;
 // export const allUpdateDocumentTypes = (state: { invokeDocumentTypeSaga: any; }) => state.invokeDocumentTypeSaga;
 export const allDocumentTypes = (state: { finalDocumentTypeList: any; }) => state.finalDocumentTypeList;
@@ -138,4 +158,6 @@ export const allDocumentTypes = (state: { finalDocumentTypeList: any; }) => stat
 export const allAssociates = (state: { finalAssociatesList: any; }) => state.finalAssociatesList;
 // export const invokeUpdateRoleSaga = (state: { invokeAllRoleSaga: any; }) => state.invokeAllRoleSaga;
 export const allRoles = (state: { finalRoleList: AllRoleType[]; }) => state.finalRoleList;
+export const allManagers = (state: { finalAllManagerList: AllManagerType[]; }) => state.finalAllManagerList;
+export const allReviewers = (state: { finalAllReviewerList: AllReviewerType[]; }) => state.finalAllReviewerList;
 export const { reducer } = slice;
