@@ -18,13 +18,9 @@ import Loader from '../common/Loader';
 import { SelectAssociateValidationSchema } from './FilterUploadDocument.validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Box, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
-import { error } from 'console';
-import { InputText } from '../core/InputText/InputText';
-// import NewSelectBox from '../core/NewSelect';
+import { Box, Grid} from '@mui/material';
 import { UIConstants } from '../constants/UIConstants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
-import { FlexRow } from '../common/Application.style';
 import UploadDocumentSection from './UploadDocumentSection';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 
@@ -40,12 +36,9 @@ const UploadDocument = () => {
   const [options, setOptions] = useState<string[]>([]);
   const [assocaiteList, setAssocaiteList] = useState<any>([]);
   const [optionselect, setOptionselect] = useState('');
-  const [allAssoOptionSelect, setAllAssoOptionSelect] = useState('');
 
   const [inputfile, setInputfile] = useState(false);
   const [isReviewed, setIsReviewed] = useState(false);
-  const [docTobeUpdate, setDocTobeUpdate] = useState({});
-  const [docTypeTobeUpdate, setDocTypeTobeUpdate] = useState({});
   const [updatePopupMessage, setUpdatePopupMessage] = useState('');
   const [isDocTypePopup, setIsDocTypePopup] = useState(false);
   const [openUpdate, setUpdateDialogStatus] = useState(false);
@@ -61,9 +54,7 @@ const UploadDocument = () => {
   const childRefNonReviewed = useRef<any>(null);
 
   const [ibmId, setIbmId] = useState("");
-  const [empId, setEmpId] = useState("");
-  const [password, setPswd] = useState("");
-  const [error, setError] = useState(false);
+
 
   // const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
   //   setError(false);
@@ -96,11 +87,7 @@ const UploadDocument = () => {
 
     formdata.append('file', input.files[0], input.files[0].name);
     formdata.append('data', JSON.stringify(jsonData));
-    var requestOptions = {
-      method: 'POST',
-      body: formdata,
-      redirect: 'follow',
-    };
+    
     const uploadUrl = `${BASE_URL}files`;
     axios
       .post(uploadUrl, formdata, {
@@ -163,47 +150,23 @@ const UploadDocument = () => {
         // console.log("result ==== >"+JSON.stringify(result));
 
         setAssocaiteList([...result.data]);
-        setAllAssoOptionSelect('1');
         setLoader(false);
 
       });
   }
 
-  const allAssociatesOptionChanged = (childData: any) => {
-    setAllAssoOptionSelect(childData);
-  };
 
   const optionChanged = (childData: any) => {
     setOptionselect(childData);
   };
 
   const resetFields = () => {
+    console.log('inputFile',inputfile)
     var input: any = document.getElementById('myfile');
     input.value = '';
 
     setOptionselect('1');
     setInputfile(false);
-  };
-
-  const openUpdateDialog = () => {
-    const yy: any = document.getElementById('myfile');
-    const updateFileName = yy.files[0].name;
-    //var filteredObj = [];
-    var isPopupDisplay: boolean | undefined = false;
-    if (user.role === 'ROLE_ASSOCIATE') {
-      isPopupDisplay = validateUploadFile(documents, updateFileName);
-    } else {
-      isPopupDisplay = validateUploadFile(revieweddocuments, updateFileName);
-    }
-
-    if (isPopupDisplay) {
-      //console.log(filteredObj[0])
-      //setDocTobeUpdate(filteredObj[0]);
-      //setDocTypeTobeUpdate(filteredObj[0].documentType.name);
-      setUpdateDialogStatus(true);
-    } else {
-      callUploadAPI();
-    }
   };
 
   const validateUploadFile = (documentList: any, updateFileName: any) => {
@@ -254,12 +217,13 @@ const UploadDocument = () => {
       setDocuments(documents.documents);
     } else {
       setReviewedDocuments(documents.revieweddocuments);
+      console.log('isReviewed', isReviewed)
       setIsReviewed(documents.isReviewed);
     }
   };
 
 
-  const { register, trigger, handleSubmit, watch, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
     mode: 'all',
     resolver: yupResolver(SelectAssociateValidationSchema),
   });

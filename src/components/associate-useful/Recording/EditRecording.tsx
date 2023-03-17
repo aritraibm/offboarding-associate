@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
   Grid,
-  Typography,
   TextField,
-  Button,
-  FormControl,
-  Select,
-  MenuItem,
+  Button
 } from '@mui/material';
 import RecordingService from '../../../services/hooks/RecordingService';
 import { token } from '../../../store';
@@ -14,9 +10,8 @@ import { useSelector } from 'react-redux';
 
 const EditRecording = (props: any) => {
   const userToken = useSelector(token);
-  const [recordings, setRecordings] = useState([]);
   const headers = { Authorization: 'Bearer ' + userToken };
-  const BASE_URL = 'http://localhost:9094/recording';
+  // const BASE_URL = 'http://localhost:9094/recording';
   const [recording, setRecording] = useState(props.currentRecording);
 
   useEffect(() => {

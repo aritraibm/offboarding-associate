@@ -4,7 +4,6 @@ import {
   CardActions,
   CardContent,
   Grid,
-  TextField,
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -14,7 +13,7 @@ import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../store";
-import { LoginRequest, LoginResponse } from "../constants/type";
+import { LoginResponse } from "../constants/type";
 import "../styles/login.css";
 import { LoginValidationSchema } from "./LoginComponent.validation";
 import { InputText } from "../core/InputText/InputText";
@@ -34,7 +33,7 @@ const LoginComponent = () => {
   };
 
 
-  const { register, trigger, handleSubmit, watch, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
     mode: 'all',
     resolver: yupResolver(LoginValidationSchema),
   });

@@ -1,8 +1,6 @@
 import React, {
   useState,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
+  useEffect
 } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -45,7 +43,7 @@ const DocumentTable = ((props: any) => {
 
   useEffect(() => {
     fetchDocuments();
-  }, []);
+  });
 
   const handleClose = () => {
     setDialogStatus(false);

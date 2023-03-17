@@ -8,11 +8,9 @@ import {
   Button,
   Typography,
 } from '@mui/material';
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import RecordingService from '../../../services/hooks/RecordingService';
-//import { allRecordings, userDetails } from '../../../store';
 import { token, userDetails } from '../../../store';
 
 const tableHeader = ['Recording Description', 'Recording Link'];
@@ -20,10 +18,7 @@ const RecordingList = (props: any) => {
   const userToken = useSelector(token);
   const user = useSelector(userDetails);
   const [recordings, setRecordings] = useState([]);
-  const [currentRecording, setCurrentRecording] = useState(null);
-  //const recording = useSelector(allRecordings);
-  const [currentIndex, setCurrentIndex] = useState(-1);
-
+  
   useEffect(() => {
     const BASE_URL = 'http://localhost:9094/recording';
 
@@ -38,8 +33,7 @@ const RecordingList = (props: any) => {
           response.data
         );
       });
-    //retrieveTrainings();
-  }, []);
+  }, [recordings, userToken]);
 
   return (
     <TableContainer style={{ margin: '0px', backgroundColor: 'white' }}>
@@ -64,7 +58,7 @@ const RecordingList = (props: any) => {
               <TableRow key={item.recordId}>
                 <TableCell>{item.recordDesc}</TableCell>
                 <TableCell>
-                  <a target="_blank" href={item.recordLink}>
+                  <a target="_blank" href={item.recordLink} rel="noreferrer">
                     {item.recordLink}
                   </a>
                   <br />

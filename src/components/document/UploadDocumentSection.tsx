@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import { useLocation } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
@@ -13,18 +8,13 @@ import './UploadDocument.css';
 // import SelectBox from '../core/Select';
 import { token, userDetails } from '../../store';
 import { useSelector } from 'react-redux';
-import DocumentTable from './DocumentTable';
 import Loader from '../common/Loader';
 import { FilterUploadDocumentValidationSchema } from './FilterUploadDocument.validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Box, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
-import { error } from 'console';
-import { InputText } from '../core/InputText/InputText';
 // import NewSelectBox from '../core/NewSelect';
 import { UIConstants } from '../constants/UIConstants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
-import { FlexRow } from '../common/Application.style';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 
 const UploadDocumentSection = () => {
@@ -39,12 +29,9 @@ const UploadDocumentSection = () => {
   const [options, setOptions] = useState<string[]>([]);
   const [assocaiteList, setAssocaiteList] = useState<any>([]);
   const [optionselect, setOptionselect] = useState('');
-  const [allAssoOptionSelect, setAllAssoOptionSelect] = useState('');
 
   const [inputfile, setInputfile] = useState(false);
   const [isReviewed, setIsReviewed] = useState(false);
-  const [docTobeUpdate, setDocTobeUpdate] = useState({});
-  const [docTypeTobeUpdate, setDocTypeTobeUpdate] = useState({});
   const [updatePopupMessage, setUpdatePopupMessage] = useState('');
   const [isDocTypePopup, setIsDocTypePopup] = useState(false);
   const [openUpdate, setUpdateDialogStatus] = useState(false);
@@ -58,17 +45,6 @@ const UploadDocumentSection = () => {
 
   const childRefReviewed = useRef<any>(null);
   const childRefNonReviewed = useRef<any>(null);
-
-  const [ibmId, setIbmId] = useState("AAA");
-  const [empId, setEmpId] = useState("");
-  const [password, setPswd] = useState("");
-  const [error, setError] = useState(false);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
-    setError(false);
-    if (type === "empId") setEmpId(e.target.value);
-    else if (type === "password") setPswd(e.target.value);
-  };
 
   const handleDocumentType = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
 
@@ -95,11 +71,7 @@ const UploadDocumentSection = () => {
 
     formdata.append('file', input.files[0], input.files[0].name);
     formdata.append('data', JSON.stringify(jsonData));
-    var requestOptions = {
-      method: 'POST',
-      body: formdata,
-      redirect: 'follow',
-    };
+    
     const uploadUrl = `${BASE_URL}files`;
     axios
       .post(uploadUrl, formdata, {
@@ -108,7 +80,7 @@ const UploadDocumentSection = () => {
           'Authorization': 'Bearer ' + userToken
         },
       })
-      .then((result: any) => {
+      .then(() => {
         updateDialogClose();
         setSnakBarOpen(true);
         setUploadStatus(true);
@@ -127,9 +99,8 @@ const UploadDocumentSection = () => {
       });
   };
 
-  const fileUpload = (event: any) => {
+  const fileUpload = () => {
     //let changedFile = event.target.files[0];
-    let uploadedFiles = event.target.files;
     setInputfile(true);
   };
 
@@ -162,15 +133,11 @@ const UploadDocumentSection = () => {
         // console.log("result ==== >"+JSON.stringify(result));
 
         setAssocaiteList([...result.data]);
-        setAllAssoOptionSelect('1');
         setLoader(false);
 
       });
   }
 
-  const allAssociatesOptionChanged = (childData: any) => {
-    setAllAssoOptionSelect(childData);
-  };
 
   const optionChanged = (childData: any) => {
     console.log(":::::::::::: >>>>>" + childData)
@@ -249,16 +216,8 @@ const UploadDocumentSection = () => {
     setUpdateDialogStatus(false);
   };
 
-  const syncDocuments = (documents: any) => {
-    if (documents.documents) {
-      setDocuments(documents.documents);
-    } else {
-      setReviewedDocuments(documents.revieweddocuments);
-      setIsReviewed(documents.isReviewed);
-    }
-  };
-
-  const { register, trigger, handleSubmit, watch, formState: { errors } } = useForm({
+  
+  const { register, handleSubmit, formState: { errors } } = useForm({
     mode: 'all',
     resolver: yupResolver(FilterUploadDocumentValidationSchema),
   });

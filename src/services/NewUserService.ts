@@ -1,7 +1,6 @@
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import axios from "axios";
 
 const BASE_URL = 'http://localhost:9099/';
-const ASSO_BASE_URL = 'http://localhost:9092/';
 
 export const saveNewUser = (requestData: any, userToken: string) => {
     return axios.post(`${BASE_URL}user_add`, requestData)

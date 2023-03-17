@@ -5,7 +5,6 @@ import EditRecording from './EditRecording';
 import { Grid } from '@mui/material';
 import { token, userDetails } from '../../../store';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
 import Loader from '../../common/Loader';
 import RecordingService from '../../../services/hooks/RecordingService';
 
