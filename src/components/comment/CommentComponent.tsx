@@ -113,9 +113,7 @@ const CommentComponent = (props: any) => {
 
   const handleClickOpen = () => {
     setError(false);
-    console.log("error",error)
     setComment('');
-    console.log("comment",comment)
     setOpen(true);
   };
 
