@@ -28,6 +28,8 @@ import {
   // createFristName,
   // createLastName,
   createNewUser,
+  invokeAllManagerSaga,
+  invokeAllReviewerSaga,
   invokeAllRoleSaga,
   invokeDocumentTypeSaga,
   managers,
@@ -48,7 +50,7 @@ import { Dropdown } from '../core/Dropdown/Dropdown';
 
 import { saveNewUser } from '../../services/NewUserService';
 import { mapNewUserModel_UItoAPI } from '../../transformation/UserMapper';
-import { AllRoleType, GlobalStoreType } from '../../helper/type';
+import { AllManagerType, AllRoleType, GlobalStoreType } from '../../helper/type';
 
 
 const NewUserComponent = () => {
@@ -78,7 +80,8 @@ const NewUserComponent = () => {
 
 
   const allRoles = useSelector((state: GlobalStoreType) => state.finalRoleList);
-
+  const allManagers = useSelector((state: GlobalStoreType) => state.finalAllManagerList);
+  const allReviewers = useSelector((state: GlobalStoreType) => state.finalAllReviewerList);
   // const getRoleName = (roleId: string) => {
   //   allRole.filter((data: any) => {
   //     if (data.id == roleId) {
@@ -99,10 +102,10 @@ const NewUserComponent = () => {
   // const reviewerRoleId = allRoles.find((data: any) => {
   //   return data.name == ROLE_ONBOARDING_REVIEWER;
   // });
-  const allManager = useSelector(allManagers).filter(
-    (item: any) => item.empId !== 'N/A'
+  const allManager = allManagers.filter(
+    (item: AllManagerType) => item.empId !== 'N/A'
   );
-  const allReviewer = useSelector(allReviewers).filter(
+  const allReviewer = allReviewers.filter(
     (item: any) => item.empId !== 'N/A'
   );
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -113,20 +116,28 @@ const NewUserComponent = () => {
       dispatch(invokeAllRoleSaga({ test: "test", id: 1 }));
     }
 
+    if (allManagers.length === 0) {
+      dispatch(invokeAllManagerSaga({ test: "test", id: 1 }));
+    }
+
+    if (allReviewers.length === 0) {
+      dispatch(invokeAllReviewerSaga({ test: "test", id: 1 }));
+    }
+
     // axios.get('http://localhost:9099/roles').then((response) => {
     //   if (response.data) {
     //     dispatch(roles({ roles: response.data }));
     //     console.log("response.data :::::: >>>>> " + JSON.stringify(response.data))
     //   } else console.log('No Roles');
     // });
-    axios.get('http://localhost:9099/managers').then((response) => {
-      if (response.data) dispatch(managers({ managers: response.data }));
-      else console.log('No managers');
-    });
-    axios.get('http://localhost:9099/reviewers').then((response) => {
-      if (response.data) dispatch(reviewers({ reviewers: response.data }));
-      else console.log('No Reviewers');
-    });
+    // axios.get('http://localhost:9099/managers').then((response) => {
+    //   if (response.data) dispatch(managers({ managers: response.data }));
+    //   else console.log('No managers');
+    // });
+    // axios.get('http://localhost:9099/reviewers').then((response) => {
+    //   if (response.data) dispatch(reviewers({ reviewers: response.data }));
+    //   else console.log('No Reviewers');
+    // });
 
     return () => dispatch(resetCreateNewUserDetails());
 

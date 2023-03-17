@@ -176,6 +176,21 @@ export interface GlobalStoreType {
     finalAssociatesList: [],
     invokeAllRoleSaga: [],
     finalRoleList: [],
+    invokeAllManagerSaga: [],
+    finalAllManagerList: [],
+    invokeAllReviewerSaga: [],
+    finalAllReviewerList: [],
 }
 
 export type AllRoleType = DropdownValues;
+
+interface EmpId {
+    empId: string
+}
+export interface AllManagerType extends EmpId {
+    managerName: string
+}
+
+export interface AllReviewerType extends EmpId {
+    reviewerName: string
+}

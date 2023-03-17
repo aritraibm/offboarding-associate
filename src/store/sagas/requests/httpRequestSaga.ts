@@ -26,3 +26,20 @@ export const requestAllRoles = (): Promise<AxiosResponse<any, any>> => {
     url: "http://localhost:9099/roles",
   });
 }
+
+
+export const requestAllManagers = (): Promise<AxiosResponse<any, any>> => {
+
+  return axios.request({
+    method: "get",
+    url: "http://localhost:9099/managers",
+  });
+}
+
+export const requestAllReviewers = (): Promise<AxiosResponse<any, any>> => {
+
+  return axios.request({
+    method: "get",
+    url: "http://localhost:9099/managers",
+  });
+}
