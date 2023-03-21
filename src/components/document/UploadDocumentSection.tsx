@@ -6,21 +6,33 @@ import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import './UploadDocument.css';
 // import SelectBox from '../core/Select';
-import { token, userDetails } from '../../store';
-import { useSelector } from 'react-redux';
+import { token, userDetails, finalDocumentTypeList, invokeDocumentTypeSaga } from '../../store';
+import { useSelector, useDispatch } from 'react-redux';
+import DocumentTable from './DocumentTable';
 import Loader from '../common/Loader';
 import { FilterUploadDocumentValidationSchema } from './FilterUploadDocument.validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 // import NewSelectBox from '../core/NewSelect';
-import { UIConstants } from '../constants/UIConstants';
+import { ROLE_ASSOCIATE, UIConstants } from '../../helper/constants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 
 const UploadDocumentSection = () => {
   const BASE_URL = 'http://localhost:9003/';
-  const userToken = useSelector(token);
+  // const dispatch = useDispatch();
   const location = useLocation();
+  const userToken = useSelector(token);
+  const allDocumentTypes = useSelector((state: any) => state.finalDocumentTypeList);
+  //const allUpdatedDocumentTypes = useSelector((state: any) => state.invokeDocumentTypeSaga);
+  // console.log("allDocumentTypes :::::::::: >>" + JSON.stringify(allDocumentTypes));
+  //console.log("allUpdatedDocumentTypes :::::::::: >>" + JSON.stringify(allUpdatedDocumentTypes));
+
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   fetchAllAssociates();
+  // }, []);
+
 
   const { forAssociate } = location.state;
   const [documents, setDocuments] = useState([]);
@@ -37,9 +49,9 @@ const UploadDocumentSection = () => {
   const [openUpdate, setUpdateDialogStatus] = useState(false);
   const user = useSelector(userDetails);
   const [revieweddocuments, setReviewedDocuments] = useState([]);
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
   // const [associateObj, setAssociate] = useState({
-  //   name: 'astik', role: 'ROLE_ASSOCIATE', reviewer: {empId: 'reviewer1', reviewerName: 'Arindam'},
+  //   name: 'astik', role: ROLE_ASSOCIATE, reviewer: {empId: 'reviewer1', reviewerName: 'Arindam'},
   //   manager: {empId: 'manager1', managerName: 'Arindam'}, empId: '000U2M747'
   // });
 
@@ -51,10 +63,10 @@ const UploadDocumentSection = () => {
     optionChanged(e.target.value);
   };
 
-  useEffect(() => {
-    fetchDocumentTypes();
-    fetchAllAssociates();
-  }, []);
+  // useEffect(() => {
+  //   fetchDocumentTypes();
+  //   fetchAllAssociates();
+  // }, []);
 
   const callUploadAPI = () => {
     var input: any = document.getElementById('myfile');
@@ -63,9 +75,9 @@ const UploadDocumentSection = () => {
     const jsonData = {
       document_type: optionselect,
       employeeId:
-        user.role === 'ROLE_ASSOCIATE' ? user.empId : forAssociate.empId,
+        user.role === ROLE_ASSOCIATE ? user.empId : forAssociate.empId,
       role: user.role,
-      reviewerId: user.role === 'ROLE_ASSOCIATE' ? '' : user.empId,
+      reviewerId: user.role === ROLE_ASSOCIATE ? '' : user.empId,
     };
     var formdata = new FormData();
 
@@ -84,7 +96,7 @@ const UploadDocumentSection = () => {
         updateDialogClose();
         setSnakBarOpen(true);
         setUploadStatus(true);
-        if (user.role === 'ROLE_ASSOCIATE') {
+        if (user.role === ROLE_ASSOCIATE) {
           childRefNonReviewed.current?.fetchChildDocuments();
         } else {
           childRefReviewed.current?.fetchChildDocuments();
@@ -108,21 +120,21 @@ const UploadDocumentSection = () => {
     setSnakBarOpen(false);
   };
 
-  const fetchDocumentTypes = () => {
-    const role = user.role;
-    console.log("role >>>>> " + role);
-    axios
-      .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
-      .then((res: any) => {
-        // console.log("res >>>>> "+JSON.stringify(res));
-        setOptions([...res.data]);
-        setOptionselect('1');
-        setLoader(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const fetchDocumentTypes = () => {
+  //   const role = user.role;
+  //   // console.log("role >>>>> " + role);
+  //   axios
+  //     .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
+  //     .then((res: any) => {
+  //       // console.log("res >>>>> "+JSON.stringify(res));
+  //       setOptions([...res.data]);
+  //       setOptionselect('1');
+  //       setLoader(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
 
   const fetchAllAssociates = () => {
@@ -157,7 +169,7 @@ const UploadDocumentSection = () => {
     const updateFileName = myfile.files[0].name;
     //var filteredObj = [];
     var isPopupDisplay: boolean | undefined = false;
-    if (user.role === 'ROLE_ASSOCIATE') {
+    if (user.role === ROLE_ASSOCIATE) {
       isPopupDisplay = validateUploadFile(documents, updateFileName);
     } else {
       isPopupDisplay = validateUploadFile(revieweddocuments, updateFileName);
@@ -246,7 +258,7 @@ const UploadDocumentSection = () => {
               {...register("documentType")}
               error={!!errors?.documentType}
               onChange={handleDocumentType}
-              options={mapAPItoUIDocTypeDropdown<any>(options, 'id', 'name')}
+              options={mapAPItoUIDocTypeDropdown<any>(allDocumentTypes, 'id', 'name')}
               helperText={
                 errors.documentType
                   ? errors?.documentType.message

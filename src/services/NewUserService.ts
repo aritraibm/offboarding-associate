@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import { ROLE_ASSOCIATE } from "../helper/constants";
 
 const BASE_URL = 'http://localhost:9099/';
 
@@ -8,7 +9,7 @@ export const saveNewUser = (requestData: any, userToken: string) => {
             console.log("response is ::::: >>>>" + JSON.stringify(response));
             // setSnakBarOpen(true);
 
-            if (response.data.role.name === 'ROLE_ASSOCIATE') {
+            if (response.data.role.name === ROLE_ASSOCIATE) {
                 const saveAssociateReq = {
                     associateName: response.data.userName,
                     ibmId: response.data.employeeId,
@@ -39,7 +40,7 @@ class NewUserService {
     //             console.log("response is ::::: >>>>" + JSON.stringify(response));
     //             // setSnakBarOpen(true);
 
-    //             if (response.data.role.name === 'ROLE_ASSOCIATE') {
+    //             if (response.data.role.name === ROLE_ASSOCIATE) {
     //                 const saveAssociateReq = {
     //                     associateName: response.data.userName,
     //                     ibmId: response.data.employeeId,

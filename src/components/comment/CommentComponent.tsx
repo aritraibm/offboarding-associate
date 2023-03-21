@@ -28,12 +28,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { comments, userComments, userDetails, token } from '../../store';
 import Loader from '../common/Loader';
 import { Dropdown } from '../core/Dropdown/Dropdown';
-import { UIConstants } from '../constants/UIConstants';
+import { UIConstants } from '../../helper/constants';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 import { InputText } from '../core/InputText/InputText';
 import { CommentValidationSchema, addCommentValidationSchema, addCommentDefaultValues } from './Comment.validation';
+
 
 const CommentComponent = (props: any) => {
   const BASE_URL = 'http://localhost:9003/';

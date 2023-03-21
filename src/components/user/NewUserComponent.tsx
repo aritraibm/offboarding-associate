@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { InfoRounded, Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Alert,
@@ -10,7 +9,10 @@ import {
   Grid,
   IconButton,
   InputAdornment,
+  // MenuItem,
+  // Select,
   Snackbar,
+  // TextField,
   Tooltip,
   useTheme,
   Typography,
@@ -26,6 +28,10 @@ import {
   // createFristName,
   // createLastName,
   createNewUser,
+  invokeAllManagerSaga,
+  invokeAllReviewerSaga,
+  invokeAllRoleSaga,
+  invokeDocumentTypeSaga,
   managers,
   resetCreateNewUserDetails,
   reviewers,
@@ -39,10 +45,11 @@ import { newUserFormDefaultValues, NewUserValidationSchema } from './NewUserComp
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
-import { UIConstants } from '../constants/UIConstants';
+import { ROLE_ASSOCIATE, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../../helper/constants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import { saveNewUser } from '../../services/NewUserService';
 import { mapNewUserModel_UItoAPI } from '../../transformation/UserMapper';
+import { AllManagerType, AllRoleType, GlobalStoreType } from '../../helper/type';
 
 
 const NewUserComponent = () => {
@@ -52,46 +59,82 @@ const NewUserComponent = () => {
   const dispatch = useDispatch();
   const userToken = useSelector(token);
   const newUserDetails = useSelector(createNewUser);
-  const allRole = useSelector(allRoles);
+  // const allRole = useSelector(allRoles);
 
 
-
+  // const [employeeId, setEmployeeId] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [firstName, setFirstName] = useState("");
+  // const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [attribteType, setAttribteType] = useState('password');
   const [userRoleName, setUserRoleName] = useState('');
+  //const [openSnakBar, setSnakBarOpen] = useState(false);
 
 
-  const isEmail = (email: any) =>
-    /^[A-Z0-9._%+-]+@[IBM,ibm]+\.[COM,com]{2,4}$/i.test(email);
+  // const isEmail = (email: any) =>
+  //   /^[A-Z0-9._%+-]+@[IBM,ibm]+\.[COM,com]{2,4}$/i.test(email);
 
 
-  const getRoleName = (roleId: string) => {
-    return allRole.filter((data: any) => data.id == roleId)
+  const allRoles = useSelector((state: GlobalStoreType) => state.finalRoleList);
+  const allManagers = useSelector((state: GlobalStoreType) => state.finalAllManagerList);
+  const allReviewers = useSelector((state: GlobalStoreType) => state.finalAllReviewerList);
+  // const getRoleName = (roleId: string) => {
+  //   allRole.filter((data: any) => {
+  //     if (data.id == roleId) {
+  //       return data.name;
+
+  //     }
+  //   })
+  // };
+
+  const getRoleName = (roleId: string): AllRoleType[] => {
+    return allRoles.filter((data: AllRoleType) => data.id == roleId)
   }
 
-  const allManager = useSelector(allManagers).filter(
-    (item: any) => item.empId !== 'N/A'
+
+  // const assosiateRoleId = allRoles.find((data: any) => {
+  //   return data.name == ROLE_ASSOCIATE;
+  // });
+  // const reviewerRoleId = allRoles.find((data: any) => {
+  //   return data.name == ROLE_ONBOARDING_REVIEWER;
+  // });
+  const allManager = allManagers.filter(
+    (item: AllManagerType) => item.empId !== 'N/A'
   );
-  const allReviewer = useSelector(allReviewers).filter(
+  const allReviewer = allReviewers.filter(
     (item: any) => item.empId !== 'N/A'
   );
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect((): any => {
-    axios.get('http://localhost:9099/roles').then((response) => {
-      if (response.data) {
-        dispatch(roles({ roles: response.data }));
-        console.log("response.data :::::: >>>>> " + JSON.stringify(response.data))
-      } else console.log('No Roles');
-    });
-    axios.get('http://localhost:9099/managers').then((response) => {
-      if (response.data) dispatch(managers({ managers: response.data }));
-      else console.log('No managers');
-    });
-    axios.get('http://localhost:9099/reviewers').then((response) => {
-      if (response.data) dispatch(reviewers({ reviewers: response.data }));
-      else console.log('No Reviewers');
-    });
+
+    if (allRoles.length === 0) {
+      dispatch(invokeAllRoleSaga({ test: "test", id: 1 }));
+    }
+
+    if (allManagers.length === 0) {
+      dispatch(invokeAllManagerSaga({ test: "test", id: 1 }));
+    }
+
+    if (allReviewers.length === 0) {
+      dispatch(invokeAllReviewerSaga({ test: "test", id: 1 }));
+    }
+
+    // axios.get('http://localhost:9099/roles').then((response) => {
+    //   if (response.data) {
+    //     dispatch(roles({ roles: response.data }));
+    //     console.log("response.data :::::: >>>>> " + JSON.stringify(response.data))
+    //   } else console.log('No Roles');
+    // });
+    // axios.get('http://localhost:9099/managers').then((response) => {
+    //   if (response.data) dispatch(managers({ managers: response.data }));
+    //   else console.log('No managers');
+    // });
+    // axios.get('http://localhost:9099/reviewers').then((response) => {
+    //   if (response.data) dispatch(reviewers({ reviewers: response.data }));
+    //   else console.log('No Reviewers');
+    // });
 
     return () => dispatch(resetCreateNewUserDetails());
 
@@ -131,7 +174,120 @@ const NewUserComponent = () => {
     setSnackbarOpen(false);
   };
 
-  
+  // const handleNewUser = (e: any) => {
+  //   e.preventDefault();
+  //   let error = {};
+  //   // if (newUserDetails.email === '') error = { ...error, errorEmail: true };
+
+  //   // if (!isEmail(newUserDetails.email)) {
+  //   //   error = { ...error, errorEmail: true };
+  //   // }
+
+  //   // if (newUserDetails.employeeId === '')
+  //   //   error = { ...error, errorEmployeeId: true };
+
+  //   // // if (newUserDetails.employeeId) {
+  //   // //   error = { ...error, errorEmployeeId: true };
+  //   // } 
+  //   // else if (newUserDetails.employeeId.length > 6) {
+  //   //   error = { ...error, errorEmployeeId: true };
+  //   // }
+
+  //   // if (
+  //   //   newUserDetails.reviewerName === '' &&
+  //   //   newUserDetails.role === assosiateRoleId?.id
+  //   // )
+  //   //   error = { ...error, errorReviewerName: true };
+
+  //   // if (
+  //   //   newUserDetails.managerName === '' &&
+  //   //   (newUserDetails.role === assosiateRoleId?.id ||
+  //   //     newUserDetails.role === reviewerRoleId?.id)
+  //   // )
+  //   //   error = { ...error, errorManagerName: true };
+  //   // if (newUserDetails.role === '') error = { ...error, errorRole: true };
+
+  //   // if (newUserDetails.userName === '')
+  //   //   error = { ...error, errorUserName: true };
+
+  //   // if (newUserDetails.FristName === '')
+  //   //   error = { ...error, errorFristName: true };
+  //   // if (newUserDetails.FristName)
+  //   // error = { ...error, errorFristName: true };
+
+  //   // if (newUserDetails.LastName === '')
+  //   //   error = { ...error, errorLastName: true };
+  //   // if (newUserDetails.LastName)
+  //   // error = { ...error, errorLastName: true };
+
+  //   // if (newUserDetails.password === '')
+  //   //   error = { ...error, errorPassword: true };
+  //   // if (newUserDetails.employeeId.length > 6) {
+  //   //   error = { ...error, errorEmployeeId: true };
+  //   // }
+  //   dispatch(
+  //     createNewUserDetails({
+  //       createNewUser: { ...newUserDetails, error },
+  //     })
+  //   );
+  //   // console.log('Error '+JSON.stringify(error));
+  //   if (JSON.stringify(error) === '{}') {
+  //     if (!newUserDetails.isGeneratedButtonDisabled) {
+  //       dispatch(
+  //         createNewUserDetails({
+  //           createNewUser: {
+  //             ...newUserDetails,
+  //             error: { errorGeneratebutton: true },
+  //           },
+  //         })
+  //       );
+  //     } else {
+  //       const requestData = {
+  //         employeeId: newUserDetails.employeeId,
+  //         email: newUserDetails.email,
+  //         // userName: newUserDetails.userName,
+  //         FristName: newUserDetails.FristName,
+  //         LastName: newUserDetails.LastName,
+  //         password: newUserDetails.password,
+  //         roleId: newUserDetails.role,
+  //         reviewerEmpId:
+  //           newUserDetails.role === assosiateRoleId?.id
+  //             ? newUserDetails.reviewerName
+  //             : 'N/A',
+  //         managerEmpId:
+  //           newUserDetails.role === assosiateRoleId?.id ||
+  //             newUserDetails.role === reviewerRoleId?.id
+  //             ? newUserDetails.managerName
+  //             : 'N/A',
+  //       };
+  //       axios
+  //         .post('http://localhost:9099/user_add', requestData)
+  //         .then((response) => {
+  //           if (response.data.role.name === ROLE_ASSOCIATE) {
+  //             const saveAssociateReq = {
+  //               associateName: response.data.userName,
+  //               ibmId: response.data.employeeId,
+  //               emailIbm: response.data.email,
+  //               FristName: response.data.FristName,
+  //               LastName: response.data.LastName,
+  //               activeInactive: 'Yet to be started',
+  //             };
+  //             const associateResponse = axios.post(
+  //               'http://localhost:9092/pru-associate/new-associate',
+  //               saveAssociateReq,
+  //               {
+  //                 headers: { Authorization: 'Bearer ' + userToken },
+  //               }
+  //             );
+  //             console.log(associateResponse);
+  //           }
+  //           setSnackbarOpen(true);
+  //           dispatch(resetCreateNewUserDetails());
+  //         });
+  //     }
+  //   } else console.log('Error');
+  // };
+
   const handleClickShowPassword = () => {
 
     if (attribteType === "text") {
@@ -148,7 +304,7 @@ const NewUserComponent = () => {
     setPassword(newUserFormDefaultValues.password);
     // setValue('roleId', '');
     resetField('roleId')
-    trigger('roleId');
+    // trigger('roleId');
   }
 
   const { register, trigger, reset, resetField, getValues, setFocus, handleSubmit, formState: { errors } } = useForm({
@@ -172,6 +328,34 @@ const NewUserComponent = () => {
     } catch {
       console.log("something went wrong!!!");
     }
+
+
+    // axios.post('http://localhost:9099/user_add', requestData)
+    //   .then((response) => {
+    //     console.log("response is ::::: >>>>" + JSON.stringify(response));
+    //     setSnakBarOpen(true);
+
+    //     if (response.data.role.name === ROLE_ASSOCIATE) {
+    //       const saveAssociateReq = {
+    //         associateName: response.data.userName,
+    //         ibmId: response.data.employeeId,
+    //         emailIbm: response.data.email,
+    //         FristName: response.data.FristName,
+    //         LastName: response.data.LastName,
+    //         activeInactive: 'Yet to be started',
+    //       };
+    //       const associateResponse = axios.post(
+    //         'http://localhost:9092/pru-associate/new-associate',
+    //         saveAssociateReq,
+    //         {
+    //           headers: { Authorization: 'Bearer ' + userToken },
+    //         }
+    //       );
+    //       console.log("associateResponse ::: >>>" + JSON.stringify(associateResponse));
+    //     }
+    //     // setSnackbarOpen(true);
+    //     // dispatch(resetCreateNewUserDetails());
+    //   });
 
   }
 
@@ -310,8 +494,15 @@ const NewUserComponent = () => {
                 >
                   {UIConstants.generatePasswordBtnLabel}
                 </Button>
-                
-                {allRole && (
+                {/* <Typography
+                  variant="caption"
+                  color={
+                    newUserDetails.error.errorGeneratebutton ? 'red' : 'black'
+                  }
+                >
+                  Please generate password
+                </Typography> */}
+                {allRoles && (
                   <>
 
                     <Dropdown
@@ -319,7 +510,7 @@ const NewUserComponent = () => {
                       {...register("roleId")}
                       error={!!errors?.roleId}
                       onChange={handleUserDropdownChange}
-                      options={mapAPItoUIDocTypeDropdown(allRole, 'id', 'name')}
+                      options={mapAPItoUIDocTypeDropdown(allRoles, 'id', 'name')}
                       selectAnOption
                       helperText={
                         errors.roleId

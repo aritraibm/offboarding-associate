@@ -12,6 +12,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { token, userDetails } from '../../../store';
+import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../../../helper/constants';
 
 const tableHeader = ['Recording Description', 'Recording Link'];
 const RecordingList = (props: any) => {
@@ -64,7 +65,7 @@ const RecordingList = (props: any) => {
                   <br />
                   Password : {item.recordLinkPassword}
                 </TableCell>
-                {(user.role === 'ROLE_ONBOARDING_REVIEWER' || user.role === 'ROLE_ONBOARDING_MANAGER') && (
+                {(user.role === ROLE_ONBOARDING_REVIEWER || user.role === ROLE_ONBOARDING_MANAGER) && (
                   <>
                     <TableCell>
                       <Button

@@ -13,7 +13,7 @@ import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../store";
-import { LoginResponse } from "../constants/type";
+import {  LoginResponse } from "../../helper/type";
 import "../styles/login.css";
 import { LoginValidationSchema } from "./LoginComponent.validation";
 import { InputText } from "../core/InputText/InputText";

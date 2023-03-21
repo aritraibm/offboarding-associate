@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import Dialog from '@mui/material/Dialog';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -19,9 +19,11 @@ import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 // import SelectBox from '../core/Select';
+import axios from '../../config/interceptor'
 
 import './UploadDocument.css';
 import Loader from '../common/Loader';
+import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../../helper/constants';
 
 const SampleDocuments = () => {
   const BASE_URL = 'http://localhost:9003/';
@@ -48,9 +50,7 @@ const SampleDocuments = () => {
   const fetchDocuments = () => {
     
     axios
-      .get(BASE_URL + 'files/sampledoc', {
-        headers: { Authorization: 'Bearer ' + userToken },
-      })
+      .get(BASE_URL + 'files/sampledoc')
       .then((res) => {
         setDocuments(res.data);
         setLoader(false);
@@ -64,9 +64,7 @@ const SampleDocuments = () => {
   const fetchDocumentTypes = () => {
     
     axios
-      .get(BASE_URL + 'document/sample', {
-        headers: { Authorization: 'Bearer ' + userToken },
-      })
+      .get(BASE_URL + 'document/sample')
       .then((res: any) => {
         // setOptions([...res.data]);
         setOption(res.data.filter((obj: { id: number; }) => obj.id === 0)[0]);
@@ -204,8 +202,8 @@ const SampleDocuments = () => {
 
   return (
     <div className="upload-doc-container">
-      {(user.role === 'ROLE_ONBOARDING_MANAGER' ||
-        user.role === 'ROLE_ONBOARDING_REVIEWER') && (
+      {(user.role === ROLE_ONBOARDING_MANAGER ||
+        user.role === ROLE_ONBOARDING_REVIEWER) && (
           <div>
             <h2>Upload Documents</h2>
             <div className="input-fieldbox">
@@ -277,7 +275,7 @@ const SampleDocuments = () => {
                     <TableCell>S.No.</TableCell>
                     <TableCell>Name</TableCell>
                     <TableCell>Document Type</TableCell>
-                    {user.role === 'ROLE_ONBOARDING_MANAGER' && (
+                    {user.role === ROLE_ONBOARDING_MANAGER && (
                       <TableCell>Delete</TableCell>
                     )}
                     <TableCell>Download</TableCell>
@@ -298,7 +296,7 @@ const SampleDocuments = () => {
                       <TableCell component="th" scope="row">
                         {doc.documentType.name}
                       </TableCell>
-                      {user.role === 'ROLE_ONBOARDING_MANAGER' && (
+                      {user.role === ROLE_ONBOARDING_MANAGER && (
                         <TableCell>
                           <Button
                             color="secondary"

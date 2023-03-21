@@ -33,7 +33,7 @@ const Header = () => {
           <div>
             <Grid container>
               <Grid item>
-                <Typography variant="span" style={{ paddingRight: "10px" }}>
+                <Typography style={{ paddingRight: "10px" }}>
                   Hi, {user.firstName} {user.lastName}
                 </Typography>
               </Grid>

@@ -26,10 +26,10 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Offboarding />}>
-            <Route path="/" element={<Welcome />} />
+            {/* <Route path="/" element={<Welcome />} /> */}
             {user && (
               <>
-                <Route path="/NewUser" element={<NewUserComponent />} />
+                <Route path="/newUser" element={<NewUserComponent />} />
                 <Route path="uploadDocuments" element={<UploadDocument />} />
                 <Route path="sampleDocuments" element={<SampleDocuments />} />
                 <Route path="recording" element={<Recording />} />

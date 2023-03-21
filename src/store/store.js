@@ -1,5 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { reducer } from "./reducers";
+import createSagaMiddleware from 'redux-saga'
+import { watcherSaga } from "./sagas/rootWatcherSaga"
+
 import {
   persistStore,
   persistReducer,
@@ -19,6 +22,7 @@ const persistConfig = {
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);
+const sagaMiddleware = createSagaMiddleware()
 
 const store = configureStore({
   reducer: persistedReducer,
@@ -27,8 +31,10 @@ const store = configureStore({
       serializableCheck: {
         ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(sagaMiddleware),
 });
+
+sagaMiddleware.run(watcherSaga);
 
 export const persistor = persistStore(store);
 
