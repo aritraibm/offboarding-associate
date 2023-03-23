@@ -27,13 +27,14 @@ const Header = () => {
           <span className="app-title">Offboarding Associate</span>
         </Link>
       </div>
+   
       {user ? (
         <>
           <div>
             <Grid container>
               <Grid item>
                 <Typography style={{ paddingRight: "10px" }}>
-                  Hi, {user.name}
+                  Hi, {user.firstName} {user.lastName}
                 </Typography>
               </Grid>
               <Grid item>

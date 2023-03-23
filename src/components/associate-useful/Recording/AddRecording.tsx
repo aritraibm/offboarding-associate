@@ -20,6 +20,7 @@ const AddRecording = (props: any) => {
   };
   const newRecording = () => {
     setRecording(initialFormState);
+    console.log("submitted",submitted)
     setSubmitted(false);
   };
   return (

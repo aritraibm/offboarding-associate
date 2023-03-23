@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { call, put } from "redux-saga/effects";
-import { AllRoleType, AssociateDetailResponse, DropdownIdName, AllReviewerType } from "../../../helper/type";
-import { finalAllManagerList, finalAssociatesList, finalDocumentTypeList, finalRoleList } from "../../reducers/app.reducer";
+import { AllRoleType, AssociateDetailResponse, DropdownIdName, AllReviewerType, AllManagerType } from "../../../helper/type";
+import { finalAllManagerList, finalAllReviewerList, finalAssociatesList, finalDocumentTypeList, finalRoleList } from "../../reducers/app.reducer";
 import { requestAllDocumentType, requestAllAsociate, requestAllRoles, requestAllManagers, requestAllReviewers } from "../requests/httpRequestSaga";
 
 export function* handleAllDocumentType(action: any) {
@@ -36,7 +36,7 @@ export function* handleAllRoles(action: any) {
 
 export function* handleAllManagers(action: any) {
   try {
-    const response: AxiosResponse<AllRoleType[]> = yield call(requestAllManagers);
+    const response: AxiosResponse<AllManagerType[]> = yield call(requestAllManagers);
     const { data } = response;
     yield put(finalAllManagerList(data));
   } catch (error) {
@@ -49,7 +49,7 @@ export function* handleAllReviewers(action: any) {
   try {
     const response: AxiosResponse<AllReviewerType[]> = yield call(requestAllReviewers);
     const { data } = response;
-    yield put(finalAllManagerList(data));
+    yield put(finalAllReviewerList(data));
   } catch (error) {
     console.log(error);
   }

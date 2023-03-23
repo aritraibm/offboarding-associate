@@ -31,7 +31,7 @@ const SampleDocuments = () => {
   const [documents, setDocuments] = useState([]);
   const user = useSelector(userDetails);
   const [openSnakBar, setSnakBarOpen] = useState(false);
-  const [options, setOptions] = useState<string[]>([]);
+  // const [options, setOptions] = useState<string[]>([]);
   const [optionselect, setOptionselect] = useState('');
   const [option, setOption] = useState<any>({});
   const [inputfile, setInputfile] = useState(false);
@@ -48,12 +48,7 @@ const SampleDocuments = () => {
   }, []);
 
   const fetchDocuments = () => {
-    // const docs = [{"id":"doc001", "name":"Beekeeper.jpg" , "documentType":{"id":0,"name":"Sample Documents"}},
-    // {"id":"doc002", "name":"Checklist.doc" , "documentType":{"id":0,"name":"Sample Documents"}}
-    // ];
-    // setDocuments(docs);
-    // setLoader(false);
-
+    
     axios
       .get(BASE_URL + 'files/sampledoc')
       .then((res) => {
@@ -67,14 +62,11 @@ const SampleDocuments = () => {
   };
 
   const fetchDocumentTypes = () => {
-    // const response = [{"id":0,"name":"Sample Documents"},{"id":1,"name":"Select"}];
-    // setOptions([...response]);
-    // setOption(response.filter(obj=> obj.id===0)[0]);
-
+    
     axios
       .get(BASE_URL + 'document/sample')
       .then((res: any) => {
-        setOptions([...res.data]);
+        // setOptions([...res.data]);
         setOption(res.data.filter((obj: { id: number; }) => obj.id === 0)[0]);
         setOptionselect('0');
       })
@@ -83,9 +75,6 @@ const SampleDocuments = () => {
       });
   };
 
-  const optionChanged = (childData: React.SetStateAction<string>) => {
-    setOptionselect(childData);
-  };
 
   const fileUpload = () => {
     setInputfile(true);
@@ -133,13 +122,7 @@ const SampleDocuments = () => {
     var formdata = new FormData();
     formdata.append('file', input.files[0], input.files[0].name);
     formdata.append('data', JSON.stringify(jsonData));
-    // formdata.append("document_type", optionselect);
-    // formdata.append("employeeId", user.empId);
-    var requestOptions = {
-      method: 'POST',
-      body: formdata,
-      redirect: 'follow',
-    };
+    
     axios
       .post(BASE_URL + 'files', formdata, {
         headers: {
@@ -153,7 +136,7 @@ const SampleDocuments = () => {
         setUploadStatus(true);
         fetchDocuments();
         resetFields();
-        //console.log(result);
+        console.log(result);
       })
       .catch((error) => {
         setSnakBarOpen(true);

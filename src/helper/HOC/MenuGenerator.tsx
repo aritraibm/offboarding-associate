@@ -5,7 +5,7 @@ import { tabSelected, appStore } from '../../store';
 import { Button } from '../../components/core';
 import { MenuGeneratorProps } from '../type';
 
-const MenuGenerator = (props: MenuGeneratorProps) => {
+const MenuGenerator = (props: MenuGeneratorProps): any => {
 
     const dispatch = useDispatch();
     const store = useSelector(appStore);

@@ -40,6 +40,6 @@ export const requestAllReviewers = (): Promise<AxiosResponse<any, any>> => {
 
   return axios.request({
     method: "get",
-    url: "http://localhost:9099/managers",
+    url: "http://localhost:9099/reviewers",
   });
 }

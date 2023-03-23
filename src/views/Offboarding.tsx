@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-import { NEW_USER_TAB, RECORDINGS_TAB, ROLE_ASSOCIATE, ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER, SAMPLE_DOCUMENTS_TAB, UPLOAD_DOCUMENTS_TAB } from '../helper/constants';
+import { CHECKLIST, COMMENTS, NEW_USER_TAB, RECORDINGS_TAB, ROLE_ASSOCIATE, ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER, SAMPLE_DOCUMENTS_TAB, UPLOAD_DOCUMENTS_TAB } from '../helper/constants';
 import { appStore } from '../store';
 import MenuGenerator from '../helper/HOC/MenuGenerator';
 
@@ -34,6 +34,15 @@ export default function Offboarding() {
                 linkTo="/uploadDocuments"
                 state={{ forAssociate: { empId: user.empId } }}
               />
+              <MenuGenerator
+                label={CHECKLIST}
+                linkTo="/offboarding-checklist"
+                state={{ forAssociate: { empId: user.empId } }}
+              />
+              <MenuGenerator
+                label={COMMENTS}
+                linkTo="/comment"
+              />
 
             </>
           )}
@@ -56,6 +65,15 @@ export default function Offboarding() {
               label={RECORDINGS_TAB}
               linkTo="/recording"
             />
+            <MenuGenerator
+                label={CHECKLIST}
+                linkTo="/offboarding-checklist"
+                state={{ forAssociate: { empId: user.empId } }}
+              />
+              <MenuGenerator
+                label={COMMENTS}
+                linkTo="/comment"
+              />
           </>
         )}
       </ul>

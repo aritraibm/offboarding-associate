@@ -39,7 +39,7 @@ import {
   token,
 } from '../../store';
 import '../styles/login.css';
-import { generate, generateMultiple, validate } from '@wcj/generate-password';
+import { generate, validate } from '@wcj/generate-password';
 import { InputText } from '../core/InputText/InputText';
 import { newUserFormDefaultValues, NewUserValidationSchema } from './NewUserComponent.validation';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -47,7 +47,6 @@ import { useForm } from 'react-hook-form';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 import { ROLE_ASSOCIATE, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../../helper/constants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
-
 import { saveNewUser } from '../../services/NewUserService';
 import { mapNewUserModel_UItoAPI } from '../../transformation/UserMapper';
 import { AllManagerType, AllRoleType, GlobalStoreType } from '../../helper/type';
@@ -59,8 +58,6 @@ const NewUserComponent = () => {
   const matchesXL = useMediaQuery(theme.breakpoints.down('xl'));
   const dispatch = useDispatch();
   const userToken = useSelector(token);
-  // const FristName=useSelector(createFristName);
-  // const LastName=useSelector(createLastName);
   const newUserDetails = useSelector(createNewUser);
   // const allRole = useSelector(allRoles);
 
@@ -171,78 +168,7 @@ const NewUserComponent = () => {
     setFocus("password");
     setPassword(randomPasword);
 
-    // if (newUserDetails.employeeId !== '' && newUserDetails.FristName !== '') {
-    //   const generatedPassword =
-    //     newUserDetails.FristName.replace(/\s+/g, '').slice(0, 3) +
-    //     newUserDetails.employeeId;
-    //   dispatch(
-    //     createNewUserDetails({
-    //       createNewUser: {
-    //         ...newUserDetails,
-    //         isGeneratedButtonDisabled: true,
-    //         password: generatedPassword,
-    //         error: {
-    //           ...newUserDetails.error,
-    //           errorPassword: false,
-    //           errorGeneratebutton: false,
-    //         },
-    //       },
-    //     })
-    //   );
-    // } else {
-    //   let errorEmployeeId = false;
-    //   let errorUserName = false;
-    //   let errorFristName = false;
-    //   let errorLastName = false;
-    //   if (newUserDetails.employeeId === '') errorEmployeeId = true;
-    //   if (newUserDetails.FristName === '') errorFristName = true;
-    //   if (newUserDetails.LastName === '') errorLastName = true;
-    //   if (newUserDetails.UserName === '') errorUserName = true;
-    //   dispatch(
-    //     createNewUserDetails({
-    //       createNewUser: {
-    //         ...newUserDetails,
-    //         error: { ...newUserDetails.error, errorEmployeeId, errorUserName, errorFristName, errorLastName },
-    //       },
-    //     })
-    //   );
-    // }
   };
-
-  // const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
-  //   if (type == "employeeId") {
-  //     // setEmployeeId(e.target.value);
-  //   } else if (type == "email") {
-  //     // setEmail(e.target.value);
-  //   } else if (type == "firstName") {
-  //     // setFirstName(e.target.value);
-  //   } else if (type == "lastName") {
-  //     // setLastName(e.target.value);
-  //   } else if (type == "password") {
-  //     // setPassword(e.target.value);
-  //   }
-
-
-  // };
-
-
-  // const handleChange = (prop: any, errorType: any) => (event: any) => {
-  //   event.preventDefault();
-  //   dispatch(
-  //     createNewUserDetails({
-  //       createNewUser: {
-  //         ...newUserDetails,
-  //         [prop]: event.target.value,
-  //         isGeneratedButtonDisabled:
-  //           // prop === 'UserName' || 
-  //           prop === 'employeeId'
-  //             ? false
-  //             : newUserDetails.isGeneratedButtonDisabled,
-  //         error: { ...newUserDetails.error, [errorType]: false },
-  //       },
-  //     })
-  //   );
-  // };
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -369,18 +295,6 @@ const NewUserComponent = () => {
     } else {
       setAttribteType('text');
     }
-
-    // if (!newUserDetails.showPassword)
-    //   document.getElementById('password').type = 'text';
-    // else document.getElementById('password').type = 'password';
-    // dispatch(
-    //   createNewUserDetails({
-    //     createNewUser: {
-    //       ...newUserDetails,
-    //       showPassword: !newUserDetails.showPassword,
-    //     },
-    //   })
-    // );
   };
 
 
@@ -393,7 +307,7 @@ const NewUserComponent = () => {
     // trigger('roleId');
   }
 
-  const { register, trigger, reset, resetField, getValues, setValue, setFocus, handleSubmit, watch, formState: { errors } } = useForm({
+  const { register, trigger, reset, resetField, getValues, setFocus, handleSubmit, formState: { errors } } = useForm({
     mode: 'all',
     defaultValues: newUserFormDefaultValues,
     resolver: yupResolver(NewUserValidationSchema),
@@ -527,80 +441,6 @@ const NewUserComponent = () => {
                 />
 
 
-                {/* <TextField
-                  className="btn-color"
-                  autoFocus
-                  margin="dense"
-                  label="Employee id"
-                  type="text"
-                  fullWidth
-                  variant="standard"
-                  value={newUserDetails.employeeId}
-                  error={newUserDetails.error.errorEmployeeId}
-                  onChange={handleChange('employeeId', 'errorEmployeeId')}
-                />
-                <Typography
-                  variant="caption"
-                  color={newUserDetails.error.errorEmployeeId ? 'red' : 'black'}
-                >
-                  Please enter IBM employee ID in 6 character. Eg: xxxxxx
-                </Typography> */}
-                {/* <TextField
-                  margin="dense"
-                  label="Email Id"
-                  type="email"
-                  fullWidth
-                  variant="standard"
-                  value={newUserDetails.email}
-                  error={newUserDetails.error.errorEmail}
-                  onChange={handleChange('email', 'errorEmail')}
-                />
-                <Typography
-                  variant="caption"
-                  color={newUserDetails.error.errorEmail ? 'red' : 'black'}
-                >
-                  Please enter email for exapmle "xyz@ibm.com"
-                </Typography> */}
-                {/* <TextField
-                margin="dense"
-                label="Employee Name"
-                type="text"
-                fullWidth
-                variant="standard"
-                value={newUserDetails.userName}
-                error={newUserDetails.error.errorUserName}
-                onChange={handleChange('userName', 'errorUserName')}
-              /> */}
-                {/* <TextField
-                  margin="dense"
-                  label="FirstName"
-                  type="text"
-                  fullWidth
-                  variant="standard"
-                  value={newUserDetails.FristName}
-                  error={newUserDetails.error.errorFristName}
-                  onChange={handleChange('FristName', 'errorFristName')}
-                />
-                <TextField
-                  margin="dense"
-                  label="LastName"
-                  type="text"
-                  fullWidth
-                  variant="standard"
-                  value={newUserDetails.LastName}
-                  error={newUserDetails.error.errorLastName}
-                  onChange={handleChange('LastName', 'errorLastName')}
-                /> */}
-                {/* <Typography
-                  variant="caption"
-                  color={
-                    newUserDetails.error.errorGeneratebutton ? 'red' : 'black'
-                  }
-                >
-                  Please Enter LastName
-                </Typography> */}
-
-
                 <InputText
                   label={UIConstants.passwordLabel}
                   value={password}
@@ -644,46 +484,7 @@ const NewUserComponent = () => {
                 />
 
 
-                {/* <TextField
-                  id="password"
-                  margin="dense"
-                  label="Password"
-                  type="password"
-                  fullWidth
-                  variant="standard"
-                  value={newUserDetails.password}
-                  error={newUserDetails.error.errorPassword}
-                  onChange={handleChange('password', 'errorPassword')}
-                  InputProps={{
-                    readOnly: true,
-                    endAdornment: (
-                      <>
-                        <InputAdornment position="end">
-                          <Tooltip
-                            title="Password will be generated based on EmployeeID and Employee Name.
-  Ex: EmployeeID - 123456, Employee Name - x test
-  Generated Password - xte123456"
-                          >
-                            <IconButton>
-                              <InfoRounded />
-                            </IconButton>
-                          </Tooltip>
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            edge="end"
-                          >
-                            {newUserDetails.showPassword ? (
-                              <VisibilityOff />
-                            ) : (
-                              <Visibility />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      </>
-                    ),
-                  }}
-                /> */}
+               
                 <Button
                   fullWidth
                   variant="contained"
@@ -718,39 +519,6 @@ const NewUserComponent = () => {
                       }
                     />
 
-                    {/* <Select
-                      margin="dense"
-                      displayEmpty
-                      id="role"
-                      value={newUserDetails.role}
-                      error={newUserDetails.error.errorRole}
-                      size="small"
-                      fullWidth
-                      onChange={handleChange('role', 'errorRole')}
-                      style={{ marginTop: '1.5rem' }}
-                      sx={{
-                        '& legend': { display: 'none' },
-                        '& fieldset': { top: 0 },
-                      }}
-                    //   inputProps={{ "aria-label": "Without label" }}
-                    >
-                      <MenuItem disabled value="">
-                        UserRole
-                      </MenuItem>
-                      {allRole.map((data: any) => {
-                        return (
-                          <MenuItem value={data?.id} key={data?.id}>
-                            {data?.name}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                    <Typography
-                      variant="caption"
-                      color={newUserDetails.error.errorRole ? 'red' : 'black'}
-                    >
-                      Please select the role for the user
-                    </Typography> */}
                   </>
                 )}
                 {/* {newUserDetails.role === assosiateRoleId?.id && allReviewer && ( */}
@@ -771,46 +539,10 @@ const NewUserComponent = () => {
                       }
                     />
                   )}
-                  {/* <Select
-                    margin="dense"
-                    displayEmpty
-                    id="reviewer"
-                    value={newUserDetails.reviewerName}
-                    error={newUserDetails.error.errorReviewerName}
-                    size="small"
-                    fullWidth
-                    onChange={handleChange('reviewerName', 'errorReviewerName')}
-                    style={{ marginTop: '1.5rem' }}
-                    sx={{
-                      '& legend': { display: 'none' },
-                      '& fieldset': { top: 0 },
-                    }}
-                  //   inputProps={{ "aria-label": "Without label" }}
-                  >
-                    <MenuItem disabled value="">
-                      Reviewer Name
-                    </MenuItem>
-                    {allReviewer.map((data: any) => {
-                      return (
-                        <MenuItem value={data.empId} key={data.empId}>
-                          {data.reviewerName}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                  <Typography
-                    variant="caption"
-                    color={
-                      newUserDetails.error.errorReviewerName ? 'red' : 'black'
-                    }
-                  >
-                    Please select the Reviewer Name
-                  </Typography> */}
+                  
                 </>
-                {/* )} */}
-                {/* {(newUserDetails.role === assosiateRoleId?.id ||
-                  newUserDetails.role === reviewerRoleId?.id) &&
-                  allManager && ( */}
+                
+                
                 <>
 
                   {/* ---{userRoleName}--- */}
@@ -829,54 +561,11 @@ const NewUserComponent = () => {
                       }
                     />
                   )}
-                  {/* <Select
-                    margin="dense"
-                    displayEmpty
-                    id="manager"
-                    value={newUserDetails.managerName}
-                    error={newUserDetails.error.errorManagerName}
-                    size="small"
-                    fullWidth
-                    onChange={handleChange('managerName', 'errorManagerName')}
-                    style={{ marginTop: '1.5rem' }}
-                    sx={{
-                      '& legend': { display: 'none' },
-                      '& fieldset': { top: 0 },
-                    }}
-                  //   inputProps={{ "aria-label": "Without label" }}
-                  >
-                    <MenuItem disabled value="">
-                      Manager Name
-                    </MenuItem>
-                    {allManager.map((data: any) => {
-                      return (
-                        <MenuItem value={data.empId} key={data.empId}>
-                          {data.managerName}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                  <Typography
-                    variant="caption"
-                    color={
-                      newUserDetails.error.errorManagerName ? 'red' : 'black'
-                    }
-                  >
-                    Please select the Manager Name
-                  </Typography> */}
+                  
                 </>
                 {/* )} */}
               </CardContent>
               <CardActions>
-                {/* <Button
-                fullWidth
-                variant="contained"
-                disabled={newUserDetails.isLoginButonDisabled}
-                onClick={handleNewUser}
-              >
-                Add
-              </Button> */}
-
                 <Button
                   fullWidth
                   variant="contained"
