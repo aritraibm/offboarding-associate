@@ -25,7 +25,7 @@ export const NewUserValidationSchema = yup.object().shape({
         .string()
         .required(`Please enter ${UIConstants.lastNameLabel}`)
         .trim()
-        .min(2)
+        .min(1)
         .max(60),
     password: yup
         .string()

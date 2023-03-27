@@ -23,7 +23,7 @@ import axios from '../../config/interceptor'
 
 import './UploadDocument.css';
 import Loader from '../common/Loader';
-import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../../helper/constants';
+import { ROLE_ASSOCIATE, ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../../helper/constants';
 
 const SampleDocuments = () => {
   const BASE_URL = 'http://localhost:9003/';
@@ -244,6 +244,9 @@ const SampleDocuments = () => {
             </div>
           </div>
         )}
+        {(user.role === ROLE_ONBOARDING_MANAGER ||
+        user.role === ROLE_ONBOARDING_REVIEWER ||
+        user.role === ROLE_ASSOCIATE) && (
       <div className="button-content">
         <div className="content-left">
           <h3>Sample Documents:</h3>
@@ -255,14 +258,17 @@ const SampleDocuments = () => {
                 href="http://localhost:9003/files/sampledoc/zip"
                 className="fa fa-download"
                 title="Download All"
-              ></a>
+              > </a>
             </div>
             {/* <h3>
         <a href="http://localhost:9003/files/sampledoc/zip" className="btn btn-primary">Download All</a>
       </h3> */}
           </div>
         )}
-      </div>
+      </div> 
+        )}
+
+
       <div>
         {loader ? (
           <Loader />
@@ -387,6 +393,7 @@ const SampleDocuments = () => {
           </Alert>
         </Snackbar>
       </div>
+        
     </div>
   );
 };
