@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import React, { Fragment, useEffect, useState } from 'react';
 
-const CheckListTable = (props) => {
+const CheckListTable = (props: any) => {
   const infoDetails = props.infoData;
   const OffBoardingCheckList = props.offBoardingData.checkListDetails;
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -31,15 +31,15 @@ const CheckListTable = (props) => {
     let date =
       today.getMonth() + 1 + '/' + today.getDate() + '/' + today.getFullYear();
     // eslint-disable-next-line
-    OffBoardingCheckList.map((data) => {
+    OffBoardingCheckList.map((data: any) => {
       return (data.date = date);
     });
   }
   const [tableValues, setTableValues] = useState(OffBoardingCheckList);
 
-  const handleChange = (event, id, keyName) => {
-    setTableValues((prevState) => {
-      const newData = prevState.map((data) => {
+  const handleChange = (event: any, id: any, keyName:any) => {
+    setTableValues((prevState: any) => {
+      const newData = prevState.map((data: any) => {
         if (data.checkListId === id) {
           if (keyName === 'date') return { ...data, date: event.target.value };
           if (keyName === 'comment')
@@ -53,11 +53,11 @@ const CheckListTable = (props) => {
     });
   };
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (newPage: any) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (event: any) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -89,7 +89,7 @@ const CheckListTable = (props) => {
               {tableValues &&
                 tableValues
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((tableValue) => {
+                  .map((tableValue: any) => {
                     return (
                       <TableRow key={tableValue.checkListId}>
                         <TableCell style={{ width: '40rem' }}>

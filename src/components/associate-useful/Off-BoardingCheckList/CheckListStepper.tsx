@@ -7,19 +7,20 @@ import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import Form from './Form';
+import Form from './Form'
 import CheckListTable from './CheckListTable';
 import ExportToExcel from '../../common/ExportToExcel';
+import { string } from 'yup';
 
 const CheckListStepper = () => {
   const [info, setInfo] = React.useState('');
-  const [offBoardingData, setOffBoardingData] = React.useState({});
-  const handleInfoDetails = (data) => {
+  const [offBoardingData, setOffBoardingData] = React.useState({checkListDetails: string});
+  const handleInfoDetails = (data: any) => {
     setInfo(data.info);
     setOffBoardingData({ checkListDetails: data.result });
-    handleNext();
+    handleNext('buttonName');
   };
-  const handleChecklistDetails = (data) => {
+  const handleChecklistDetails = (data: any) => {
     setOffBoardingData(data);
   };
 
@@ -58,7 +59,7 @@ const CheckListStepper = () => {
 
   const [activeStep, setActiveStep] = React.useState(0);
 
-  const handleNext = (buttonName) => {
+  const handleNext = (buttonName: string) => {
     if (buttonName === 'Submit') {
       console.log('Submit Button: ', info, offBoardingData);
     }
@@ -85,7 +86,7 @@ const CheckListStepper = () => {
                 ) : null
               }
             >
-              <Typography variant="span" style={{ margin: 0 }}>
+              <Typography style={{ margin: 0 }}>
                 <strong>{step.label}</strong>
               </Typography>
             </StepLabel>

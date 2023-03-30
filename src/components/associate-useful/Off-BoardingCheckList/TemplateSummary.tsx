@@ -23,7 +23,7 @@ const TemplateSummary = () => {
                 tableHeader.map((header) => {
                   return (
                     <TableCell key={header}>
-                      <Typography variant="span">
+                      <Typography>
                         <strong>{header}</strong>
                       </Typography>
                     </TableCell>
