@@ -60,21 +60,21 @@ const CommentComponent = (props: any) => {
 
 
 
-  const [showReplies, setShowReplies] = useState(false);
-  const [messages, setMessages] = useState([]);
+  // const [showReplies, setShowReplies] = useState(false);
+  // const [messages, setMessages] = useState([]);
 
-  const handleReply = () => {
-    setShowReplies(true);
-  }
+  // const handleReply = () => {
+  //   setShowReplies(true);
+  // }
 
-  const handleBack = () => {
-    setShowReplies(false)
-  }
+  // const handleBack = () => {
+  //   setShowReplies(false)
+  // }
 
-  const handleSave = () => {
-    // setMessages((prevMessages) => [...prevMessages, message]);
-    setShowReplies(true);
-  }
+  // const handleSave = () => {
+  //   // setMessages((prevMessages) => [...prevMessages, message]);
+  //   setShowReplies(true);
+  // }
 
 
   // const allDocumentTypes = useSelector((state: GlobalStoreType) => state.finalDocumentTypeList);
@@ -516,7 +516,7 @@ const CommentComponent = (props: any) => {
 
                 <Grid item xs="auto" style={{ paddingLeft: '5px' }}>
 
-                  {showReplies ?
+                  {/* {showReplies ?
                     <>
                       <TextField
                         key={empId}
@@ -551,7 +551,7 @@ const CommentComponent = (props: any) => {
                     >
                       Reply
                     </Button>
-                  }
+                  } */}
                   {/* {messages.map((message, index) => {
                     <div key={index}>{message}</div>
                   })} */}
