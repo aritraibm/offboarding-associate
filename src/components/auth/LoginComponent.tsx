@@ -6,7 +6,6 @@ import {
   Grid,
   IconButton,
   InputAdornment,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -16,13 +15,13 @@ import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../store";
-import {  LoginResponse } from "../../helper/type";
+import { LoginResponse } from "../../helper/type";
 import "../styles/login.css";
 import { LoginValidationSchema } from "./LoginComponent.validation";
 import { InputText } from "../core/InputText/InputText";
 import React from "react";
 import { UIConstants } from "../../helper/constants";
-import { InfoRounded, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const LoginComponent = () => {
   const navigate = useNavigate();

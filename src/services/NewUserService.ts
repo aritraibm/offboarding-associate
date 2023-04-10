@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import axios from "axios";
 import { ROLE_ASSOCIATE } from "../helper/constants";
 
 const BASE_URL = 'http://localhost:9099/';

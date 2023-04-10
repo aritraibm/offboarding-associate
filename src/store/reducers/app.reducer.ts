@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AllManagerType, AllReviewerType, AllRoleType, AssociateDetailResponse, DropdownIdName, GlobalStoreType, NewUserInitialState } from "../../helper/type";
+import { AllManagerType, AllReviewerType, AllRoleType, GlobalStoreType, NewUserInitialState } from "../../helper/type";
 import { DEFAULT_TAB } from '../../helper/constants';
 
 const newUserInitState: NewUserInitialState = {
@@ -8,7 +8,8 @@ const newUserInitState: NewUserInitialState = {
   reviewerName: '',
   managerName: '',
   role: '',
-  userName: '',
+  firstName: '',
+  lastName:'',
   password: '',
   showPassword: false,
   isLoginButonDisabled: false,
@@ -19,7 +20,8 @@ const newUserInitState: NewUserInitialState = {
     errorReviewerName: false,
     errorManagerName: false,
     errorRole: false,
-    errorUserName: false,
+    errorFirstName: false,
+    errorLastName: false,
     errorPassword: false,
     errorGeneratebutton: false,
   },
