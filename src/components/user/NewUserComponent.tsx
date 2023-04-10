@@ -70,8 +70,8 @@ const NewUserComponent = () => {
   const [openSnakBar, setSnakBarOpen] = useState(false);
 
 
-  const isEmail = (email: any) =>
-    /^[A-Z0-9._%+-]+@[IBM,ibm]+\.[COM,com]{2,4}$/i.test(email);
+  // const isEmail = (email: any) =>
+  //   /^[A-Z0-9._%+-]+@[IBM,ibm]+\.[COM,com]{2,4}$/i.test(email);
 
   const getRoleName = (roleId: string) => {
     allRole.filter((data: any) => {
@@ -887,3 +887,4 @@ const NewUserComponent = () => {
 };
 
 export default NewUserComponent;
+

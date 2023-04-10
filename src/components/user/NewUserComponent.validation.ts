@@ -31,6 +31,8 @@ export const NewUserValidationSchema = yup.object().shape({
     password: yup
         .string()
         .required(`Please generate the ${UIConstants.passwordLabel}`),
+
+        
     roleId: yup
         .string()
         .required(`Please select ${UIConstants.selectUser}`),
