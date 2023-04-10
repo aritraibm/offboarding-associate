@@ -1,7 +1,7 @@
 import {
   PeopleAltTwoTone,
   PreviewTwoTone,
-  SupportAgentTwoTone,
+  SupportAgentTwoTone
 } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import {
@@ -17,6 +17,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  TextField,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -25,7 +26,7 @@ import moment from 'moment/moment.js';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { comments, userComments, userDetails, token } from '../../store';
+import { comments, userComments, userDetails, token, invokeAssociatesSaga } from '../../store';
 import Loader from '../common/Loader';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../../helper/constants';
@@ -34,6 +35,7 @@ import { useForm } from 'react-hook-form';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 import { InputText } from '../core/InputText/InputText';
 import { CommentValidationSchema, addCommentValidationSchema, addCommentDefaultValues } from './Comment.validation';
+import { GlobalStoreType } from '../../helper/type';
 
 
 const CommentComponent = (props: any) => {
@@ -54,11 +56,60 @@ const CommentComponent = (props: any) => {
   const [loader, setLoader] = useState(true);
   // const [associateName, setAssociateName] = useState();
   // const [ibmId, setIbmId] = useState('');
-  const [assocaiteList, setAssocaiteList] = useState<any>([]);
+  // const [assocaiteList, setAssocaiteList] = useState<any>([]);
+
+
+
+  const [showReplies, setShowReplies] = useState(false);
+  const [messages, setMessages] = useState([]);
+
+  const handleReply = () => {
+    setShowReplies(true);
+  }
+
+  const handleBack = () => {
+    setShowReplies(false)
+  }
+
+  const handleSave = () => {
+    // setMessages((prevMessages) => [...prevMessages, message]);
+    setShowReplies(true);
+  }
+
+
+  // const allDocumentTypes = useSelector((state: GlobalStoreType) => state.finalDocumentTypeList);
+  const allAssociates = useSelector((state: GlobalStoreType) => state.finalAssociatesList);
 
   useEffect(() => {
-    fetchDocumentTypes();
+    // fetchDocumentTypes();
     fetchAllAssociates();
+    if (allAssociates.length === 0) {
+      dispatch(invokeAssociatesSaga({ test: "test", id: 1 }));
+    }
+    // if (allDocumentTypes.length === 0) {
+    //   dispatch(invokeDocumentTypeSaga({ test: "test", id: 1 }));
+    // }
+    // if (allAssociates.length === 0) {
+    //   dispatch(invokeAssociatesSaga({ test: "test", id: 1 }));
+    // }
+
+    const role = user.role;
+    console.log("role >>>>> " + role);
+    axios
+      .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
+      .then((res: any) => {
+        // console.log("res >>>>> "+JSON.stringify(res));
+        setOptions([...res.data]);
+        console.log("options", options)
+        setOptionselect('1');
+        console.log("optionselect", optionselect)
+        setLoader(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+
     axios
       .get('http://localhost:9094/comment/' + empId, {
         headers: { Authorization: 'Bearer ' + userToken },
@@ -77,23 +128,23 @@ const CommentComponent = (props: any) => {
 
 
 
-  const fetchDocumentTypes = () => {
-    const role = user.role;
-    console.log("role >>>>> " + role);
-    axios
-      .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
-      .then((res: any) => {
-        // console.log("res >>>>> "+JSON.stringify(res));
-        setOptions([...res.data]);
-        console.log("options", options)
-        setOptionselect('1');
-        console.log("optionselect",optionselect)
-        setLoader(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const fetchDocumentTypes = () => {
+  //   const role = user.role;
+  //   console.log("role >>>>> " + role);
+  //   axios
+  //     .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
+  //     .then((res: any) => {
+  //       // console.log("res >>>>> "+JSON.stringify(res));
+  //       setOptions([...res.data]);
+  //       console.log("options", options)
+  //       setOptionselect('1');
+  //       console.log("optionselect", optionselect)
+  //       setLoader(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
 
   const fetchAllAssociates = () => {
@@ -103,9 +154,9 @@ const CommentComponent = (props: any) => {
       .then((result: any) => {
         // console.log("result ==== >"+JSON.stringify(result));
 
-        setAssocaiteList([...result.data]);
+        //setAssocaiteList([...result.data]);
         setAllAssoOptionSelect('1');
-        console.log("allAssoOptionSelect",allAssoOptionSelect)
+        console.log("allAssoOptionSelect", allAssoOptionSelect)
         setLoader(false);
 
       });
@@ -204,58 +255,58 @@ const CommentComponent = (props: any) => {
       // comments: comment,
       date: moment(new Date()).format(),
     };
-    const reqData= {...data, ...updatedComments};
+    const reqData = { ...data, ...updatedComments };
     console.log("COMMENT SAVE DATA --->" + JSON.stringify(reqData))
-  
-    axios
-        .post('http://localhost:9094/comment/add-comment', reqData, {
-          headers: { Authorization: 'Bearer ' + userToken },
-        })
-        .then((result) => {
-          cmtReset(addCommentDefaultValues);
-          callOnchangeAPI(getValues('associateName'));
-          // if (result.data)
-          //   dispatch(
-          //     comments({
-          //       comments: [result.data, ...allComments],
-          //     })
-          //   );
-        });
-     
-      setOpen(false);
-  }
 
-  const callOnchangeAPI = (value: string) =>{
-      if(value !== null && value !== ''){
-      axios
-      .get('http://localhost:9094/comment/' + value, {
+    axios
+      .post('http://localhost:9094/comment/add-comment', reqData, {
         headers: { Authorization: 'Bearer ' + userToken },
       })
       .then((result) => {
-        if (result.data) {
-          dispatch(
-            comments({
-              comments: result.data,
-            })
-          );
-          setLoader(false);
-        }
-      }); // eslint-disable-next-line react-hooks/exhaustive-deps
-     }else{
+        cmtReset(addCommentDefaultValues);
+        callOnchangeAPI(getValues('associateName'));
+        // if (result.data)
+        //   dispatch(
+        //     comments({
+        //       comments: [result.data, ...allComments],
+        //     })
+        //   );
+      });
+
+    setOpen(false);
+  }
+
+  const callOnchangeAPI = (value: string) => {
+    if (value !== null && value !== '') {
+      axios
+        .get('http://localhost:9094/comment/' + value, {
+          headers: { Authorization: 'Bearer ' + userToken },
+        })
+        .then((result) => {
+          if (result.data) {
+            dispatch(
+              comments({
+                comments: result.data,
+              })
+            );
+            setLoader(false);
+          }
+        }); // eslint-disable-next-line react-hooks/exhaustive-deps
+    } else {
       dispatch(
         comments({
           comments: [],
         })
       );
-     }
-     }
+    }
+  }
 
   const handleAssociateDropdownChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
-     // alert(cmtGetValues('comments'))
-     const onChangeValue= e.target.value;
-     Object.freeze(onChangeValue);
+    // alert(cmtGetValues('comments'))
+    const onChangeValue = e.target.value;
+    Object.freeze(onChangeValue);
 
-     callOnchangeAPI(onChangeValue);
+    callOnchangeAPI(onChangeValue);
     //  if(onChangeValue !== null && onChangeValue !== ''){
     //   axios
     //   .get('http://localhost:9094/comment/' + e.target.value, {
@@ -282,7 +333,7 @@ const CommentComponent = (props: any) => {
 
 
 
-  const handleNewCommentDropdownChange=(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string)=>{
+  const handleNewCommentDropdownChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
 
   }
 
@@ -302,43 +353,43 @@ const CommentComponent = (props: any) => {
       {props.empId ? <></> : <h2>Comment</h2>}
 
 
-      {(user.role === ROLE_ONBOARDING_MANAGER || 
-      user.role === ROLE_ONBOARDING_REVIEWER) && (
-      <Box mb={6}>
-        <div className="col-md-12 container">
-          <div className="col-md-4 flex-column">
+      {(user.role === ROLE_ONBOARDING_MANAGER ||
+        user.role === ROLE_ONBOARDING_REVIEWER) && (
+          <Box mb={6}>
+            <div className="col-md-12 container">
+              <div className="col-md-4 flex-column">
 
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <>
-                <h2>Find Associate</h2>
-                <Grid item md={6} sm={6} xs={12}>
-                  <div className="section-border">
-                    <Dropdown
-                      label={UIConstants.selectAnAssociate}
-                      {...register("associateName")}
-                      error={!!errors?.associateName}
-                      onChange={handleAssociateDropdownChange}
-                      options={mapAPItoUIDocTypeDropdown(assocaiteList, 'associateId', 'associateName')}
-                      selectAnOption
-                      helperText={
-                        errors.associateName
-                          ? errors?.associateName?.message
-                          : null
-                      }
-                    />
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <>
+                    <h2>Find Associate</h2>
+                    <Grid item md={6} sm={6} xs={12}>
+                      <div className="section-border">
+                        <Dropdown
+                          label={UIConstants.selectAnAssociate}
+                          {...register("associateName")}
+                          error={!!errors?.associateName}
+                          onChange={handleAssociateDropdownChange}
+                          options={mapAPItoUIDocTypeDropdown(allAssociates, 'ibmId', 'associateName')}
+                          selectAnOption
+                          helperText={
+                            errors.associateName
+                              ? errors?.associateName?.message
+                              : null
+                          }
+                        />
 
-                  </div>
-                </Grid>
+                      </div>
+                    </Grid>
 
-              </>
-            </form>
+                  </>
+                </form>
 
-          </div>
-        </div>
+              </div>
+            </div>
 
-      </Box>
-      )}
+          </Box>
+        )}
       {/* <Box mb={6}>
         <div className="col-md-12 container">
           <div className="col-md-4 flex-column">
@@ -431,15 +482,15 @@ const CommentComponent = (props: any) => {
                                             style={{ fontSize: 13 }}
                                           />
                                         )}
-                                        
+
                                       </Tooltip>
-                                      
+
                                     </Grid>
-                                    
+
                                   </Grid>
                                 </>
                               )}
-                              
+
                             </Grid>
                             <Grid item xs={6} style={{ textAlign: 'end' }}>
                               <span style={{ fontSize: '10px' }}>
@@ -447,7 +498,7 @@ const CommentComponent = (props: any) => {
                               </span>
                             </Grid>
                           </Grid>
-                          
+
                         </Typography>
                       </>
                     }
@@ -462,6 +513,51 @@ const CommentComponent = (props: any) => {
                     }
                   />
                 </ListItem>
+
+                <Grid item xs="auto" style={{ paddingLeft: '5px' }}>
+
+                  {showReplies ?
+                    <>
+                      <TextField
+                        key={empId}
+                        label="Write a Reply..."
+                        variant="standard"
+                        style={{ margin: '10px' }}
+                      >
+                      </TextField>
+                      
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        style={{ margin: '20px' }}
+                        onClick={handleSave}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        style={{ margin: '3px' }}
+                        onClick={handleBack}
+                      >
+                        Back
+                      </Button>
+                    </>
+                    :
+                    <Button
+                      // key={index}
+                      onClick={handleReply}
+                      variant="contained"
+                      style={{ margin: '10px' }}
+                    >
+                      Reply
+                    </Button>
+                  }
+                  {/* {messages.map((message, index) => {
+                    <div key={index}>{message}</div>
+                  })} */}
+
+                </Grid>
+
                 <Divider />
               </Fragment>
             );
@@ -470,26 +566,33 @@ const CommentComponent = (props: any) => {
       ) : (
         'No comments to display.'
       )}
-      <Tooltip
-        title="Add New comment"
-        sx={{ position: 'fixed', bottom: 60, right: 50 }}
-      >
-        <Fab color="primary" onClick={handleClickOpen}>
-          <AddIcon />
-        </Fab>
-      </Tooltip>
+
+      {(user.role === ROLE_ONBOARDING_MANAGER ||
+        user.role === ROLE_ONBOARDING_REVIEWER) && (
+
+          <Tooltip
+            title="Add New comment"
+            sx={{ position: 'fixed', bottom: 60, right: 50 }}
+          >
+            <Fab color="primary" onClick={handleClickOpen}>
+              <AddIcon />
+            </Fab>
+          </Tooltip>
+
+        )}
+
       <Dialog open={open}>
         <DialogTitle>Add Comment</DialogTitle>
 
         <form onSubmit={cmtHandleSubmit(saveComments)}>
           <DialogContent>
 
-          <Dropdown
+            <Dropdown
               label={UIConstants.selectAnAssociate}
               {...cmtRegister("empId")}
               error={!!cmtErrors?.empId}
               onChange={handleNewCommentDropdownChange}
-              options={mapAPItoUIDocTypeDropdown(assocaiteList, 'associateId', 'associateName')}
+              options={mapAPItoUIDocTypeDropdown(allAssociates, 'ibmId', 'associateName')}
               selectAnOption
               helperText={
                 cmtErrors.empId
@@ -507,21 +610,25 @@ const CommentComponent = (props: any) => {
                   ? cmtErrors?.comments.message
                   : null
               }
-              // value={comment}
-              // onChange={handleComment}
-              // error={error}
+            // value={comment}
+            // onChange={handleComment}
+            // error={error}
             />
           </DialogContent>
+
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button 
+            <Button
               fullWidth
               variant="contained"
               className="login-btn"
               type="submit">Add</Button>
           </DialogActions>
+
         </form>
       </Dialog>
+
+
     </div>
   );
 };
