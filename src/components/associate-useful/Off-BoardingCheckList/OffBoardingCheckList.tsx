@@ -11,7 +11,7 @@ const OffBoardingCheckList = () => {
         <Grid item xs={12}>
           <Typography
             style={{ margin: "20px" }}
-            variant="span"
+            
             color="black"
             sx={{ textDecoration: "underline" }}
           >
@@ -29,7 +29,7 @@ const OffBoardingCheckList = () => {
         <Grid item xs={12}>
           <Typography
             style={{ margin: "20px" }}
-            variant="span"
+            
             color="red"
             sx={{ textDecoration: "underline" }}
           >

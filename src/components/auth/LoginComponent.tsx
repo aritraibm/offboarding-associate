@@ -4,6 +4,8 @@ import {
   CardActions,
   CardContent,
   Grid,
+  IconButton,
+  InputAdornment,
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -13,11 +15,13 @@ import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../store";
-import {  LoginResponse } from "../../helper/type";
+import { LoginResponse } from "../../helper/type";
 import "../styles/login.css";
 import { LoginValidationSchema } from "./LoginComponent.validation";
 import { InputText } from "../core/InputText/InputText";
 import React from "react";
+import { UIConstants } from "../../helper/constants";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const LoginComponent = () => {
   const navigate = useNavigate();
@@ -25,6 +29,7 @@ const LoginComponent = () => {
   const [password, setPswd] = useState("");
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
+  const [attribteType, setAttribteType] = useState('password');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
     setError(false);
@@ -37,6 +42,15 @@ const LoginComponent = () => {
     mode: 'all',
     resolver: yupResolver(LoginValidationSchema),
   });
+
+  const handleClickShowPassword = () => {
+
+    if (attribteType === "text") {
+      setAttribteType('password');
+    } else {
+      setAttribteType('text');
+    }
+  };
 
 
   const onSubmit = (data: any) => {
@@ -106,7 +120,8 @@ const LoginComponent = () => {
                     </Typography>
 
                     <InputText
-                      label="Password"
+                      type={attribteType}
+                      label={UIConstants.passwordLabel}
                       value={password}
                       {...register("password")}
                       onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(e, "password")}
@@ -115,6 +130,26 @@ const LoginComponent = () => {
                           ? errors?.password.message
                           : null
                       }
+                      InputProps={{
+                        readOnly: false,
+                        endAdornment: (
+                          <>
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                edge="end"
+                              >
+                                {attribteType === 'text' ? (
+                                  <VisibilityOff />
+                                ) : (
+                                  <Visibility />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          </>
+                        ),
+                      }}
                     />
                     {/* {errors?.password?.message} */}
 

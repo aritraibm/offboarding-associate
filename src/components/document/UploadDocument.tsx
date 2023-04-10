@@ -22,7 +22,7 @@ import { Box, Card, CardActions, CardContent, Grid, Typography } from '@mui/mate
 import { error } from 'console';
 import { InputText } from '../core/InputText/InputText';
 // import NewSelectBox from '../core/NewSelect';
-import { ROLE_ASSOCIATE, UIConstants } from '../../helper/constants';
+import { ROLE_ASSOCIATE, ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../../helper/constants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import UploadDocumentSection from './UploadDocumentSection';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
@@ -42,7 +42,7 @@ const UploadDocument = () => {
   const [openSnakBar, setSnakBarOpen] = useState(false);
   const [uploadStatus, setUploadStatus] = useState(false);
   const [options, setOptions] = useState<string[]>([]);
-  const [assocaiteList, setAssocaiteList] = useState<any>([]);
+  // const [assocaiteList, setAssocaiteList] = useState<any>([]);
   const [optionselect, setOptionselect] = useState('');
 
   const [inputfile, setInputfile] = useState(false);
@@ -76,6 +76,7 @@ const UploadDocument = () => {
   };
 
   useEffect(() => {
+   
     if (allDocumentTypes.length === 0) {
       dispatch(invokeDocumentTypeSaga({ test: "test", id: 1 }));
     }
@@ -325,6 +326,9 @@ const UploadDocument = () => {
         </div> */}
       </div>
 
+
+      {(user.role === ROLE_ONBOARDING_MANAGER || 
+      user.role === ROLE_ONBOARDING_REVIEWER) && (
       <Box mb={6}>
         <div className="col-md-12 container">
           <div className="col-md-4 flex-column">
@@ -340,7 +344,7 @@ const UploadDocument = () => {
                       {...register("associateName")}
                       error={!!errors?.associateName}
                       onChange={handleAssociateDropdownChange}
-                      options={mapAPItoUIDocTypeDropdown(assocaiteList, 'associateId', 'associateName')}
+                      options={mapAPItoUIDocTypeDropdown(allAssociates, 'ibmId', 'associateName')}
                       selectAnOption
                       helperText={
                         errors.associateName
@@ -359,6 +363,8 @@ const UploadDocument = () => {
         </div>
 
       </Box>
+      )}
+
 
       <DocumentTable
         forAssociate={forAssociate}

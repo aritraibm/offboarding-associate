@@ -7,8 +7,8 @@ export function* watcherSaga() {
     console.log("invokeDocumentTypeSaga.type :::::::: >>>>>>" + invokeDocumentTypeSaga.type)
     console.log("invokeAssociatesSaga.type :::::::: >>>>>>" + invokeAssociatesSaga.type)
     console.log("invokeAllRoleSaga.type :::::::: >>>>>>" + invokeAllRoleSaga.type)
-    console.log("invokeAllRoleSaga.type :::::::: >>>>>>" + invokeAllManagerSaga.type)
-    console.log("invokeAllRoleSaga.type :::::::: >>>>>>" + invokeAllManagerSaga.type)
+    console.log("invokeAllReviewerSaga.type :::::::: >>>>>>" + invokeAllReviewerSaga.type)
+    console.log("invokeAllManagerSaga.type :::::::: >>>>>>" + invokeAllManagerSaga.type)
 
     if (invokeDocumentTypeSaga.type === 'Offboarding/invokeDocumentTypeSaga') {
         yield takeLatest(invokeDocumentTypeSaga.type, handleAllDocumentType);

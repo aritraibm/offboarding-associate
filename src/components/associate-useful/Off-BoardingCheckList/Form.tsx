@@ -17,7 +17,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { token, userDetails } from '../../../store';
 
-const Form = (props) => {
+const Form = (props: any) => {
   const userToken = useSelector(token);
   const userDetail = useSelector(userDetails);
   const sendInfo = props.sendInfo;
@@ -45,7 +45,7 @@ const Form = (props) => {
   const [errorEmpName, setErrorEmpName] = useState(false);
   const [errorCoOrdinatorName, setErrorCoOrdinatorName] = useState(false);
   const [errorIbmOrContractorId, setErrorIbmOrContractorId] = useState(false);
-  const handleChange = (e, keyName) => {
+  const handleChange = (e: any, keyName: any) => {
     setError('');
     if (keyName === 'offBoardingDate')
       return setInfo({ ...info, offBoardingDate: e });
@@ -105,7 +105,7 @@ const Form = (props) => {
           <Grid item xs={8} md={6} lg={3}>
             <Typography
               id="employeeName"
-              variant="span"
+  
               style={{
                 margin: 0,
                 color: errorEmpName ? 'red' : 'black',
@@ -114,7 +114,7 @@ const Form = (props) => {
               <strong>Employee Name</strong>
             </Typography>
             <TextField
-              variant="outlined"
+              
               id="employeeName"
               value={info.employeeName}
               style={{ width: '80%' }}
@@ -133,7 +133,7 @@ const Form = (props) => {
           <Grid item xs={8} md={6} lg={3}>
             <Typography
               id="coordinatorName"
-              variant="span"
+              
               style={{
                 margin: 0,
                 color: errorCoOrdinatorName ? 'red' : 'black',
@@ -162,7 +162,7 @@ const Form = (props) => {
           <Grid item xs={8} md={6} lg={3}>
             <Typography
               id="ibmEmployeeOrContractorId"
-              variant="span"
+              
               style={{
                 margin: 0,
                 color: errorIbmOrContractorId ? 'red' : 'black',
@@ -225,7 +225,7 @@ const Form = (props) => {
           <Grid item xs={8} md={4} lg={2}>
             <Typography
               id="offBoardingDate"
-              variant="span"
+              
               style={{ margin: 0 }}
             >
               <strong>On-Boarding Date</strong>
@@ -262,7 +262,7 @@ const Form = (props) => {
           <Grid item xs={8} md={4} lg={2}>
             <Typography
               id="offBoardingDate"
-              variant="span"
+              
               style={{ margin: 0 }}
             >
               <strong>Off-Boarding Date</strong>
@@ -299,7 +299,7 @@ const Form = (props) => {
           <Grid item xs={8} md={4} lg={2}>
             <Typography
               id="offBoardingCompletionDate"
-              variant="span"
+              
               style={{ margin: 0 }}
             >
               <strong>Off-Boarding Activities Completion Date</strong>

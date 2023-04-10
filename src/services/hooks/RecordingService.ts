@@ -7,23 +7,23 @@ class RecordingService {
     return axios.get(BASE_URL + '/get-all-recordings');
   }
 
-  createRecording(recording, headers) {
+  createRecording(recording: any, headers: any) {
     return axios.post(BASE_URL + '/add-recording', recording, {
       headers: headers,
     });
   }
 
-  getRecordingById(recordingId) {
+  getRecordingById(recordingId: any) {
     return axios.get(BASE_URL + '/' + recordingId);
   }
 
-  updateRecording(recording, recordingId, headers) {
+  updateRecording(recording: any, recordingId: any, headers: any) {
     return axios.put(BASE_URL + '/' + recordingId, recording, {
       headers: headers,
     });
   }
 
-  deleteRecording(recordingId, headers) {
+  deleteRecording(recordingId: any, headers: any) {
     return axios.delete(BASE_URL + '/' + recordingId, {
       headers: headers,
     });

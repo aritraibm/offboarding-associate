@@ -19,11 +19,11 @@ import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 // import SelectBox from '../core/Select';
-import axios from '../../config/interceptor'
+import axios from '../../config/interceptor';
 
 import './UploadDocument.css';
 import Loader from '../common/Loader';
-import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../../helper/constants';
+import { ROLE_ASSOCIATE, ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../../helper/constants';
 
 const SampleDocuments = () => {
   const BASE_URL = 'http://localhost:9003/';
@@ -124,12 +124,7 @@ const SampleDocuments = () => {
     formdata.append('data', JSON.stringify(jsonData));
     
     axios
-      .post(BASE_URL + 'files', formdata, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': 'Bearer ' + userToken
-        },
-      })
+      .post(BASE_URL + 'files', formdata)
       .then((result) => {
         updateDialogClose();
         setSnakBarOpen(true);
@@ -201,11 +196,17 @@ const SampleDocuments = () => {
   };
 
   return (
+    <>
+    {(user.role === ROLE_ONBOARDING_MANAGER ||
+      user.role === ROLE_ONBOARDING_REVIEWER ||
+      user.role === ROLE_ASSOCIATE) && (
     <div className="upload-doc-container">
       {(user.role === ROLE_ONBOARDING_MANAGER ||
         user.role === ROLE_ONBOARDING_REVIEWER) && (
           <div>
             <h2>Upload Documents</h2>
+            {(user.role === ROLE_ONBOARDING_MANAGER ||
+              user.role === ROLE_ONBOARDING_REVIEWER) && (
             <div className="input-fieldbox">
               <div className="input-select">
                 {' '}
@@ -242,8 +243,12 @@ const SampleDocuments = () => {
                 </Button>
               </div>
             </div>
+              )}
           </div>
         )}
+        {(user.role === ROLE_ONBOARDING_MANAGER ||
+        user.role === ROLE_ONBOARDING_REVIEWER ||
+        user.role === ROLE_ASSOCIATE) && (
       <div className="button-content">
         <div className="content-left">
           <h3>Sample Documents:</h3>
@@ -255,14 +260,17 @@ const SampleDocuments = () => {
                 href="http://localhost:9003/files/sampledoc/zip"
                 className="fa fa-download"
                 title="Download All"
-              ></a>
+              > </a>
             </div>
             {/* <h3>
         <a href="http://localhost:9003/files/sampledoc/zip" className="btn btn-primary">Download All</a>
       </h3> */}
           </div>
         )}
-      </div>
+      </div> 
+        )}
+
+
       <div>
         {loader ? (
           <Loader />
@@ -387,7 +395,10 @@ const SampleDocuments = () => {
           </Alert>
         </Snackbar>
       </div>
+        
     </div>
-  );
+    )}
+    </>
+    );
 };
 export default SampleDocuments;
