@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Loader from '../../common/Loader';
 import RecordingService from '../../../services/hooks/RecordingService';
+import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../../../helper/constants';
 
 const RecordingMainComponent = () => {
   const userToken = useSelector(token);
@@ -82,8 +83,8 @@ const RecordingMainComponent = () => {
   return (
     <div style={{ padding: '20px 20px 130px 20px' }}>
       <Grid container>
-        {user.role === 'ROLE_ONBOARDING_MANAGER' ||
-          user.role === 'ROLE_ONBOARDING_REVIEWER' ? (
+        {user.role === ROLE_ONBOARDING_MANAGER ||
+          user.role === ROLE_ONBOARDING_REVIEWER ? (
           <Grid item xs={12}>
             {editing ? (
               <Grid item xs={12}>

@@ -5,8 +5,8 @@ import {
     MenuItem,
 } from "@mui/material";
 import React from "react";
-import { DropdownType } from "../../constants/type";
-import { UIConstants } from "../../constants/UIConstants";
+import { DropdownIdName, DropdownType } from "../../../helper/type";
+import { UIConstants } from "../../../helper/constants";
 import { SelectInput } from "./Dropdown.styles";
 
 const formControlDefaultProps = {
@@ -39,7 +39,7 @@ export const Dropdown: React.FC<any> = React.forwardRef(
                         </MenuItem>
                     )}
 
-                    {options?.map((items: any) => (
+                    {options?.map((items: DropdownIdName) => (
                         <MenuItem value={items.id}>{items.name}</MenuItem>
                     ))}
                 </SelectInput>

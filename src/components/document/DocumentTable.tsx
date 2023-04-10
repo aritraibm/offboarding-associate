@@ -23,6 +23,7 @@ import { Typography } from '@mui/material';
 import { token, userDetails } from '../../store';
 import { useSelector } from 'react-redux';
 import Loader from '../common/Loader';
+import { ROLE_ASSOCIATE } from '../../helper/constants';
 
 const DocumentTable = ((props: any) => {
   const userToken = useSelector(token);
@@ -33,7 +34,7 @@ const DocumentTable = ((props: any) => {
   const user = useSelector(userDetails);
   const [loader, setLoader] = useState(true);
   // const [associateObj, setAssociate] = useState({
-  //   name: 'astik', role: 'ROLE_ASSOCIATE', reviewer: {empId: 'reviewer1', reviewerName: 'Arindam'},
+  //   name: 'astik', role: ROLE_ASSOCIATE, reviewer: {empId: 'reviewer1', reviewerName: 'Arindam'},
   //   manager: {empId: 'manager1', managerName: 'Arindam'}, empId: '000U2M747'
   // });
 
@@ -58,17 +59,17 @@ const DocumentTable = ((props: any) => {
 
   const getIdByRole = (): string | boolean => {
     // const id =
-    //   user.role === 'ROLE_ASSOCIATE' ? user.empId : props.forAssociate.empId;
+    //   user.role === ROLE_ASSOCIATE ? user.empId : props.forAssociate.empId;
 
     if (!props.ibmId) return false;
-    return user.role === 'ROLE_ASSOCIATE' ? user.empId : props.ibmId;
+    return user.role === ROLE_ASSOCIATE ? user.empId : props.ibmId;
   }
 
   const fetchDocuments = () => {
 
     const id = getIdByRole();
 
-    const reviewerId = user.role === 'ROLE_ASSOCIATE' ? '' : user.empId;
+    const reviewerId = user.role === ROLE_ASSOCIATE ? '' : user.empId;
     var url = props.fetchDocumentURL ? props.fetchDocumentURL : '';
     //console.log("::::::::::::::: >>>" + props.type + " :: " + url);
     if (props.type === 'REVIEWED') {
@@ -141,7 +142,7 @@ const DocumentTable = ((props: any) => {
   const submitReviewed = () => {
 
     const id = getIdByRole();
-    const reviewerId = user.role === 'ROLE_ASSOCIATE' ? '' : user.empId;
+    const reviewerId = user.role === ROLE_ASSOCIATE ? '' : user.empId;
     axios
       .put(`http://localhost:9003/files/reviewer/${reviewerId}/employee/${id}`, { headers: { Authorization: 'Bearer ' + userToken }, })
       .then((result) => {
@@ -156,7 +157,7 @@ const DocumentTable = ((props: any) => {
   const downloadDocsForAsso = () => {
 
     const id = getIdByRole();
-    const reviewerId = user.role === 'ROLE_ASSOCIATE' ? '' : user.empId;
+    const reviewerId = user.role === ROLE_ASSOCIATE ? '' : user.empId;
     const url = `http://localhost:9003/files/reviewer/${reviewerId}/employee/${id}/zip`;
     axios
       .get(url, { headers: { Authorization: 'Bearer ' + userToken }, responseType: 'blob' })
@@ -188,7 +189,7 @@ const DocumentTable = ((props: any) => {
             </div>
 
             {documents.length > 0 &&
-              user.role !== 'ROLE_ASSOCIATE' &&
+              user.role !== ROLE_ASSOCIATE &&
               props.type === 'NOTREVIEWED' && (
                 <div className="content-right">
                   <div className="download-icon">
@@ -217,9 +218,9 @@ const DocumentTable = ((props: any) => {
                       <TableCell>S.No.</TableCell>
                       <TableCell>Name</TableCell>
                       <TableCell>Document Type</TableCell>
-                      {/* {((user.role !== 'ROLE_ASSOCIATE' &&
+                      {/* {((user.role !== ROLE_ASSOCIATE &&
                         props.type === 'REVIEWED') ||
-                        (user.role === 'ROLE_ASSOCIATE' &&
+                        (user.role === ROLE_ASSOCIATE &&
                           props.type === 'NOTREVIEWED')) && ( */}
                       <TableCell>Delete</TableCell>
                       {/* )} */}
@@ -243,9 +244,9 @@ const DocumentTable = ((props: any) => {
                         <TableCell component="th" scope="row">
                           {doc.documentType.name}
                         </TableCell>
-                        {/* {((user.role !== 'ROLE_ASSOCIATE' &&
+                        {/* {((user.role !== ROLE_ASSOCIATE &&
                           props.type === 'REVIEWED') ||
-                          (user.role === 'ROLE_ASSOCIATE' &&
+                          (user.role === ROLE_ASSOCIATE &&
                             props.type === 'NOTREVIEWED')) && ( */}
                         <TableCell>
                           <Button
@@ -267,7 +268,7 @@ const DocumentTable = ((props: any) => {
                       </TableRow>
                     ))}
 
-                    {user.role !== 'ROLE_ASSOCIATE' &&
+                    {user.role !== ROLE_ASSOCIATE &&
                       props.type === 'REVIEWED' && (
                         <TableRow>
                           <TableCell>

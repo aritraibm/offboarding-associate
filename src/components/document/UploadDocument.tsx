@@ -10,9 +10,9 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import './UploadDocument.css';
-import SelectBox from '../core/Select';
-import { token, userDetails } from '../../store';
-import { useSelector } from 'react-redux';
+// import SelectBox from '../core/Select';
+import { token, userDetails, invokeDocumentTypeSaga, invokeAssociatesSaga } from '../../store';
+import { useSelector, useDispatch } from 'react-redux';
 import DocumentTable from './DocumentTable';
 import Loader from '../common/Loader';
 import { SelectAssociateValidationSchema } from './FilterUploadDocument.validation';
@@ -21,18 +21,23 @@ import { useForm } from 'react-hook-form';
 import { Box, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
 import { error } from 'console';
 import { InputText } from '../core/InputText/InputText';
-import NewSelectBox from '../core/NewSelect';
-import { UIConstants } from '../constants/UIConstants';
+// import NewSelectBox from '../core/NewSelect';
+import { ROLE_ASSOCIATE, UIConstants } from '../../helper/constants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import { FlexRow } from '../common/Application.style';
 import UploadDocumentSection from './UploadDocumentSection';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
+import { GlobalStoreType } from '../../helper/type';
+
 
 const UploadDocument = () => {
   const BASE_URL = 'http://localhost:9003/';
   const userToken = useSelector(token);
   const location = useLocation();
+  const allDocumentTypes = useSelector((state: GlobalStoreType) => state.finalDocumentTypeList);
+  const allAssociates = useSelector((state: GlobalStoreType) => state.finalAssociatesList);
 
+  const dispatch = useDispatch();
   const { forAssociate } = location.state;
   const [documents, setDocuments] = useState([]);
   const [openSnakBar, setSnakBarOpen] = useState(false);
@@ -51,9 +56,9 @@ const UploadDocument = () => {
   const [openUpdate, setUpdateDialogStatus] = useState(false);
   const user = useSelector(userDetails);
   const [revieweddocuments, setReviewedDocuments] = useState([]);
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
   // const [associateObj, setAssociate] = useState({
-  //   name: 'astik', role: 'ROLE_ASSOCIATE', reviewer: {empId: 'reviewer1', reviewerName: 'Arindam'},
+  //   name: 'astik', role: ROLE_ASSOCIATE, reviewer: {empId: 'reviewer1', reviewerName: 'Arindam'},
   //   manager: {empId: 'manager1', managerName: 'Arindam'}, empId: '000U2M747'
   // });
 
@@ -77,8 +82,12 @@ const UploadDocument = () => {
   };
 
   useEffect(() => {
-    fetchDocumentTypes();
-    fetchAllAssociates();
+    if (allDocumentTypes.length === 0) {
+      dispatch(invokeDocumentTypeSaga({ test: "test", id: 1 }));
+    }
+    if (allAssociates.length === 0) {
+      dispatch(invokeAssociatesSaga({ test: "test", id: 1 }));
+    }
   }, []);
 
   const callUploadAPI = () => {
@@ -88,9 +97,9 @@ const UploadDocument = () => {
     const jsonData = {
       document_type: optionselect,
       employeeId:
-        user.role === 'ROLE_ASSOCIATE' ? user.empId : forAssociate.empId,
+        user.role === ROLE_ASSOCIATE ? user.empId : forAssociate.empId,
       role: user.role,
-      reviewerId: user.role === 'ROLE_ASSOCIATE' ? '' : user.empId,
+      reviewerId: user.role === ROLE_ASSOCIATE ? '' : user.empId,
     };
     var formdata = new FormData();
 
@@ -113,7 +122,7 @@ const UploadDocument = () => {
         updateDialogClose();
         setSnakBarOpen(true);
         setUploadStatus(true);
-        if (user.role === 'ROLE_ASSOCIATE') {
+        if (user.role === ROLE_ASSOCIATE) {
           childRefNonReviewed.current?.fetchChildDocuments();
         } else {
           childRefReviewed.current?.fetchChildDocuments();
@@ -138,44 +147,44 @@ const UploadDocument = () => {
     setSnakBarOpen(false);
   };
 
-  const fetchDocumentTypes = () => {
-    const role = user.role;
-    console.log("role >>>>> " + role);
-    axios
-      .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
-      .then((res: any) => {
-        // console.log("res >>>>> "+JSON.stringify(res));
-        setOptions([...res.data]);
-        setOptionselect('1');
-        setLoader(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const fetchDocumentTypes = () => {
+  //   const role = user.role;
+  //   // console.log("role >>>>> " + role);
+  //   axios
+  //     .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
+  //     .then((res: any) => {
+  //       // console.log("res >>>>> "+JSON.stringify(res));
+  //       setOptions([...res.data]);
+  //       setOptionselect('1');
+  //       setLoader(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
 
-  const fetchAllAssociates = () => {
+  // const fetchAllAssociates = () => {
 
-    axios
-      .get("http://localhost:9092/pru-associate/get-all-associates", { headers: { Authorization: 'Bearer ' + userToken } })
-      .then((result: any) => {
-        // console.log("result ==== >"+JSON.stringify(result));
+  //   axios
+  //     .get("http://localhost:9092/pru-associate/get-all-associates", { headers: { Authorization: 'Bearer ' + userToken } })
+  //     .then((result: any) => {
+  //       // console.log("result ==== >"+JSON.stringify(result));
 
-        setAssocaiteList([...result.data]);
-        setAllAssoOptionSelect('1');
-        setLoader(false);
+  //       setAssocaiteList([...result.data]);
+  //       setAllAssoOptionSelect('1');
+  //       setLoader(false);
 
-      });
-  }
+  //     });
+  // }
 
-  const allAssociatesOptionChanged = (childData: any) => {
-    setAllAssoOptionSelect(childData);
-  };
+  // const allAssociatesOptionChanged = (childData: any) => {
+  //   setAllAssoOptionSelect(childData);
+  // };
 
-  const optionChanged = (childData: any) => {
-    setOptionselect(childData);
-  };
+  // const optionChanged = (childData: any) => {
+  //   setOptionselect(childData);
+  // };
 
   const resetFields = () => {
     var input: any = document.getElementById('myfile');
@@ -190,7 +199,7 @@ const UploadDocument = () => {
     const updateFileName = yy.files[0].name;
     //var filteredObj = [];
     var isPopupDisplay: boolean | undefined = false;
-    if (user.role === 'ROLE_ASSOCIATE') {
+    if (user.role === ROLE_ASSOCIATE) {
       isPopupDisplay = validateUploadFile(documents, updateFileName);
     } else {
       isPopupDisplay = validateUploadFile(revieweddocuments, updateFileName);
@@ -339,7 +348,7 @@ const UploadDocument = () => {
                       {...register("associateName")}
                       error={!!errors?.associateName}
                       onChange={handleAssociateDropdownChange}
-                      options={mapAPItoUIDocTypeDropdown(assocaiteList, 'ibmId', 'associateName')}
+                      options={mapAPItoUIDocTypeDropdown(allAssociates, 'ibmId', 'associateName')}
                       selectAnOption
                       helperText={
                         errors.associateName
@@ -370,7 +379,7 @@ const UploadDocument = () => {
         fetchDocumentURL="http://localhost:9003/files/employee"
       />
 
-      {user.role !== 'ROLE_ASSOCIATE' && (
+      {user.role !== ROLE_ASSOCIATE && (
         <DocumentTable
           forAssociate={forAssociate}
           options={options}
