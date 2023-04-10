@@ -4,14 +4,21 @@ import store from '../store/store'
 const UserToken = () => store.getState().token;
 // axios instance for making requests
 const AxiosInstance = axios.create();
+const BASE_URL = 'http://localhost:9003/';
+const URL = BASE_URL + 'files';
 
 // request interceptor
 AxiosInstance.interceptors.request.use(
     config => {
-        if (UserToken) {
-            config.headers['Authorization'] = 'Bearer ' + UserToken()
+        console.log("config >>>>>" + JSON.stringify(config))
+        config.headers['Authorization'] = 'Bearer ' + UserToken()
+
+        if (UserToken && URL) {
+            config.headers['Content-Type'] = 'multipart/form-data';
+        } else if (UserToken) {
             config.headers['Content-Type'] = 'application/json';
         }
+
         return config
     },
     error => {

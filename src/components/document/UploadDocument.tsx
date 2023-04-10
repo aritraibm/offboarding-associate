@@ -42,7 +42,7 @@ const UploadDocument = () => {
   const [openSnakBar, setSnakBarOpen] = useState(false);
   const [uploadStatus, setUploadStatus] = useState(false);
   const [options, setOptions] = useState<string[]>([]);
-  const [assocaiteList, setAssocaiteList] = useState<any>([]);
+  // const [assocaiteList, setAssocaiteList] = useState<any>([]);
   const [optionselect, setOptionselect] = useState('');
 
   const [inputfile, setInputfile] = useState(false);
@@ -76,6 +76,7 @@ const UploadDocument = () => {
   };
 
   useEffect(() => {
+   
     if (allDocumentTypes.length === 0) {
       dispatch(invokeDocumentTypeSaga({ test: "test", id: 1 }));
     }
@@ -343,7 +344,7 @@ const UploadDocument = () => {
                       {...register("associateName")}
                       error={!!errors?.associateName}
                       onChange={handleAssociateDropdownChange}
-                      options={mapAPItoUIDocTypeDropdown(assocaiteList, 'associateId', 'associateName')}
+                      options={mapAPItoUIDocTypeDropdown(allAssociates, 'ibmId', 'associateName')}
                       selectAnOption
                       helperText={
                         errors.associateName
