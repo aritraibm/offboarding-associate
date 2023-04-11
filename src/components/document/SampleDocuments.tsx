@@ -23,7 +23,7 @@ import axios from '../../config/interceptor';
 
 import './UploadDocument.css';
 import Loader from '../common/Loader';
-import { ROLE_ASSOCIATE, ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER } from '../../helper/constants';
+import { ROLE_ASSOCIATE, ROLE_OFFBOARDING_MANAGER, ROLE_OFFBOARDING_REVIEWER } from '../../helper/constants';
 
 const SampleDocuments = () => {
   const BASE_URL = 'http://localhost:9003/';
@@ -197,16 +197,16 @@ const SampleDocuments = () => {
 
   return (
     <>
-    {(user.role === ROLE_ONBOARDING_MANAGER ||
-      user.role === ROLE_ONBOARDING_REVIEWER ||
+    {(user.role === ROLE_OFFBOARDING_MANAGER ||
+      user.role === ROLE_OFFBOARDING_REVIEWER ||
       user.role === ROLE_ASSOCIATE) && (
     <div className="upload-doc-container">
-      {(user.role === ROLE_ONBOARDING_MANAGER ||
-        user.role === ROLE_ONBOARDING_REVIEWER) && (
+      {(user.role === ROLE_OFFBOARDING_MANAGER ||
+        user.role === ROLE_OFFBOARDING_REVIEWER) && (
           <div>
             <h2>Upload Documents</h2>
-            {(user.role === ROLE_ONBOARDING_MANAGER ||
-              user.role === ROLE_ONBOARDING_REVIEWER) && (
+            {(user.role === ROLE_OFFBOARDING_MANAGER ||
+              user.role === ROLE_OFFBOARDING_REVIEWER) && (
             <div className="input-fieldbox">
               <div className="input-select">
                 {' '}
@@ -246,8 +246,8 @@ const SampleDocuments = () => {
               )}
           </div>
         )}
-        {(user.role === ROLE_ONBOARDING_MANAGER ||
-        user.role === ROLE_ONBOARDING_REVIEWER ||
+        {(user.role === ROLE_OFFBOARDING_MANAGER ||
+        user.role === ROLE_OFFBOARDING_REVIEWER ||
         user.role === ROLE_ASSOCIATE) && (
       <div className="button-content">
         <div className="content-left">
@@ -283,7 +283,7 @@ const SampleDocuments = () => {
                     <TableCell>S.No.</TableCell>
                     <TableCell>Name</TableCell>
                     <TableCell>Document Type</TableCell>
-                    {user.role === ROLE_ONBOARDING_MANAGER && (
+                    {user.role === ROLE_OFFBOARDING_MANAGER && (
                       <TableCell>Delete</TableCell>
                     )}
                     <TableCell>Download</TableCell>
@@ -304,7 +304,7 @@ const SampleDocuments = () => {
                       <TableCell component="th" scope="row">
                         {doc.documentType.name}
                       </TableCell>
-                      {user.role === ROLE_ONBOARDING_MANAGER && (
+                      {user.role === ROLE_OFFBOARDING_MANAGER && (
                         <TableCell>
                           <Button
                             color="secondary"

@@ -22,7 +22,7 @@ import { Box, Card, CardActions, CardContent, Grid, Typography } from '@mui/mate
 import { error } from 'console';
 import { InputText } from '../core/InputText/InputText';
 // import NewSelectBox from '../core/NewSelect';
-import { ROLE_ASSOCIATE, ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../../helper/constants';
+import { ROLE_ASSOCIATE, ROLE_OFFBOARDING_MANAGER, ROLE_OFFBOARDING_REVIEWER, UIConstants } from '../../helper/constants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import UploadDocumentSection from './UploadDocumentSection';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
@@ -327,8 +327,8 @@ const UploadDocument = () => {
       </div>
 
 
-      {(user.role === ROLE_ONBOARDING_MANAGER || 
-      user.role === ROLE_ONBOARDING_REVIEWER) && (
+      {(user.role === ROLE_OFFBOARDING_MANAGER || 
+      user.role === ROLE_OFFBOARDING_REVIEWER) && (
       <Box mb={6}>
         <div className="col-md-12 container">
           <div className="col-md-4 flex-column">

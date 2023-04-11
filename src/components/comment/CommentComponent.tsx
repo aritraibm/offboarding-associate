@@ -29,7 +29,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { comments, userComments, userDetails, token, invokeAssociatesSaga } from '../../store';
 import Loader from '../common/Loader';
 import { Dropdown } from '../core/Dropdown/Dropdown';
-import { ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../../helper/constants';
+import { ROLE_OFFBOARDING_MANAGER, ROLE_OFFBOARDING_REVIEWER, UIConstants } from '../../helper/constants';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
@@ -192,6 +192,9 @@ const CommentComponent = (props: any) => {
       },
       sameElse: 'YYYY/MM/DD hh:mm A',
     });
+    // let updatedDate = new Date(date);
+    // return updatedDate.toLocaleString();
+
   };
 
 
@@ -353,8 +356,8 @@ const CommentComponent = (props: any) => {
       {props.empId ? <></> : <h2>Comment</h2>}
 
 
-      {(user.role === ROLE_ONBOARDING_MANAGER ||
-        user.role === ROLE_ONBOARDING_REVIEWER) && (
+      {(user.role === ROLE_OFFBOARDING_MANAGER ||
+        user.role === ROLE_OFFBOARDING_REVIEWER) && (
           <Box mb={6}>
             <div className="col-md-12 container">
               <div className="col-md-4 flex-column">
@@ -567,8 +570,8 @@ const CommentComponent = (props: any) => {
         'No comments to display.'
       )}
 
-      {(user.role === ROLE_ONBOARDING_MANAGER ||
-        user.role === ROLE_ONBOARDING_REVIEWER) && (
+      {(user.role === ROLE_OFFBOARDING_MANAGER ||
+        user.role === ROLE_OFFBOARDING_REVIEWER) && (
 
           <Tooltip
             title="Add New comment"
@@ -633,3 +636,4 @@ const CommentComponent = (props: any) => {
   );
 };
 export default CommentComponent;
+
