@@ -179,22 +179,22 @@ const CommentComponent = (props: any) => {
 
 
   const convertDate = (date: any) => {
-    let updatedDate = moment(new Date(date));
-    return updatedDate.calendar(null, {
-      lastWeek: '[Last] ddd hh:mm A',
-      lastDay: '[Yesterday at] hh:mm A',
-      sameDay: function (now) {
-        if (moment(date).isSame(moment(new Date()).format())) {
-          return '[Now]';
-        } else {
-          return '[Today at] hh:mm A';
-        }
-      },
-      sameElse: 'YYYY/MM/DD hh:mm A',
-    });
+    // let updatedDate = moment(new Date(date));
+    // return updatedDate.calendar(null, {
+    //   lastWeek: '[Last] ddd hh:mm A',
+    //   lastDay: '[Yesterday at] hh:mm A',
+    //   sameDay: function (now) {
+    //     if (moment(date).isSame(moment(new Date()).format())) {
+    //       return '[Now]';
+    //     } else {
+    //       return '[Today at] hh:mm A';
+    //     }
+    //   },
+    //   sameElse: 'YYYY/MM/DD hh:mm A',
+    // });
     // let updatedDate = new Date(date);
     // return updatedDate.toLocaleString();
-
+    return date;
   };
 
 
@@ -497,7 +497,7 @@ const CommentComponent = (props: any) => {
                             </Grid>
                             <Grid item xs={6} style={{ textAlign: 'end' }}>
                               <span style={{ fontSize: '10px' }}>
-                                {convertDate(data.date)}
+                                {data.date}
                               </span>
                             </Grid>
                           </Grid>
