@@ -30,10 +30,10 @@ function App() {
             {user && (
               <>
                 <Route path="/newUser" element={<NewUserComponent />} />
+                <Route path="offboarding-Checklist" element={<OffBoardingCheckList />} />
                 <Route path="uploadDocuments" element={<UploadDocument />} />
                 <Route path="sampleDocuments" element={<SampleDocuments />} />
                 <Route path="recording" element={<Recording />} />
-                <Route path="offboarding-checklist" element={<OffBoardingCheckList />} />
                 <Route path="comment" element={<CommentComponent />} />
               </>
             )}

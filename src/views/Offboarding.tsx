@@ -21,9 +21,14 @@ export default function Offboarding() {
                 label={NEW_USER_TAB}
                 linkTo="/newUser"
               />
-              <MenuGenerator
+              {/* <MenuGenerator
                 label={RECORDINGS_TAB}
                 linkTo="/recording"
+              /> */} 
+               <MenuGenerator
+                label={CHECKLIST}
+                linkTo="/offboarding-Checklist"
+                state={{ forAssociate: { empId: user.empId } }}
               />
               <MenuGenerator
                 label={SAMPLE_DOCUMENTS_TAB}
@@ -34,11 +39,7 @@ export default function Offboarding() {
                 linkTo="/uploadDocuments"
                 state={{ forAssociate: { empId: user.empId } }}
               />
-              <MenuGenerator
-                label={CHECKLIST}
-                linkTo="/offboarding-checklist"
-                state={{ forAssociate: { empId: user.empId } }}
-              />
+             
               <MenuGenerator
                 label={COMMENTS}
                 linkTo="/comment"
@@ -52,6 +53,11 @@ export default function Offboarding() {
               label={NEW_USER_TAB}
               linkTo="/newUser"
             />
+             <MenuGenerator
+                label={CHECKLIST}
+                linkTo="/offboarding-Checklist"
+                state={{ forAssociate: { empId: user.empId } }}
+              />
             <MenuGenerator
               label={SAMPLE_DOCUMENTS_TAB}
               linkTo="/sampleDocuments"
@@ -61,15 +67,11 @@ export default function Offboarding() {
               linkTo="/uploadDocuments"
               state={{ forAssociate: { empId: user.empId } }}
             />
-            <MenuGenerator
+            {/* <MenuGenerator
               label={RECORDINGS_TAB}
               linkTo="/recording"
-            />
-            <MenuGenerator
-                label={CHECKLIST}
-                linkTo="/offboarding-checklist"
-                state={{ forAssociate: { empId: user.empId } }}
-              />
+            /> */}
+            
               <MenuGenerator
                 label={COMMENTS}
                 linkTo="/comment"

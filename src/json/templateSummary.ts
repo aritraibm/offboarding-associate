@@ -3,7 +3,7 @@ export const templateSummary = [
     version: "1.0",
     author: "PMO",
     natureOfChange: 
-    "Incorporated DS&P requirements in the checklist",
+    "Incorporated DS&P requirements in the Checklist",
   },
   {
     version: "1.1",

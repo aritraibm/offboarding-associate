@@ -71,7 +71,7 @@ const Form = (props: any) => {
     ) {
       axios
         .get(
-          'http://localhost:9094/offboarding_checklist/get-all-offboarding-checklist',
+          'http://localhost:9094/offboarding_Checklist/get-all-offboarding-Checklist',
           { headers: { Authorization: 'Bearer ' + userToken } }
         )
         .then((result) => {

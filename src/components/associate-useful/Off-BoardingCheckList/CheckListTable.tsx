@@ -63,7 +63,7 @@ const CheckListTable = (props: any) => {
   };
 
   useEffect(() => {
-    props.onCheckListSubmit({ checkListDetails: tableValues });
+    props.onCheckListSubmit({ CheckListDetails: tableValues });
   }, [tableValues]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -91,7 +91,7 @@ const CheckListTable = (props: any) => {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((tableValue: any) => {
                     return (
-                      <TableRow key={tableValue.checkListId}>
+                      <TableRow key={tableValue.CheckListId}>
                         <TableCell style={{ width: '40rem' }}>
                           {tableValue.questions}
                           {tableValue.link && (
@@ -111,7 +111,7 @@ const CheckListTable = (props: any) => {
                             variant="standard"
                             value={tableValue.date}
                             onChange={(e) =>
-                              handleChange(e, tableValue.checkListId, 'date')
+                              handleChange(e, tableValue.CheckListId, 'date')
                             }
                           />
                         </TableCell>
@@ -120,7 +120,7 @@ const CheckListTable = (props: any) => {
                             displayEmpty
                             value={tableValue.status}
                             onChange={(e) =>
-                              handleChange(e, tableValue.checkListId, 'status')
+                              handleChange(e, tableValue.CheckListId, 'status')
                             }
                             inputProps={{ 'aria-label': 'Without label' }}
                           >
@@ -138,7 +138,7 @@ const CheckListTable = (props: any) => {
                             onChange={(e) => {
                               handleChange(
                                 e,
-                                tableValue.checkListId,
+                                tableValue.CheckListId,
                                 'comment'
                               );
                             }}

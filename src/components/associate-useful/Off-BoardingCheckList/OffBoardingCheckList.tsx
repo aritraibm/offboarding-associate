@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const OffBoardingCheckList = () => {
   return (
-    <div className="checklist-container">
+    <div className="Checklist-container">
       <Grid container direction="row" style={{ backgroundColor: "white" }} className="pt-3">
         <Grid item xs={12}>
           <Typography

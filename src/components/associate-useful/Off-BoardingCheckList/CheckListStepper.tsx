@@ -14,10 +14,10 @@ import { string } from 'yup';
 
 const CheckListStepper = () => {
   const [info, setInfo] = React.useState('');
-  const [offBoardingData, setOffBoardingData] = React.useState({checkListDetails: string});
+  const [offBoardingData, setOffBoardingData] = React.useState({CheckListDetails: string});
   const handleInfoDetails = (data: any) => {
     setInfo(data.info);
-    setOffBoardingData({ checkListDetails: data.result });
+    setOffBoardingData({ CheckListDetails: data.result });
     handleNext('buttonName');
   };
   const handleChecklistDetails = (data: any) => {
@@ -26,7 +26,7 @@ const CheckListStepper = () => {
 
   const infoDetails = <Form onInfoSubmit={handleInfoDetails} sendInfo={info} />;
 
-  const checkList = (
+  const CheckList = (
     <CheckListTable
       infoData={info}
       offBoardingData={offBoardingData}
@@ -41,7 +41,7 @@ const CheckListStepper = () => {
     },
     {
       label: 'Off-Boarding Checklist',
-      description: checkList,
+      description: CheckList,
       buttonName: 'Submit',
     },
   ];
@@ -121,7 +121,7 @@ const CheckListStepper = () => {
           <Typography>
             Download Off-Boarding Checklist document.
             <ExportToExcel
-              inputExcelData={offBoardingData.checkListDetails}
+              inputExcelData={offBoardingData.CheckListDetails}
               excelData={excelData}
             />
           </Typography>
