@@ -1,4 +1,4 @@
-import { ROLE_ASSOCIATE, ROLE_ONBOARDING_REVIEWER, ROLE_ONBOARDING_MANAGER } from '../helper/constants'
+import { ROLE_ASSOCIATE, ROLE_OFFBOARDING_REVIEWER, ROLE_OFFBOARDING_MANAGER } from '../helper/constants'
 
 export type LoginRequest = {
     empId: string;
@@ -125,7 +125,8 @@ export interface NewUserInitialState {
     reviewerName: string,
     managerName: string,
     role: string,
-    userName: string,
+    firstName: string,
+    lastName: string,
     password: string,
     showPassword: boolean,
     isLoginButonDisabled: boolean,
@@ -139,7 +140,8 @@ export interface UserInitiationErrorDetails {
     errorReviewerName: boolean,
     errorManagerName: boolean,
     errorRole: boolean,
-    errorUserName: boolean,
+    errorFirstName: boolean,
+    errorLastName: boolean,
     errorPassword: boolean,
     errorGeneratebutton: boolean,
 }
@@ -152,7 +154,7 @@ export interface MenuGeneratorProps {
     state?: any,
 }
 
-type AllApplicationRoles = typeof ROLE_ASSOCIATE | typeof ROLE_ONBOARDING_REVIEWER | typeof ROLE_ONBOARDING_MANAGER;
+type AllApplicationRoles = typeof ROLE_ASSOCIATE | typeof ROLE_OFFBOARDING_REVIEWER | typeof ROLE_OFFBOARDING_MANAGER;
 
 
 export interface LoggedInUserDetails {

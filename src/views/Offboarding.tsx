@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-import { CHECKLIST, COMMENTS, NEW_USER_TAB, RECORDINGS_TAB, ROLE_ASSOCIATE, ROLE_ONBOARDING_MANAGER, ROLE_ONBOARDING_REVIEWER, SAMPLE_DOCUMENTS_TAB, UPLOAD_DOCUMENTS_TAB } from '../helper/constants';
+import { CHECKLIST, COMMENTS, NEW_USER_TAB, RECORDINGS_TAB, ROLE_ASSOCIATE, ROLE_OFFBOARDING_MANAGER, ROLE_OFFBOARDING_REVIEWER, SAMPLE_DOCUMENTS_TAB, UPLOAD_DOCUMENTS_TAB } from '../helper/constants';
 import { appStore } from '../store';
 import MenuGenerator from '../helper/HOC/MenuGenerator';
 
@@ -14,8 +14,8 @@ export default function Offboarding() {
     return (
       <ul className="nav-links">
         {user &&
-          (user.role === ROLE_ONBOARDING_REVIEWER ||
-            user.role === ROLE_ONBOARDING_MANAGER) && (
+          (user.role === ROLE_OFFBOARDING_REVIEWER ||
+            user.role === ROLE_OFFBOARDING_MANAGER) && (
             <>
               <MenuGenerator
                 label={NEW_USER_TAB}
@@ -56,6 +56,11 @@ export default function Offboarding() {
              <MenuGenerator
                 label={CHECKLIST}
                 linkTo="/offboarding-Checklist"
+                state={{ forAssociate: { empId: user.empId } }}
+              />
+            <MenuGenerator
+                label={CHECKLIST}
+                linkTo="/offboarding-checklist"
                 state={{ forAssociate: { empId: user.empId } }}
               />
             <MenuGenerator

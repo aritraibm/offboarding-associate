@@ -45,7 +45,7 @@ import { newUserFormDefaultValues, NewUserValidationSchema } from './NewUserComp
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
-import { ROLE_ASSOCIATE, ROLE_ONBOARDING_REVIEWER, UIConstants } from '../../helper/constants';
+import { ROLE_ASSOCIATE, ROLE_OFFBOARDING_REVIEWER, UIConstants } from '../../helper/constants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import { saveNewUser } from '../../services/NewUserService';
 import { mapNewUserModel_UItoAPI } from '../../transformation/UserMapper';
@@ -97,7 +97,7 @@ const NewUserComponent = () => {
   //   return data.name == ROLE_ASSOCIATE;
   // });
   // const reviewerRoleId = allRoles.find((data: any) => {
-  //   return data.name == ROLE_ONBOARDING_REVIEWER;
+  //   return data.name == ROLE_OFFBOARDING_REVIEWER;
   // });
   const allManager = allManagers.filter(
     (item: AllManagerType) => item.empId !== 'N/A'
@@ -546,7 +546,7 @@ const NewUserComponent = () => {
                 <>
 
                   {/* ---{userRoleName}--- */}
-                  {(userRoleName === "ROLE_ONBOARDING_REVIEWER" || userRoleName === "ROLE_ASSOCIATE") && (
+                  {(userRoleName === "ROLE_OFFBOARDING_REVIEWER" || userRoleName === "ROLE_ASSOCIATE") && (
                     <Dropdown
                       label={UIConstants.selectManager}
                       {...register("managerEmpId")}
