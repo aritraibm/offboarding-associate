@@ -48,10 +48,10 @@ export default function Offboarding() {
           )}
         {user && user.role === ROLE_ASSOCIATE && (
           <>
-            <MenuGenerator
+            {/* <MenuGenerator
               label={NEW_USER_TAB}
               linkTo="/newUser"
-            />
+            /> */}
             <MenuGenerator
                 label={CHECKLIST}
                 linkTo="/offboarding-checklist"
