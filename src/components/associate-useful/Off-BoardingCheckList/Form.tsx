@@ -22,13 +22,16 @@ const Form = (props: any) => {
   const userDetail = useSelector(userDetails);
   const sendInfo = props.sendInfo;
   const data = {
-    employeeName: userDetail.name
-      ? userDetail.name
+    employeeName: userDetail.firstName + " " + userDetail.lastName
+      ? userDetail.firstName + " " + userDetail.lastName
       : sendInfo.employeeName
         ? sendInfo.employeeName
         : '',
     offBoardingDate: sendInfo.offBoardingDate
       ? sendInfo.offBoardingDate
+      : new Date(),
+    onBoardingDate: sendInfo.onBoardingDate
+      ? sendInfo.onBoardingDate
       : new Date(),
     coordinatorName: userDetail.reviewer.reviewerName
       ? userDetail.reviewer.reviewerName
@@ -38,7 +41,11 @@ const Form = (props: any) => {
     offBoardingCompletionDate: sendInfo.offBoardingCompletionDate
       ? sendInfo.offBoardingCompletionDate
       : new Date(),
-    ibmEmployeeOrContractorId: sendInfo.ibmEmployeeOrContractorId ? sendInfo.ibmEmployeeOrContractorId : '',
+    ibmEmployeeOrContractorId: userDetail.empId
+      ? userDetail.empId
+      : sendInfo.ibmEmployeeOrContractorId
+        ? sendInfo.ibmEmployeeOrContractorId
+        : ''
   };
   const [info, setInfo] = useState(data);
   const [error, setError] = useState('');
@@ -58,8 +65,10 @@ const Form = (props: any) => {
     } else if (keyName === 'ibmEmployeeOrContractorId') {
       setErrorIbmOrContractorId(false);
       return setInfo({ ...info, ibmEmployeeOrContractorId: e.target.value });
-    } else if (keyName === 'offBoardingCompletionDate')
+    } else if (keyName === 'offBoardingCompletionDate') {
       return setInfo({ ...info, offBoardingCompletionDate: e });
+    } else if (keyName === 'onBoardingDate')
+      return setInfo({ ...info, onBoardingDate: e })
   };
 
 
@@ -105,7 +114,7 @@ const Form = (props: any) => {
           <Grid item xs={8} md={6} lg={3}>
             <Typography
               id="employeeName"
-  
+
               style={{
                 margin: 0,
                 color: errorEmpName ? 'red' : 'black',
@@ -114,7 +123,7 @@ const Form = (props: any) => {
               <strong>Employee Name</strong>
             </Typography>
             <TextField
-              
+
               id="employeeName"
               value={info.employeeName}
               style={{ width: '80%' }}
@@ -133,7 +142,7 @@ const Form = (props: any) => {
           <Grid item xs={8} md={6} lg={3}>
             <Typography
               id="coordinatorName"
-              
+
               style={{
                 margin: 0,
                 color: errorCoOrdinatorName ? 'red' : 'black',
@@ -162,7 +171,7 @@ const Form = (props: any) => {
           <Grid item xs={8} md={6} lg={3}>
             <Typography
               id="ibmEmployeeOrContractorId"
-              
+
               style={{
                 margin: 0,
                 color: errorIbmOrContractorId ? 'red' : 'black',
@@ -224,8 +233,8 @@ const Form = (props: any) => {
           </Grid> */}
           <Grid item xs={8} md={4} lg={2}>
             <Typography
-              id="offBoardingDate"
-              
+              id="onBoardingDate"
+
               style={{ margin: 0 }}
             >
               <strong>On-Boarding Date</strong>
@@ -233,8 +242,8 @@ const Form = (props: any) => {
             <FormControl style={{ width: '80%' }}>
               <DatePicker
                 inputFormat="MM/dd/yyyy"
-                value={info.offBoardingDate}
-                onChange={(e) => handleChange(e, 'offBoardingDate')}
+                value={info.onBoardingDate}
+                onChange={(e) => handleChange(e, 'onBoardingDate')}
                 renderInput={(params) => (
                   <TextField
                     size="small"
@@ -262,7 +271,7 @@ const Form = (props: any) => {
           <Grid item xs={8} md={4} lg={2}>
             <Typography
               id="offBoardingDate"
-              
+
               style={{ margin: 0 }}
             >
               <strong>Off-Boarding Date</strong>
@@ -299,7 +308,7 @@ const Form = (props: any) => {
           <Grid item xs={8} md={4} lg={2}>
             <Typography
               id="offBoardingCompletionDate"
-              
+
               style={{ margin: 0 }}
             >
               <strong>Off-Boarding Activities Completion Date</strong>

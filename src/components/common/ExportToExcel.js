@@ -1,8 +1,9 @@
 import React from 'react';
 import Excel from 'exceljs';
 import { saveAs } from 'file-saver';
+import { HyperlinkCSS } from "./ExportToExcel.style";
 
-const ExportToExcel = ({ inputExcelData, excelData }) => {
+const ExportToExcel = ({ inputExcelData, excelData, label }) => {
   const workbook = new Excel.Workbook();
 
   const exportIntoExcel = async () => {
@@ -48,12 +49,14 @@ const ExportToExcel = ({ inputExcelData, excelData }) => {
   return (
     <>
       <div className="download-icon">
-        <i
-          title="Export to Excel"
-          className="fa fa-download"
-          onClick={() => exportIntoExcel()}
-          aria-hidden="true"
-        ></i>
+        <HyperlinkCSS>
+          <i
+            title="Export to Excel"
+            className="fa fa-download"
+            onClick={() => exportIntoExcel()}
+            aria-hidden="true"
+          >{label}</i>
+        </HyperlinkCSS>
       </div>
     </>
   );

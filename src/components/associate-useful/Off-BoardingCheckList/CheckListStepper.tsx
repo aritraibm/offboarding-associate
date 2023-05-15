@@ -118,13 +118,12 @@ const CheckListStepper = () => {
       </Stepper>
       {activeStep === steps.length && (
         <Paper square elevation={0} sx={{ p: 3 }}>
-          <Typography>
-            Download Off-Boarding Checklist document.
+          
             <ExportToExcel
               inputExcelData={offBoardingData.checkListDetails}
               excelData={excelData}
+              label="Download Off-Boarding Checklist document."
             />
-          </Typography>
         </Paper>
       )}
     </Box>

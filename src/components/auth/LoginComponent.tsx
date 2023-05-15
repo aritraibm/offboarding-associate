@@ -22,6 +22,7 @@ import { InputText } from "../core/InputText/InputText";
 import React from "react";
 import { UIConstants } from "../../helper/constants";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { MaxWidth } from "./LoginComponent.style";
 
 const LoginComponent = () => {
   const navigate = useNavigate();
@@ -70,7 +71,7 @@ const LoginComponent = () => {
                 role: result.data.role,
                 reviewer: result.data.reviewer,
                 manager: result.data.manager,
-                empId: empId,
+                empId: result.data.userId,
               },
             })
           );
@@ -99,7 +100,8 @@ const LoginComponent = () => {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <>
-            <Grid item xs={12}>
+          <MaxWidth>
+            <Grid item xs={12} >
               <Card>
                 <CardContent>
                   <>
@@ -110,21 +112,28 @@ const LoginComponent = () => {
                     <InputText
                       autoFocus
                       label="Employee id"
-                      value={empId}
+                      //value={empId}
                       {...register("empId")}
-                      onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(e, "empId")}
+                      // onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(e, "empId")}
+                      error={!!errors?.empId}
+                      helperText={
+                        errors.empId
+                          ? errors?.empId.message
+                          : null
+                      }
                     />
 
-                    <Typography variant="body2" color="text.secondary">
+                    {/* <Typography variant="body2" color="text.secondary">
                       Please enter your IBM employee ID in 6 character. Eg: xxxxxx
-                    </Typography>
+                    </Typography> */}
 
                     <InputText
                       type={attribteType}
                       label={UIConstants.passwordLabel}
-                      value={password}
+                      //value={password}
                       {...register("password")}
-                      onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(e, "password")}
+                     // onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(e, "password")}
+                      error={!!errors?.password}
                       helperText={
                         errors.password
                           ? errors?.password.message
@@ -168,6 +177,7 @@ const LoginComponent = () => {
               </Card>
 
             </Grid>
+            </MaxWidth>
           </>
         </form>
       </Grid>

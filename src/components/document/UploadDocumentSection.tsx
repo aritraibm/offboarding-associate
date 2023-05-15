@@ -18,7 +18,7 @@ import { ROLE_ASSOCIATE, UIConstants } from '../../helper/constants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 
-const UploadDocumentSection = () => {
+const UploadDocumentSection = (props: any) => {
   const BASE_URL = 'http://localhost:9003/';
   // const dispatch = useDispatch();
   const location = useLocation();
@@ -85,6 +85,9 @@ const UploadDocumentSection = () => {
     formdata.append('data', JSON.stringify(jsonData));
     
     const uploadUrl = `${BASE_URL}files`;
+
+    props.change("");
+
     axios
       .post(uploadUrl, formdata, {
         headers: {
@@ -96,10 +99,14 @@ const UploadDocumentSection = () => {
         updateDialogClose();
         setSnakBarOpen(true);
         setUploadStatus(true);
+
+        props.change(user.role === ROLE_ASSOCIATE ? user.empId : forAssociate.empId )
+
         if (user.role === ROLE_ASSOCIATE) {
-          childRefNonReviewed.current?.fetchChildDocuments();
+          // props.change('newName' )
+          //childRefNonReviewed.current?.fetchChildDocuments();
         } else {
-          childRefReviewed.current?.fetchChildDocuments();
+          //childRefReviewed.current?.fetchChildDocuments();
         }
         resetFields();
         //console.log(result);
@@ -108,6 +115,7 @@ const UploadDocumentSection = () => {
         setSnakBarOpen(true);
         setUploadStatus(false);
         console.log('Error while uploading', error);
+        props.change(user.role === ROLE_ASSOCIATE ? user.empId : forAssociate.empId )
       });
   };
 
