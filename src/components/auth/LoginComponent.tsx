@@ -114,6 +114,7 @@ const LoginComponent = () => {
                       label="Employee id"
                       //value={empId}
                       {...register("empId")}
+                      // value="0000R2"
                       // onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(e, "empId")}
                       error={!!errors?.empId}
                       helperText={

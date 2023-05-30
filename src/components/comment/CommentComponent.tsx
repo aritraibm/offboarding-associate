@@ -34,8 +34,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 import { InputText } from '../core/InputText/InputText';
-import { CommentValidationSchema, addCommentValidationSchema, addCommentDefaultValues } from './Comment.validation';
-import { GlobalStoreType } from '../../helper/type';
+import { CommentValidationSchema, addCommentValidationSchema, addCommentDefaultValues, rplyCommentValidationSchema } from './Comment.validation';
+import { GlobalStoreType, ReplyMsgBody } from '../../helper/type';
 
 
 const CommentComponent = (props: any) => {
@@ -47,11 +47,13 @@ const CommentComponent = (props: any) => {
 
   const userToken = useSelector(token);
   const [open, setOpen] = useState(false);
+  const [rplyOpen, setRplyOpen] = useState(false);
   const [comment, setComment] = useState('');
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector(userDetails);
-  const allComments = useSelector(userComments);
+  const tempAllComments = useSelector(userComments);
+  const allComments= [...tempAllComments].sort((a:any,b:any) => a.msgId.localeCompare(b.msgId) || a.versionNo.localeCompare(b.versionNo));
   const empId: any = props.empId ? props.empId : user.empId;
   const [loader, setLoader] = useState(true);
   // const [associateName, setAssociateName] = useState();
@@ -60,21 +62,21 @@ const CommentComponent = (props: any) => {
 
 
 
-  // const [showReplies, setShowReplies] = useState(false);
-  // const [messages, setMessages] = useState([]);
+  const [showReplies, setShowReplies] = useState(false);
+  const [rplyUIMsg, setRplyUIMsg] = useState('');
 
-  // const handleReply = () => {
-  //   setShowReplies(true);
-  // }
+  const handleReply = () => {
+    setShowReplies(true);
+  }
 
-  // const handleBack = () => {
-  //   setShowReplies(false)
-  // }
+  const handleBack = () => {
+    setShowReplies(false)
+  }
 
-  // const handleSave = () => {
-  //   // setMessages((prevMessages) => [...prevMessages, message]);
-  //   setShowReplies(true);
-  // }
+  const handleSave = () => {
+    // setMessages((prevMessages) => [...prevMessages, message]);
+    setShowReplies(true);
+  }
 
 
   // const allDocumentTypes = useSelector((state: GlobalStoreType) => state.finalDocumentTypeList);
@@ -124,6 +126,7 @@ const CommentComponent = (props: any) => {
           setLoader(false);
         }
       }); // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [empId]);
 
 
@@ -169,14 +172,24 @@ const CommentComponent = (props: any) => {
     setOpen(true);
   };
 
+  const handleReplyClickOpen: any = (data: any) => {
 
+    console.log(":::::::::::: >>>>"+JSON.stringify(data));
+
+    // setError(false);
+    // setComment('');
+     //setRplyOpen(true);
+  };
 
   const handleClose = () => {
     setOpen(false);
     cmtReset(addCommentDefaultValues);
   };
 
-
+  const handleReplyClose = () => {
+    setRplyOpen(false);
+    cmtReset(addCommentDefaultValues);
+  };
 
   const convertDate = (date: any) => {
     // let updatedDate = moment(new Date(date));
@@ -243,16 +256,31 @@ const CommentComponent = (props: any) => {
     mode: 'all',
     resolver: yupResolver(addCommentValidationSchema),
   })
+
   const cmtRegister = cmtForm.register;
   const cmtHandleSubmit = cmtForm.handleSubmit;
   const cmtErrors = cmtForm.formState.errors;
   // const cmtGetValues = cmtForm.getValues;
   const cmtReset = cmtForm.reset;
 
+
+  
+  const rplyForm = useForm({
+    mode: 'all',
+    resolver: yupResolver(rplyCommentValidationSchema),
+  })
+  const rplyRegister = rplyForm.register;
+  const rplyHandleSubmit = rplyForm.handleSubmit;
+  const rplyErrors = rplyForm.formState.errors;
+  // const rplyGetValues = rplyForm.getValues;
+  const rplyReset = rplyForm.reset;
+  
   const saveComments = (data: any) => {
     const fullName = user.firstName + user.lastName;
     let updatedComments = {
       // empId: empId,
+      msgId: null,
+      versionNo: null,
       who: fullName,
       role: user.role,
       // comments: comment,
@@ -279,6 +307,49 @@ const CommentComponent = (props: any) => {
     setOpen(false);
   }
 
+  const handleReplyChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setRplyUIMsg(e.target.value);
+    
+  };
+
+  const replyComments: any = (data: any) => {
+    const {msgId,versionNo,empId,date,who,role} = data;
+    const reqBody: ReplyMsgBody={
+      // commentId: "",
+      msgId,
+      versionNo,
+      empId,
+      comments: rplyUIMsg,
+      date,
+      who: user.name,
+      role: user.role
+    }
+
+    console.log(" ::A::: >> "+JSON.stringify(reqBody));
+    // const fullName = user.firstName + user.lastName;
+    // let updatedComments = {
+    //   // empId: empId,
+    //   who: fullName,
+    //   role: user.role,
+    //   // comments: comment,
+    //   date: moment(new Date()).format(),
+    // };
+    // const reqData = { ...data, ...updatedComments };
+    // console.log("COMMENT SAVE DATA --->" + JSON.stringify(reqData))
+
+    axios
+      .post('http://localhost:9094/comment/add-comment', reqBody, {
+        headers: { Authorization: 'Bearer ' + userToken },
+      })
+      .then((result) => {
+       // cmtReset(addCommentDefaultValues);
+        callOnchangeAPI(empId);
+        console.log(" ::result::: >> "+JSON.stringify(result));
+      });
+
+    //   setRplyOpen(false);
+  }
+
   const callOnchangeAPI = (value: string) => {
     if (value !== null && value !== '') {
       axios
@@ -302,6 +373,7 @@ const CommentComponent = (props: any) => {
         })
       );
     }
+    
   }
 
   const handleAssociateDropdownChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
@@ -332,6 +404,7 @@ const CommentComponent = (props: any) => {
     //     })
     //   );
     //  }
+    
   }
 
 
@@ -511,20 +584,51 @@ const CommentComponent = (props: any) => {
 
                         color="black"
                       >
-                        {data.comments}
+                        {/* msgId: {data.msgId} <br/>
+                        versionNo: {data.versionNo} <br/> */}
+                        comment: {data.comments}
+
+                        {/* {parentId === "" && data.comments} */}
+
                       </Typography>
                     }
                   />
+
+                
+                  
                 </ListItem>
 
+                <InputText
+                  id="outlined-multiline-static"
+                  label="Reply Comment"
+                  onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleReplyChange(e)}
+                  //value={rplyUIMsg}
+                  multiline
+                  rows={3}
+                />
+
+                <DialogActions>
+                  ------{JSON.stringify(data)}------
+                  <Button onClick={()=> setRplyUIMsg('')}>Clear</Button>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    onClick={() => replyComments(data)}
+                    >Reply</Button>
+                </DialogActions>
+
+
+                {/* <Button onClick={handleReplyClickOpen(data)}>Reply</Button> */}
                 <Grid item xs="auto" style={{ paddingLeft: '5px' }}>
 
                   {/* {showReplies ?
                     <>
                       <TextField
-                        key={empId}
+                        id="outlined-multiline-static"
+                        multiline
                         label="Write a Reply..."
-                        variant="standard"
+                        variant="outlined"
+                        rows={3}
                         style={{ margin: '10px' }}
                       >
                       </TextField>
@@ -535,7 +639,7 @@ const CommentComponent = (props: any) => {
                         style={{ margin: '20px' }}
                         onClick={handleSave}
                       >
-                        Save
+                        Submit
                       </Button>
                       <Button
                         variant="outlined"
@@ -547,17 +651,18 @@ const CommentComponent = (props: any) => {
                     </>
                     :
                     <Button
-                      // key={index}
+                      key={index}
                       onClick={handleReply}
-                      variant="contained"
-                      style={{ margin: '10px' }}
+                      // variant="contained"
                     >
                       Reply
                     </Button>
                   } */}
-                  {/* {messages.map((message, index) => {
+
+                  {/* {messages.map((message, index): any => {
                     <div key={index}>{message}</div>
                   })} */}
+
 
                 </Grid>
 
@@ -630,6 +735,54 @@ const CommentComponent = (props: any) => {
 
         </form>
       </Dialog>
+
+
+      {/* <Dialog open={rplyOpen}>
+        <DialogTitle>Reply Comment</DialogTitle>
+
+        <form onSubmit={rplyHandleSubmit(replyComments)}>
+          <DialogContent>
+
+            <Dropdown
+              label={UIConstants.selectAnAssociate}
+              {...cmtRegister("empId")}
+              error={!!cmtErrors?.empId}
+              onChange={handleNewCommentDropdownChange}
+              options={mapAPItoUIDocTypeDropdown(allAssociates, 'ibmId', 'associateName')}
+              selectAnOption
+              helperText={
+                cmtErrors.empId
+                  ? cmtErrors?.empId.message
+                  : null
+              }
+            />
+            <InputText
+              // autoFocus
+              label="Comment"
+              error={!!cmtErrors?.comments}
+              {...cmtRegister("comments")}
+              helperText={
+                cmtErrors.comments
+                  ? cmtErrors?.comments.message
+                  : null
+              }
+            // value={comment}
+            // onChange={handleComment}
+            // error={error}
+            />
+          </DialogContent>
+
+          <DialogActions>
+            <Button onClick={handleReplyClose}>Cancel</Button>
+            <Button
+              fullWidth
+              variant="contained"
+              className="login-btn"
+              type="submit">Add</Button>
+          </DialogActions>
+
+        </form>
+      </Dialog> */}
 
 
     </div>

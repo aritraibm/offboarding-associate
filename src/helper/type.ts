@@ -199,3 +199,14 @@ export interface AllManagerType extends EmpId {
 export interface AllReviewerType extends EmpId {
     reviewerName: string
 }
+
+export interface ReplyMsgBody{
+    commentId?: String;
+    msgId: String;
+    versionNo: String;
+    empId: String;
+    comments: String;
+    date: String;
+    who: String;
+    role: String;
+    }

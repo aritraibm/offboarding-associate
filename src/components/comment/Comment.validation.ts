@@ -12,6 +12,12 @@ export const addCommentValidationSchema = yup.object().shape({
     
 });
 
+export const rplyCommentValidationSchema = yup.object().shape({
+    empId: yup.string(),
+    comments: yup.string(),
+    
+});
+
 export const addCommentDefaultValues= {
     empId: '',
     comments: '',
