@@ -47,6 +47,7 @@ const CommentComponent = (props: any) => {
 
   const userToken = useSelector(token);
   const [open, setOpen] = useState(false);
+  const [result1, setResult1] = useState<any>([]);
   const [rplyOpen, setRplyOpen] = useState(false);
   const [comment, setComment] = useState('');
   const [error, setError] = useState(false);
@@ -81,9 +82,16 @@ const CommentComponent = (props: any) => {
 
   // const allDocumentTypes = useSelector((state: GlobalStoreType) => state.finalDocumentTypeList);
   const allAssociates = useSelector((state: GlobalStoreType) => state.finalAssociatesList);
+  var result: any[] = [];
 
   useEffect(() => {
     // fetchDocumentTypes();
+    //tt();
+    var myArray = 
+    [{"commentId":"646c9b03f9cd04710f9259f7","msgId":"CUPYJIY","versionNo":"1","empId":"0000A2","comments":"A1","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b1af9cd04710f9259f8","msgId":"FHQZYFH","versionNo":"1","empId":"0000A2","comments":"B1","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b2bf9cd04710f9259f9","msgId":"CUPYJIY","versionNo":"2","empId":"0000A2","comments":"A2","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b5bf9cd04710f9259fb","msgId":"FHQZYFH","versionNo":"2","empId":"0000A2","comments":"B2","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9baaf9cd04710f9259fc","msgId":"CUPYJIY","versionNo":"3","empId":"0000A2","comments":"A3","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"},{"commentId":"646c9bb4f9cd04710f9259fd","msgId":"FHQZYFH","versionNo":"3","empId":"0000A2","comments":"B3","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"},{"commentId":"6475b11fdfa77820ef9b17c1","msgId":"CUPYJIY","versionNo":"4","empId":"0000A2","comments":"A4","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"},{"commentId":"6475d6dfdfa77820ef9b17c2","msgId":"CUPYJIY","versionNo":"5","empId":"0000A2","comments":"A5","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"}];
+
+
+
     fetchAllAssociates();
     if (allAssociates.length === 0) {
       dispatch(invokeAssociatesSaga({ test: "test", id: 1 }));
@@ -127,9 +135,30 @@ const CommentComponent = (props: any) => {
         }
       }); // eslint-disable-next-line react-hooks/exhaustive-deps
 
+
+      console.log(">>>>>>>>>>>"+JSON.stringify(allComments))
+  myArray.forEach((hash => a => {
+      if (!hash[a.msgId]) {
+          hash[a.msgId] = { msgId: a.msgId, versionNo: 0 };
+          result.push(hash[a.msgId]);
+      }
+      hash[a.msgId].versionNo = Math.max(hash[a.msgId].versionNo, Number(a.versionNo));
+  })(Object.create(null)));
+  let helloArray = result.map((item, count) => ({...item, groupCount: count}));
+  setResult1(helloArray);
+
   }, [empId]);
 
+  // const tt1 = (src: any) => {
+  //   result1.filter(obj => {
+  //     return obj.msgId === src
+  //   })
+  // }
 
+
+  const tt=(src: any)=>result1.filter((obj: { msgId: any; }) => {
+    return obj.msgId === src
+  })
 
   // const fetchDocumentTypes = () => {
   //   const role = user.role;
@@ -417,6 +446,21 @@ const CommentComponent = (props: any) => {
     console.log("COMMENT PAGE DATA --->" + JSON.stringify(data))
   }
 
+  //let result: any[] = [];
+
+//   var myArray = 
+// [{"commentId":"646c9b03f9cd04710f9259f7","msgId":"CUPYJIY","versionNo":"1","empId":"0000A2","comments":"A1","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b1af9cd04710f9259f8","msgId":"FHQZYFH","versionNo":"1","empId":"0000A2","comments":"B1","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b2bf9cd04710f9259f9","msgId":"CUPYJIY","versionNo":"2","empId":"0000A2","comments":"A2","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b5bf9cd04710f9259fb","msgId":"FHQZYFH","versionNo":"2","empId":"0000A2","comments":"B2","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9baaf9cd04710f9259fc","msgId":"CUPYJIY","versionNo":"3","empId":"0000A2","comments":"A3","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"},{"commentId":"646c9bb4f9cd04710f9259fd","msgId":"FHQZYFH","versionNo":"3","empId":"0000A2","comments":"B3","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"},{"commentId":"646c9baaf9cd04710f9259fd","msgId":"CUPYJIY","versionNo":"4","empId":"0000A2","comments":"A4","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"}];
+
+
+//   const tt=()=>{
+//     myArray.forEach((hash => a => {
+//       if (!hash[a.msgId]) {
+//           hash[a.msgId] = { msgId: a.msgId, versionNo: 0 };
+//           result.push(hash[a.msgId]);
+//       }
+//       hash[a.msgId].versionNo = Math.max(hash[a.msgId].versionNo, Number(a.versionNo));
+//   })(Object.create(null)));
+//   }
 
 
   return (
@@ -593,10 +637,18 @@ const CommentComponent = (props: any) => {
                       </Typography>
                     }
                   />
-
-                
                   
                 </ListItem>
+
+                
+
+            {/* ------{JSON.stringify(Number(data.versionNo))}------
+            ---@@@@---{JSON.stringify(tt(data.msgId))}---@@@@@@@@---
+            ---%%---{result1[tt(data.msgId).groupCount]?.versionNo}---%%---
+            ---##---{(Number(data.versionNo) == result1[result1?.groupCount]?.versionNo) ? "TRUE" : "FALSE"}---##--- */}
+
+            {(Number(data.versionNo) == result1[tt(data.msgId)[0].groupCount]?.versionNo) && (
+              <>
 
                 <InputText
                   id="outlined-multiline-static"
@@ -608,14 +660,16 @@ const CommentComponent = (props: any) => {
                 />
 
                 <DialogActions>
-                  ------{JSON.stringify(data)}------
-                  <Button onClick={()=> setRplyUIMsg('')}>Clear</Button>
+                  {/* <Button onClick={()=> setRplyUIMsg('')}>Clear</Button> */}
                   <Button
                     fullWidth
                     variant="contained"
                     onClick={() => replyComments(data)}
                     >Reply</Button>
                 </DialogActions>
+              </>
+            )}
+               
 
 
                 {/* <Button onClick={handleReplyClickOpen(data)}>Reply</Button> */}
