@@ -343,6 +343,12 @@ const CommentComponent = (props: any) => {
   };
 
   const replyComments: any = (data: any) => {
+
+    if(!rplyUIMsg){
+      alert("Please enter comments")
+      return false;
+    }
+
     const {msgId,versionNo,empId,date,who,role} = data;
     const reqBody: ReplyMsgBody={
       // commentId: "",
@@ -374,6 +380,7 @@ const CommentComponent = (props: any) => {
       .then((result) => {
        // cmtReset(addCommentDefaultValues);
         callOnchangeAPI(empId);
+        setRplyUIMsg('');
         //console.log(" ::result::: >> "+JSON.stringify(result));
       });
 
@@ -566,9 +573,10 @@ const CommentComponent = (props: any) => {
               <Fragment key={`comments-${index}`}>
                 <ListItem alignItems="flex-start" key={index}>
 
-                {/* {(Number(data.versionNo) <= result1[replyValue(data.msgId)[0]?.groupCount]?.versionNo) && (
+                  {(Number(data.versionNo) <= result1[replyValue(data.msgId)[0]?.groupCount]?.versionNo) && (
                     
-                    <ReplyLeftPadding> */}
+                    <ReplyLeftPadding style={{paddingLeft: `${data.versionNo}em`}}/>
+                  )}
                       <ListItemText
                           primary={
                             <>
