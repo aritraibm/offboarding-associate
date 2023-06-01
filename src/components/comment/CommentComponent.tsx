@@ -34,8 +34,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 import { InputText } from '../core/InputText/InputText';
-import { CommentValidationSchema, addCommentValidationSchema, addCommentDefaultValues } from './Comment.validation';
-import { GlobalStoreType } from '../../helper/type';
+import { CommentValidationSchema, addCommentValidationSchema, addCommentDefaultValues, rplyCommentValidationSchema } from './Comment.validation';
+import { GlobalStoreType, ReplyMsgBody } from '../../helper/type';
+import { ReplyWrapper, ReplyLeftPadding } from "./CommentComponent.style";
 
 
 const CommentComponent = (props: any) => {
@@ -47,11 +48,14 @@ const CommentComponent = (props: any) => {
 
   const userToken = useSelector(token);
   const [open, setOpen] = useState(false);
+  const [result1, setResult1] = useState<any>([]);
+  const [rplyOpen, setRplyOpen] = useState(false);
   const [comment, setComment] = useState('');
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector(userDetails);
-  const allComments = useSelector(userComments);
+  const tempAllComments = useSelector(userComments);
+  const allComments= [...tempAllComments].sort((a:any,b:any) => a.msgId.localeCompare(b.msgId) || a.versionNo.localeCompare(b.versionNo));
   const empId: any = props.empId ? props.empId : user.empId;
   const [loader, setLoader] = useState(true);
   // const [associateName, setAssociateName] = useState();
@@ -60,28 +64,35 @@ const CommentComponent = (props: any) => {
 
 
 
-  // const [showReplies, setShowReplies] = useState(false);
-  // const [messages, setMessages] = useState([]);
+  const [showReplies, setShowReplies] = useState(false);
+  const [rplyUIMsg, setRplyUIMsg] = useState('');
 
-  // const handleReply = () => {
-  //   setShowReplies(true);
-  // }
+  const handleReply = () => {
+    setShowReplies(true);
+  }
 
-  // const handleBack = () => {
-  //   setShowReplies(false)
-  // }
+  const handleBack = () => {
+    setShowReplies(false)
+  }
 
-  // const handleSave = () => {
-  //   // setMessages((prevMessages) => [...prevMessages, message]);
-  //   setShowReplies(true);
-  // }
+  const handleSave = () => {
+    // setMessages((prevMessages) => [...prevMessages, message]);
+    setShowReplies(true);
+  }
 
 
   // const allDocumentTypes = useSelector((state: GlobalStoreType) => state.finalDocumentTypeList);
   const allAssociates = useSelector((state: GlobalStoreType) => state.finalAssociatesList);
-
+  var result: any[] = [];
+  let clonedAllComments: any;
   useEffect(() => {
     // fetchDocumentTypes();
+    //tt();
+    // var myArray = 
+    // [{"commentId":"646c9b03f9cd04710f9259f7","msgId":"CUPYJIY","versionNo":"1","empId":"0000A2","comments":"A1","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b1af9cd04710f9259f8","msgId":"FHQZYFH","versionNo":"1","empId":"0000A2","comments":"B1","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b2bf9cd04710f9259f9","msgId":"CUPYJIY","versionNo":"2","empId":"0000A2","comments":"A2","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b5bf9cd04710f9259fb","msgId":"FHQZYFH","versionNo":"2","empId":"0000A2","comments":"B2","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9baaf9cd04710f9259fc","msgId":"CUPYJIY","versionNo":"3","empId":"0000A2","comments":"A3","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"},{"commentId":"646c9bb4f9cd04710f9259fd","msgId":"FHQZYFH","versionNo":"3","empId":"0000A2","comments":"B3","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"},{"commentId":"6475b11fdfa77820ef9b17c1","msgId":"CUPYJIY","versionNo":"4","empId":"0000A2","comments":"A4","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"},{"commentId":"6475d6dfdfa77820ef9b17c2","msgId":"CUPYJIY","versionNo":"5","empId":"0000A2","comments":"A5","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"}];
+
+
+
     fetchAllAssociates();
     if (allAssociates.length === 0) {
       dispatch(invokeAssociatesSaga({ test: "test", id: 1 }));
@@ -94,19 +105,19 @@ const CommentComponent = (props: any) => {
     // }
 
     const role = user.role;
-    console.log("role >>>>> " + role);
+    ////console.log("role >>>>> " + role);
     axios
       .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
       .then((res: any) => {
-        // console.log("res >>>>> "+JSON.stringify(res));
+        // //console.log("res >>>>> "+JSON.stringify(res));
         setOptions([...res.data]);
-        console.log("options", options)
+        //console.log("options", options)
         setOptionselect('1');
-        console.log("optionselect", optionselect)
+        //console.log("optionselect", optionselect)
         setLoader(false);
       })
       .catch((err) => {
-        console.log(err);
+        //console.log(err);
       });
 
 
@@ -122,27 +133,49 @@ const CommentComponent = (props: any) => {
             })
           );
           setLoader(false);
+          clonedAllComments=result.data;
+          activeValue();
         }
       }); // eslint-disable-next-line react-hooks/exhaustive-deps
+
+
+      
+
   }, [empId]);
 
+  const activeValue = () => {
+    //console.log(">>>>>activeValue>>>>>>"+JSON.stringify(clonedAllComments))
+    clonedAllComments.forEach((hash => (a: { msgId: string | number; versionNo: any; }) => {
+        if (!hash[a.msgId]) {
+            hash[a.msgId] = { msgId: a.msgId, versionNo: 0 };
+            result.push(hash[a.msgId]);
+        }
+        hash[a.msgId].versionNo = Math.max(hash[a.msgId].versionNo, Number(a.versionNo));
+    })(Object.create(null)));
+    let helloArray = result.map((item, count) => ({...item, groupCount: count}));
+    setResult1(helloArray);
+  }
 
+
+  const replyValue=(src: any)=>result1.filter((obj: { msgId: any; }) => {
+    return obj.msgId === src
+  })
 
   // const fetchDocumentTypes = () => {
   //   const role = user.role;
-  //   console.log("role >>>>> " + role);
+  //   //console.log("role >>>>> " + role);
   //   axios
   //     .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
   //     .then((res: any) => {
-  //       // console.log("res >>>>> "+JSON.stringify(res));
+  //       // //console.log("res >>>>> "+JSON.stringify(res));
   //       setOptions([...res.data]);
-  //       console.log("options", options)
+  //       //console.log("options", options)
   //       setOptionselect('1');
-  //       console.log("optionselect", optionselect)
+  //       //console.log("optionselect", optionselect)
   //       setLoader(false);
   //     })
   //     .catch((err) => {
-  //       console.log(err);
+  //       //console.log(err);
   //     });
   // };
 
@@ -152,11 +185,11 @@ const CommentComponent = (props: any) => {
     axios
       .get("http://localhost:9092/pru-associate/get-all-associates", { headers: { Authorization: 'Bearer ' + userToken } })
       .then((result: any) => {
-        // console.log("result ==== >"+JSON.stringify(result));
+        // //console.log("result ==== >"+JSON.stringify(result));
 
         //setAssocaiteList([...result.data]);
         setAllAssoOptionSelect('1');
-        console.log("allAssoOptionSelect", allAssoOptionSelect)
+        //console.log("allAssoOptionSelect", allAssoOptionSelect)
         setLoader(false);
 
       });
@@ -169,14 +202,24 @@ const CommentComponent = (props: any) => {
     setOpen(true);
   };
 
+  const handleReplyClickOpen: any = (data: any) => {
 
+    //console.log(":::::::::::: >>>>"+JSON.stringify(data));
+
+    // setError(false);
+    // setComment('');
+     //setRplyOpen(true);
+  };
 
   const handleClose = () => {
     setOpen(false);
     cmtReset(addCommentDefaultValues);
   };
 
-
+  const handleReplyClose = () => {
+    setRplyOpen(false);
+    cmtReset(addCommentDefaultValues);
+  };
 
   const convertDate = (date: any) => {
     // let updatedDate = moment(new Date(date));
@@ -201,7 +244,7 @@ const CommentComponent = (props: any) => {
 
   // const handleComment = (event: { target: { value: SetStateAction<string>; }; }) => {
   //   setComment(event.target.value);
-  //   console.log("comment",comment)
+  //   //console.log("comment",comment)
   // };
 
 
@@ -243,23 +286,38 @@ const CommentComponent = (props: any) => {
     mode: 'all',
     resolver: yupResolver(addCommentValidationSchema),
   })
+
   const cmtRegister = cmtForm.register;
   const cmtHandleSubmit = cmtForm.handleSubmit;
   const cmtErrors = cmtForm.formState.errors;
   // const cmtGetValues = cmtForm.getValues;
   const cmtReset = cmtForm.reset;
 
+
+  
+  const rplyForm = useForm({
+    mode: 'all',
+    resolver: yupResolver(rplyCommentValidationSchema),
+  })
+  const rplyRegister = rplyForm.register;
+  const rplyHandleSubmit = rplyForm.handleSubmit;
+  const rplyErrors = rplyForm.formState.errors;
+  // const rplyGetValues = rplyForm.getValues;
+  const rplyReset = rplyForm.reset;
+  
   const saveComments = (data: any) => {
     const fullName = user.firstName + user.lastName;
     let updatedComments = {
       // empId: empId,
+      msgId: null,
+      versionNo: null,
       who: fullName,
       role: user.role,
       // comments: comment,
       date: moment(new Date()).format(),
     };
     const reqData = { ...data, ...updatedComments };
-    console.log("COMMENT SAVE DATA --->" + JSON.stringify(reqData))
+    //console.log("COMMENT SAVE DATA --->" + JSON.stringify(reqData))
 
     axios
       .post('http://localhost:9094/comment/add-comment', reqData, {
@@ -279,6 +337,56 @@ const CommentComponent = (props: any) => {
     setOpen(false);
   }
 
+  const handleReplyChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setRplyUIMsg(e.target.value);
+    
+  };
+
+  const replyComments: any = (data: any) => {
+
+    if(!rplyUIMsg){
+      alert("Please enter comments")
+      return false;
+    }
+
+    const {msgId,versionNo,empId,date,who,role} = data;
+    const reqBody: ReplyMsgBody={
+      // commentId: "",
+      msgId,
+      versionNo,
+      empId,
+      comments: rplyUIMsg,
+      date,
+      who: user.name,
+      role: user.role
+    }
+
+    //console.log(" ::A::: >> "+JSON.stringify(reqBody));
+    // const fullName = user.firstName + user.lastName;
+    // let updatedComments = {
+    //   // empId: empId,
+    //   who: fullName,
+    //   role: user.role,
+    //   // comments: comment,
+    //   date: moment(new Date()).format(),
+    // };
+    // const reqData = { ...data, ...updatedComments };
+    // //console.log("COMMENT SAVE DATA --->" + JSON.stringify(reqData))
+
+    axios
+      .post('http://localhost:9094/comment/add-comment', reqBody, {
+        headers: { Authorization: 'Bearer ' + userToken },
+      })
+      .then((result) => {
+       // cmtReset(addCommentDefaultValues);
+        callOnchangeAPI(empId);
+        setRplyUIMsg('');
+        //console.log(" ::result::: >> "+JSON.stringify(result));
+      });
+
+    //   setRplyOpen(false);
+  }
+
   const callOnchangeAPI = (value: string) => {
     if (value !== null && value !== '') {
       axios
@@ -293,6 +401,8 @@ const CommentComponent = (props: any) => {
               })
             );
             setLoader(false);
+            clonedAllComments=result.data;
+            activeValue();
           }
         }); // eslint-disable-next-line react-hooks/exhaustive-deps
     } else {
@@ -302,6 +412,7 @@ const CommentComponent = (props: any) => {
         })
       );
     }
+    
   }
 
   const handleAssociateDropdownChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
@@ -332,6 +443,7 @@ const CommentComponent = (props: any) => {
     //     })
     //   );
     //  }
+    
   }
 
 
@@ -341,9 +453,24 @@ const CommentComponent = (props: any) => {
   }
 
   const onSubmit = (data: any) => {
-    console.log("COMMENT PAGE DATA --->" + JSON.stringify(data))
+    //console.log("COMMENT PAGE DATA --->" + JSON.stringify(data))
   }
 
+  //let result: any[] = [];
+
+//   var myArray = 
+// [{"commentId":"646c9b03f9cd04710f9259f7","msgId":"CUPYJIY","versionNo":"1","empId":"0000A2","comments":"A1","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b1af9cd04710f9259f8","msgId":"FHQZYFH","versionNo":"1","empId":"0000A2","comments":"B1","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b2bf9cd04710f9259f9","msgId":"CUPYJIY","versionNo":"2","empId":"0000A2","comments":"A2","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b5bf9cd04710f9259fb","msgId":"FHQZYFH","versionNo":"2","empId":"0000A2","comments":"B2","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9baaf9cd04710f9259fc","msgId":"CUPYJIY","versionNo":"3","empId":"0000A2","comments":"A3","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"},{"commentId":"646c9bb4f9cd04710f9259fd","msgId":"FHQZYFH","versionNo":"3","empId":"0000A2","comments":"B3","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"},{"commentId":"646c9baaf9cd04710f9259fd","msgId":"CUPYJIY","versionNo":"4","empId":"0000A2","comments":"A4","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"}];
+
+
+//   const tt=()=>{
+//     myArray.forEach((hash => a => {
+//       if (!hash[a.msgId]) {
+//           hash[a.msgId] = { msgId: a.msgId, versionNo: 0 };
+//           result.push(hash[a.msgId]);
+//       }
+//       hash[a.msgId].versionNo = Math.max(hash[a.msgId].versionNo, Number(a.versionNo));
+//   })(Object.create(null)));
+//   }
 
 
   return (
@@ -445,86 +572,137 @@ const CommentComponent = (props: any) => {
             return (
               <Fragment key={`comments-${index}`}>
                 <ListItem alignItems="flex-start" key={index}>
-                  <ListItemText
-                    primary={
-                      <>
-                        <Typography
-                          variant="h6"
-                          color="black"
-                          style={{ margin: 0 }}
-                        >
-                          <Grid container direction="row">
-                            <Grid item xs={6}>
-                              {user.role === data.role ? (
-                                <strong>You:</strong>
-                              ) : (
-                                <>
-                                  <Grid
-                                    container
-                                    textAlign="start"
-                                    alignItems="center"
-                                  >
-                                    <Grid item xs="auto">
-                                      <strong>{data.who}:</strong>
-                                    </Grid>
-                                    <Grid item xs>
-                                      <Tooltip
-                                        title={data.role}
-                                        placement="right"
-                                      >
-                                        {data.role === 'REVIEWER' ? (
-                                          <PreviewTwoTone
-                                            style={{ fontSize: 13 }}
-                                          />
-                                        ) : data.role === 'ASSOCIATE' ? (
-                                          <SupportAgentTwoTone
-                                            style={{ fontSize: 13 }}
-                                          />
-                                        ) : (
-                                          <PeopleAltTwoTone
-                                            style={{ fontSize: 13 }}
-                                          />
-                                        )}
 
-                                      </Tooltip>
-
-                                    </Grid>
-
+                  {(Number(data.versionNo) <= result1[replyValue(data.msgId)[0]?.groupCount]?.versionNo) && (
+                    
+                    <ReplyLeftPadding style={{paddingLeft: `${data.versionNo}em`}}/>
+                  )}
+                      <ListItemText
+                          primary={
+                            <>
+                              <Typography
+                                variant="h6"
+                                color="black"
+                                style={{ margin: 0 }}
+                              >
+                                <Grid container direction="row">
+                                  <Grid item xs={6}>
+                                    {user.role === data.role ? (
+                                      <strong>You:</strong>
+                                    ) : (
+                                      <>
+                                        <Grid
+                                          container
+                                          textAlign="start"
+                                          alignItems="center"
+                                        >
+                                          <Grid item xs="auto">
+                                            <strong>{data.who}:</strong>
+                                          </Grid>
+                                          <Grid item xs>
+                                            <Tooltip
+                                              title={data.role}
+                                              placement="right"
+                                            >
+                                              {data.role === 'REVIEWER' ? (
+                                                <PreviewTwoTone
+                                                  style={{ fontSize: 13 }}
+                                                />
+                                              ) : data.role === 'ASSOCIATE' ? (
+                                                <SupportAgentTwoTone
+                                                  style={{ fontSize: 13 }}
+                                                />
+                                              ) : (
+                                                <PeopleAltTwoTone
+                                                  style={{ fontSize: 13 }}
+                                                />
+                                              )}
+      
+                                            </Tooltip>
+      
+                                          </Grid>
+      
+                                        </Grid>
+                                      </>
+                                    )}
+      
                                   </Grid>
-                                </>
-                              )}
+                                  <Grid item xs={6} style={{ textAlign: 'end' }}>
+                                    <span style={{ fontSize: '10px' }}>
+                                      {data.date}
+                                    </span>
+                                  </Grid>
+                                </Grid>
+      
+                              </Typography>
+                            </>
+                          }
+                          secondary={
+                            <Typography
+                              sx={{ display: 'inline' }}
+      
+                              color="black"
+                            >
+                              {/* msgId: {data.msgId} <br/>
+                              versionNo: {data.versionNo} <br/> */}
+                              Comment: {data.comments}
+      
+                              {/* {parentId === "" && data.comments} */}
+      
+                            </Typography>
+                          }
+                        />
+                    {/* </ReplyLeftPadding> 
+                 )} */}
 
-                            </Grid>
-                            <Grid item xs={6} style={{ textAlign: 'end' }}>
-                              <span style={{ fontSize: '10px' }}>
-                                {data.date}
-                              </span>
-                            </Grid>
-                          </Grid>
-
-                        </Typography>
-                      </>
-                    }
-                    secondary={
-                      <Typography
-                        sx={{ display: 'inline' }}
-
-                        color="black"
-                      >
-                        {data.comments}
-                      </Typography>
-                    }
-                  />
+                  
+                  
                 </ListItem>
 
+                
+
+            {/* ------{JSON.stringify(Number(data.versionNo))}------
+            ---@@@@---{JSON.stringify(tt(data.msgId))}---@@@@@@@@---
+            ---%%---{result1[tt(data.msgId).groupCount]?.versionNo}---%%---
+            ---##---{(Number(data.versionNo) == result1[result1?.groupCount]?.versionNo) ? "TRUE" : "FALSE"}---##--- */}
+            {/* ---@@@@---{(Number(data.versionNo))}:::{result1[replyValue(data.msgId)[0]?.groupCount]?.versionNo}---{(Number(data.versionNo) == result1[replyValue(data.msgId)[0]?.groupCount]?.versionNo)}---@@@@@@@@---
+            ---%%---{JSON.stringify(result1)}---%%--- */}
+            {(Number(data.versionNo) == result1[replyValue(data.msgId)[0]?.groupCount]?.versionNo) && (
+              <ReplyWrapper>
+
+                <InputText
+                  id="outlined-multiline-static"
+                  label="Reply Comment"
+                  onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleReplyChange(e)}
+                  //value={rplyUIMsg}
+                  multiline
+                  rows={3}
+                />
+
+                <DialogActions>
+                  {/* <Button onClick={()=> setRplyUIMsg('')}>Clear</Button> */}
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    onClick={() => replyComments(data)}
+                    >Reply</Button>
+                </DialogActions>
+              </ReplyWrapper>
+            )}
+               
+
+
+                {/* <Button onClick={handleReplyClickOpen(data)}>Reply</Button> */}
                 <Grid item xs="auto" style={{ paddingLeft: '5px' }}>
 
                   {/* {showReplies ?
                     <>
                       <TextField
-                        key={empId}
+                        id="outlined-multiline-static"
+                        multiline
                         label="Write a Reply..."
-                        variant="standard"
+                        variant="outlined"
+                        rows={3}
                         style={{ margin: '10px' }}
                       >
                       </TextField>
@@ -535,7 +713,7 @@ const CommentComponent = (props: any) => {
                         style={{ margin: '20px' }}
                         onClick={handleSave}
                       >
-                        Save
+                        Submit
                       </Button>
                       <Button
                         variant="outlined"
@@ -547,17 +725,18 @@ const CommentComponent = (props: any) => {
                     </>
                     :
                     <Button
-                      // key={index}
+                      key={index}
                       onClick={handleReply}
-                      variant="contained"
-                      style={{ margin: '10px' }}
+                      // variant="contained"
                     >
                       Reply
                     </Button>
                   } */}
-                  {/* {messages.map((message, index) => {
+
+                  {/* {messages.map((message, index): any => {
                     <div key={index}>{message}</div>
                   })} */}
+
 
                 </Grid>
 
@@ -630,6 +809,54 @@ const CommentComponent = (props: any) => {
 
         </form>
       </Dialog>
+
+
+      {/* <Dialog open={rplyOpen}>
+        <DialogTitle>Reply Comment</DialogTitle>
+
+        <form onSubmit={rplyHandleSubmit(replyComments)}>
+          <DialogContent>
+
+            <Dropdown
+              label={UIConstants.selectAnAssociate}
+              {...cmtRegister("empId")}
+              error={!!cmtErrors?.empId}
+              onChange={handleNewCommentDropdownChange}
+              options={mapAPItoUIDocTypeDropdown(allAssociates, 'ibmId', 'associateName')}
+              selectAnOption
+              helperText={
+                cmtErrors.empId
+                  ? cmtErrors?.empId.message
+                  : null
+              }
+            />
+            <InputText
+              // autoFocus
+              label="Comment"
+              error={!!cmtErrors?.comments}
+              {...cmtRegister("comments")}
+              helperText={
+                cmtErrors.comments
+                  ? cmtErrors?.comments.message
+                  : null
+              }
+            // value={comment}
+            // onChange={handleComment}
+            // error={error}
+            />
+          </DialogContent>
+
+          <DialogActions>
+            <Button onClick={handleReplyClose}>Cancel</Button>
+            <Button
+              fullWidth
+              variant="contained"
+              className="login-btn"
+              type="submit">Add</Button>
+          </DialogActions>
+
+        </form>
+      </Dialog> */}
 
 
     </div>

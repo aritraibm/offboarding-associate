@@ -273,7 +273,7 @@ const NewUserComponent = () => {
   //               activeInactive: 'Yet to be started',
   //             };
   //             const associateResponse = axios.post(
-  //               'http://localhost:9092/pru-associate/new-associate',
+  //               'http://localhost:9092/pru-associate/save-associate',
   //               saveAssociateReq,
   //               {
   //                 headers: { Authorization: 'Bearer ' + userToken },
@@ -305,6 +305,7 @@ const NewUserComponent = () => {
     // setValue('roleId', '');
     resetField('roleId')
     // trigger('roleId');
+    setUserRoleName('roleId');
   }
 
   const { register, trigger, reset, resetField, getValues, setFocus, handleSubmit, formState: { errors } } = useForm({
@@ -321,10 +322,11 @@ const NewUserComponent = () => {
     console.log("REACT HOOK errors  ---- >" + JSON.stringify(errors));
 
     const apiData = mapNewUserModel_UItoAPI(UIData);
-
+    console.log("REACT HOOK FORM apiData ---- >" + JSON.stringify(apiData));
     try {
       saveNewUser(apiData, userToken);
       resetForm();
+      setSnackbarOpen(true);
     } catch {
       console.log("something went wrong!!!");
     }
@@ -345,7 +347,7 @@ const NewUserComponent = () => {
     //         activeInactive: 'Yet to be started',
     //       };
     //       const associateResponse = axios.post(
-    //         'http://localhost:9092/pru-associate/new-associate',
+    //         'http://localhost:9092/pru-associate/save-associate',
     //         saveAssociateReq,
     //         {
     //           headers: { Authorization: 'Bearer ' + userToken },

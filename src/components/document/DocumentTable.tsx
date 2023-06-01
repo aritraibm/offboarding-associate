@@ -44,7 +44,7 @@ const DocumentTable = ((props: any) => {
 
   useEffect(() => {
     fetchDocuments();
-  },[]);
+  }, []);
 
   const handleClose = () => {
     setDialogStatus(false);
@@ -58,7 +58,7 @@ const DocumentTable = ((props: any) => {
   const getIdByRole = (): string | boolean => {
     // const id =
     //   user.role === ROLE_ASSOCIATE ? user.empId : props.forAssociate.empId;
-
+// alert(props.ibmId)
     if (!props.ibmId) return false;
     return user.role === ROLE_ASSOCIATE ? user.empId : props.ibmId;
   }
@@ -75,10 +75,11 @@ const DocumentTable = ((props: any) => {
     } else {
       url = url + `/${id}`;
     }
+    console.log("::::::::::::::: >>>" + props.type + " :: " + url);
     axios
       .get(url, { headers: { Authorization: 'Bearer ' + userToken }, })
       .then((res: any) => {
-        //console.log(res.data);
+        console.log("ssssss >>>>>>>>>>>>>"+res.data);
         setDocuments(res.data);
         const filteredObj = res.data.filter((obj: any) => obj.reviewed === true);
         if (filteredObj.length > 0) {
@@ -220,7 +221,9 @@ const DocumentTable = ((props: any) => {
                         props.type === 'REVIEWED') ||
                         (user.role === ROLE_ASSOCIATE &&
                           props.type === 'NOTREVIEWED')) && ( */}
-                      <TableCell>Delete</TableCell>
+                      {user.role !== ROLE_ASSOCIATE &&
+                        <TableCell>Delete</TableCell>
+                      }
                       {/* )} */}
                       <TableCell>Download</TableCell>
                     </TableRow>
@@ -246,14 +249,16 @@ const DocumentTable = ((props: any) => {
                           props.type === 'REVIEWED') ||
                           (user.role === ROLE_ASSOCIATE &&
                             props.type === 'NOTREVIEWED')) && ( */}
-                        <TableCell>
-                          <Button
-                            color="secondary"
-                            onClick={() => openDialog(doc)}
-                          >
-                            Delete
-                          </Button>
-                        </TableCell>
+                        {user.role !== ROLE_ASSOCIATE &&
+                          <TableCell>
+                            <Button
+                              color="secondary"
+                              onClick={() => openDialog(doc)}
+                            >
+                              Delete
+                            </Button>
+                          </TableCell>
+                        }
                         {/* )} */}
                         <TableCell>
                           <Button

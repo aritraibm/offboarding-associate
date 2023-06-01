@@ -83,6 +83,9 @@ const UploadDocument = () => {
     if (allAssociates.length === 0) {
       dispatch(invokeAssociatesSaga({ test: "test", id: 1 }));
     }
+    console.log(user)
+//alert(user.empId +" :: "+forAssociate.empId)
+    setIbmId(user.role === ROLE_ASSOCIATE ? user.empId : forAssociate.empId)
   }, []);
 
   const callUploadAPI = () => {
@@ -291,7 +294,7 @@ const UploadDocument = () => {
       <h2>Upload Documents</h2>
       <div className="border-2px">
 
-        <UploadDocumentSection />
+        <UploadDocumentSection change={setIbmId}/>
 
         {/* <div className="input-select">
           {' '}
@@ -377,7 +380,7 @@ const UploadDocument = () => {
         fetchDocumentURL="http://localhost:9003/files/employee"
       />
 
-      {user.role !== ROLE_ASSOCIATE && (
+      {/* {user.role !== ROLE_ASSOCIATE && (
         <DocumentTable
           forAssociate={forAssociate}
           options={options}
@@ -389,7 +392,7 @@ const UploadDocument = () => {
           title="Reviewed Documents:"
           fetchDocumentURL="http://localhost:9003/files/reviewer"
         />
-      )}
+      )} */}
 
       <Dialog
         open={openUpdate}

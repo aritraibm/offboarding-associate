@@ -127,8 +127,8 @@ const CheckListTable = (props: any) => {
                             <MenuItem disabled value="">
                               <em>None</em>
                             </MenuItem>
-                            <MenuItem value="Y">Yes</MenuItem>
-                            <MenuItem value="N">No</MenuItem>
+                            <MenuItem value="Yes">Yes</MenuItem>
+                            <MenuItem value="No">No</MenuItem>
                             <MenuItem value="N/A">N/A</MenuItem>
                           </Select>
                         </TableCell>

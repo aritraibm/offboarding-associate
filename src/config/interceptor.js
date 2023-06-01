@@ -10,7 +10,7 @@ const URL = BASE_URL + 'files';
 // request interceptor
 AxiosInstance.interceptors.request.use(
     config => {
-        console.log("config >>>>>" + JSON.stringify(config))
+        // console.log("config >>>>>" + JSON.stringify(config))
         config.headers['Authorization'] = 'Bearer ' + UserToken()
 
         if (UserToken && URL) {
