@@ -36,6 +36,7 @@ import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 import { InputText } from '../core/InputText/InputText';
 import { CommentValidationSchema, addCommentValidationSchema, addCommentDefaultValues, rplyCommentValidationSchema } from './Comment.validation';
 import { GlobalStoreType, ReplyMsgBody } from '../../helper/type';
+import { ReplyWrapper, ReplyLeftPadding } from "./CommentComponent.style";
 
 
 const CommentComponent = (props: any) => {
@@ -104,19 +105,19 @@ const CommentComponent = (props: any) => {
     // }
 
     const role = user.role;
-    console.log("role >>>>> " + role);
+    ////console.log("role >>>>> " + role);
     axios
       .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
       .then((res: any) => {
-        // console.log("res >>>>> "+JSON.stringify(res));
+        // //console.log("res >>>>> "+JSON.stringify(res));
         setOptions([...res.data]);
-        console.log("options", options)
+        //console.log("options", options)
         setOptionselect('1');
-        console.log("optionselect", optionselect)
+        //console.log("optionselect", optionselect)
         setLoader(false);
       })
       .catch((err) => {
-        console.log(err);
+        //console.log(err);
       });
 
 
@@ -143,7 +144,7 @@ const CommentComponent = (props: any) => {
   }, [empId]);
 
   const activeValue = () => {
-    //console.log(">>>>>>>>>>>"+JSON.stringify(clonedAllComments))
+    //console.log(">>>>>activeValue>>>>>>"+JSON.stringify(clonedAllComments))
     clonedAllComments.forEach((hash => (a: { msgId: string | number; versionNo: any; }) => {
         if (!hash[a.msgId]) {
             hash[a.msgId] = { msgId: a.msgId, versionNo: 0 };
@@ -162,19 +163,19 @@ const CommentComponent = (props: any) => {
 
   // const fetchDocumentTypes = () => {
   //   const role = user.role;
-  //   console.log("role >>>>> " + role);
+  //   //console.log("role >>>>> " + role);
   //   axios
   //     .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
   //     .then((res: any) => {
-  //       // console.log("res >>>>> "+JSON.stringify(res));
+  //       // //console.log("res >>>>> "+JSON.stringify(res));
   //       setOptions([...res.data]);
-  //       console.log("options", options)
+  //       //console.log("options", options)
   //       setOptionselect('1');
-  //       console.log("optionselect", optionselect)
+  //       //console.log("optionselect", optionselect)
   //       setLoader(false);
   //     })
   //     .catch((err) => {
-  //       console.log(err);
+  //       //console.log(err);
   //     });
   // };
 
@@ -184,11 +185,11 @@ const CommentComponent = (props: any) => {
     axios
       .get("http://localhost:9092/pru-associate/get-all-associates", { headers: { Authorization: 'Bearer ' + userToken } })
       .then((result: any) => {
-        // console.log("result ==== >"+JSON.stringify(result));
+        // //console.log("result ==== >"+JSON.stringify(result));
 
         //setAssocaiteList([...result.data]);
         setAllAssoOptionSelect('1');
-        console.log("allAssoOptionSelect", allAssoOptionSelect)
+        //console.log("allAssoOptionSelect", allAssoOptionSelect)
         setLoader(false);
 
       });
@@ -203,7 +204,7 @@ const CommentComponent = (props: any) => {
 
   const handleReplyClickOpen: any = (data: any) => {
 
-    console.log(":::::::::::: >>>>"+JSON.stringify(data));
+    //console.log(":::::::::::: >>>>"+JSON.stringify(data));
 
     // setError(false);
     // setComment('');
@@ -243,7 +244,7 @@ const CommentComponent = (props: any) => {
 
   // const handleComment = (event: { target: { value: SetStateAction<string>; }; }) => {
   //   setComment(event.target.value);
-  //   console.log("comment",comment)
+  //   //console.log("comment",comment)
   // };
 
 
@@ -316,7 +317,7 @@ const CommentComponent = (props: any) => {
       date: moment(new Date()).format(),
     };
     const reqData = { ...data, ...updatedComments };
-    console.log("COMMENT SAVE DATA --->" + JSON.stringify(reqData))
+    //console.log("COMMENT SAVE DATA --->" + JSON.stringify(reqData))
 
     axios
       .post('http://localhost:9094/comment/add-comment', reqData, {
@@ -354,7 +355,7 @@ const CommentComponent = (props: any) => {
       role: user.role
     }
 
-    console.log(" ::A::: >> "+JSON.stringify(reqBody));
+    //console.log(" ::A::: >> "+JSON.stringify(reqBody));
     // const fullName = user.firstName + user.lastName;
     // let updatedComments = {
     //   // empId: empId,
@@ -364,7 +365,7 @@ const CommentComponent = (props: any) => {
     //   date: moment(new Date()).format(),
     // };
     // const reqData = { ...data, ...updatedComments };
-    // console.log("COMMENT SAVE DATA --->" + JSON.stringify(reqData))
+    // //console.log("COMMENT SAVE DATA --->" + JSON.stringify(reqData))
 
     axios
       .post('http://localhost:9094/comment/add-comment', reqBody, {
@@ -373,7 +374,7 @@ const CommentComponent = (props: any) => {
       .then((result) => {
        // cmtReset(addCommentDefaultValues);
         callOnchangeAPI(empId);
-        console.log(" ::result::: >> "+JSON.stringify(result));
+        //console.log(" ::result::: >> "+JSON.stringify(result));
       });
 
     //   setRplyOpen(false);
@@ -393,6 +394,8 @@ const CommentComponent = (props: any) => {
               })
             );
             setLoader(false);
+            clonedAllComments=result.data;
+            activeValue();
           }
         }); // eslint-disable-next-line react-hooks/exhaustive-deps
     } else {
@@ -443,7 +446,7 @@ const CommentComponent = (props: any) => {
   }
 
   const onSubmit = (data: any) => {
-    console.log("COMMENT PAGE DATA --->" + JSON.stringify(data))
+    //console.log("COMMENT PAGE DATA --->" + JSON.stringify(data))
   }
 
   //let result: any[] = [];
@@ -562,81 +565,89 @@ const CommentComponent = (props: any) => {
             return (
               <Fragment key={`comments-${index}`}>
                 <ListItem alignItems="flex-start" key={index}>
-                  <ListItemText
-                    primary={
-                      <>
-                        <Typography
-                          variant="h6"
-                          color="black"
-                          style={{ margin: 0 }}
-                        >
-                          <Grid container direction="row">
-                            <Grid item xs={6}>
-                              {user.role === data.role ? (
-                                <strong>You:</strong>
-                              ) : (
-                                <>
-                                  <Grid
-                                    container
-                                    textAlign="start"
-                                    alignItems="center"
-                                  >
-                                    <Grid item xs="auto">
-                                      <strong>{data.who}:</strong>
-                                    </Grid>
-                                    <Grid item xs>
-                                      <Tooltip
-                                        title={data.role}
-                                        placement="right"
-                                      >
-                                        {data.role === 'REVIEWER' ? (
-                                          <PreviewTwoTone
-                                            style={{ fontSize: 13 }}
-                                          />
-                                        ) : data.role === 'ASSOCIATE' ? (
-                                          <SupportAgentTwoTone
-                                            style={{ fontSize: 13 }}
-                                          />
-                                        ) : (
-                                          <PeopleAltTwoTone
-                                            style={{ fontSize: 13 }}
-                                          />
-                                        )}
 
-                                      </Tooltip>
-
-                                    </Grid>
-
+                {/* {(Number(data.versionNo) <= result1[replyValue(data.msgId)[0]?.groupCount]?.versionNo) && (
+                    
+                    <ReplyLeftPadding> */}
+                      <ListItemText
+                          primary={
+                            <>
+                              <Typography
+                                variant="h6"
+                                color="black"
+                                style={{ margin: 0 }}
+                              >
+                                <Grid container direction="row">
+                                  <Grid item xs={6}>
+                                    {user.role === data.role ? (
+                                      <strong>You:</strong>
+                                    ) : (
+                                      <>
+                                        <Grid
+                                          container
+                                          textAlign="start"
+                                          alignItems="center"
+                                        >
+                                          <Grid item xs="auto">
+                                            <strong>{data.who}:</strong>
+                                          </Grid>
+                                          <Grid item xs>
+                                            <Tooltip
+                                              title={data.role}
+                                              placement="right"
+                                            >
+                                              {data.role === 'REVIEWER' ? (
+                                                <PreviewTwoTone
+                                                  style={{ fontSize: 13 }}
+                                                />
+                                              ) : data.role === 'ASSOCIATE' ? (
+                                                <SupportAgentTwoTone
+                                                  style={{ fontSize: 13 }}
+                                                />
+                                              ) : (
+                                                <PeopleAltTwoTone
+                                                  style={{ fontSize: 13 }}
+                                                />
+                                              )}
+      
+                                            </Tooltip>
+      
+                                          </Grid>
+      
+                                        </Grid>
+                                      </>
+                                    )}
+      
                                   </Grid>
-                                </>
-                              )}
+                                  <Grid item xs={6} style={{ textAlign: 'end' }}>
+                                    <span style={{ fontSize: '10px' }}>
+                                      {data.date}
+                                    </span>
+                                  </Grid>
+                                </Grid>
+      
+                              </Typography>
+                            </>
+                          }
+                          secondary={
+                            <Typography
+                              sx={{ display: 'inline' }}
+      
+                              color="black"
+                            >
+                              {/* msgId: {data.msgId} <br/>
+                              versionNo: {data.versionNo} <br/> */}
+                              Comment: {data.comments}
+      
+                              {/* {parentId === "" && data.comments} */}
+      
+                            </Typography>
+                          }
+                        />
+                    {/* </ReplyLeftPadding> 
+                 )} */}
 
-                            </Grid>
-                            <Grid item xs={6} style={{ textAlign: 'end' }}>
-                              <span style={{ fontSize: '10px' }}>
-                                {data.date}
-                              </span>
-                            </Grid>
-                          </Grid>
-
-                        </Typography>
-                      </>
-                    }
-                    secondary={
-                      <Typography
-                        sx={{ display: 'inline' }}
-
-                        color="black"
-                      >
-                        {/* msgId: {data.msgId} <br/>
-                        versionNo: {data.versionNo} <br/> */}
-                        comment: {data.comments}
-
-                        {/* {parentId === "" && data.comments} */}
-
-                      </Typography>
-                    }
-                  />
+                  
                   
                 </ListItem>
 
@@ -646,9 +657,10 @@ const CommentComponent = (props: any) => {
             ---@@@@---{JSON.stringify(tt(data.msgId))}---@@@@@@@@---
             ---%%---{result1[tt(data.msgId).groupCount]?.versionNo}---%%---
             ---##---{(Number(data.versionNo) == result1[result1?.groupCount]?.versionNo) ? "TRUE" : "FALSE"}---##--- */}
-
+            {/* ---@@@@---{(Number(data.versionNo))}:::{result1[replyValue(data.msgId)[0]?.groupCount]?.versionNo}---{(Number(data.versionNo) == result1[replyValue(data.msgId)[0]?.groupCount]?.versionNo)}---@@@@@@@@---
+            ---%%---{JSON.stringify(result1)}---%%--- */}
             {(Number(data.versionNo) == result1[replyValue(data.msgId)[0]?.groupCount]?.versionNo) && (
-              <>
+              <ReplyWrapper>
 
                 <InputText
                   id="outlined-multiline-static"
@@ -667,7 +679,7 @@ const CommentComponent = (props: any) => {
                     onClick={() => replyComments(data)}
                     >Reply</Button>
                 </DialogActions>
-              </>
+              </ReplyWrapper>
             )}
                
 
