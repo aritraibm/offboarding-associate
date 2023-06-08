@@ -356,7 +356,7 @@ const CommentComponent = (props: any) => {
       versionNo,
       empId,
       comments: rplyUIMsg,
-      date,
+      date: new Date(),
       who: user.name,
       role: user.role
     }
