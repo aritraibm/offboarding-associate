@@ -206,7 +206,7 @@ export interface ReplyMsgBody{
     versionNo: String;
     empId: String;
     comments: String;
-    date: String;
+    date: Date;
     who: String;
     role: String;
     }

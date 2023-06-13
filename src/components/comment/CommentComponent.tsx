@@ -36,8 +36,8 @@ import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 import { InputText } from '../core/InputText/InputText';
 import { CommentValidationSchema, addCommentValidationSchema, addCommentDefaultValues, rplyCommentValidationSchema } from './Comment.validation';
 import { GlobalStoreType, ReplyMsgBody } from '../../helper/type';
-import { ReplyWrapper, ReplyLeftPadding } from "./CommentComponent.style";
-
+import { ReplyWrapper, ReplyLeftPadding, ListWrapper, TimeWrapper, UserWrapper} from "./CommentComponent.style";
+import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
 
 const CommentComponent = (props: any) => {
   const BASE_URL = 'http://localhost:9003/';
@@ -356,7 +356,7 @@ const CommentComponent = (props: any) => {
       versionNo,
       empId,
       comments: rplyUIMsg,
-      date,
+      date: new Date(),
       who: user.name,
       role: user.role
     }
@@ -567,98 +567,107 @@ const CommentComponent = (props: any) => {
       {loader ? (
         <Loader />
       ) : allComments.length !== 0 ? (
-        <List style={{ overflow: 'auto', backgroundColor: 'white' }}>
+        <List style={{ overflow: 'auto'}}>
           {allComments.map((data: any, index: any) => {
             return (
               <Fragment key={`comments-${index}`}>
-                <ListItem alignItems="flex-start" key={index}>
+                <ListWrapper>
+                  <ListItem alignItems="flex-start" key={index}>
 
-                  {(Number(data.versionNo) <= result1[replyValue(data.msgId)[0]?.groupCount]?.versionNo) && (
-                    
-                    <ReplyLeftPadding style={{paddingLeft: `${data.versionNo}em`}}/>
-                  )}
-                      <ListItemText
-                          primary={
-                            <>
+                    {(Number(data.versionNo) <= result1[replyValue(data.msgId)[0]?.groupCount]?.versionNo) && (
+                      
+                      <ReplyLeftPadding style={{paddingLeft: `${data.versionNo}em`}}/>
+                    )}
+                        <ListItemText
+                            primary={
+                              <>
+                                <Typography
+                                  variant="h6"
+                                  color="black"
+                                  style={{ margin: 0 }}
+                                >
+                                  <Grid container direction="row">
+                                    <Grid item xs={6}>
+                                      {user.role === data.role ? (
+                                        <UserWrapper>
+                                          <strong>You:</strong>
+                                        </UserWrapper>
+                                      ) : (
+                                        <>
+                                          <Grid
+                                            container
+                                            textAlign="start"
+                                            alignItems="center"
+                                          >
+                                            <Grid item xs="auto">
+                                            <UserWrapper>
+                                              <strong>{data.who}:</strong>
+                                            </UserWrapper>
+                                            </Grid>
+                                            {'\u00A0'}
+                                            <Grid item xs>
+                                              <Tooltip
+                                                title={data.role}
+                                                placement="right"
+                                              >
+                                                {data.role === 'REVIEWER' ? (
+                                                  <PreviewTwoTone
+                                                    style={{ fontSize: 13 }}
+                                                  />
+                                                ) : data.role === 'ASSOCIATE' ? (
+                                                  <SupportAgentTwoTone
+                                                    style={{ fontSize: 13 }}
+                                                  />
+                                                ) : (
+                                                  <PeopleAltTwoTone
+                                                    style={{ fontSize: 13 }}
+                                                  />
+                                                )}
+        
+                                              </Tooltip>
+        
+                                            </Grid>
+        
+                                          </Grid>
+                                        </>
+                                      )}
+        
+                                    </Grid>
+                                    <Grid item xs={6} style={{ textAlign: 'end' }}>
+                                      <Grid item xs={5} style={{ float: 'right',  width: '100%' }}>
+                                        <TimeWrapper >
+                                          {/* <QueryBuilderIcon  style={{ height: 'inherit' }}/> */}
+                                            {data.date}
+                                        </TimeWrapper> 
+                                      </Grid>
+                                    </Grid>
+                                  </Grid>
+        
+                                </Typography>
+                              </>
+                            }
+                            secondary={
                               <Typography
-                                variant="h6"
+                                sx={{ display: 'inline' }}
+        
                                 color="black"
-                                style={{ margin: 0 }}
                               >
-                                <Grid container direction="row">
-                                  <Grid item xs={6}>
-                                    {user.role === data.role ? (
-                                      <strong>You:</strong>
-                                    ) : (
-                                      <>
-                                        <Grid
-                                          container
-                                          textAlign="start"
-                                          alignItems="center"
-                                        >
-                                          <Grid item xs="auto">
-                                            <strong>{data.who}:</strong>
-                                          </Grid>
-                                          <Grid item xs>
-                                            <Tooltip
-                                              title={data.role}
-                                              placement="right"
-                                            >
-                                              {data.role === 'REVIEWER' ? (
-                                                <PreviewTwoTone
-                                                  style={{ fontSize: 13 }}
-                                                />
-                                              ) : data.role === 'ASSOCIATE' ? (
-                                                <SupportAgentTwoTone
-                                                  style={{ fontSize: 13 }}
-                                                />
-                                              ) : (
-                                                <PeopleAltTwoTone
-                                                  style={{ fontSize: 13 }}
-                                                />
-                                              )}
-      
-                                            </Tooltip>
-      
-                                          </Grid>
-      
-                                        </Grid>
-                                      </>
-                                    )}
-      
-                                  </Grid>
-                                  <Grid item xs={6} style={{ textAlign: 'end' }}>
-                                    <span style={{ fontSize: '10px' }}>
-                                      {data.date}
-                                    </span>
-                                  </Grid>
-                                </Grid>
-      
+                                {/* msgId: {data.msgId} <br/>
+                                versionNo: {data.versionNo} <br/> */}
+                                Comment: {data.comments}
+        
+                                {/* {parentId === "" && data.comments} */}
+        
                               </Typography>
-                            </>
-                          }
-                          secondary={
-                            <Typography
-                              sx={{ display: 'inline' }}
-      
-                              color="black"
-                            >
-                              {/* msgId: {data.msgId} <br/>
-                              versionNo: {data.versionNo} <br/> */}
-                              Comment: {data.comments}
-      
-                              {/* {parentId === "" && data.comments} */}
-      
-                            </Typography>
-                          }
-                        />
-                    {/* </ReplyLeftPadding> 
-                 )} */}
+                            }
+                          />
+                      {/* </ReplyLeftPadding> 
+                  )} */}
 
-                  
-                  
-                </ListItem>
-
+                    
+                    
+                  </ListItem>
+                </ListWrapper>
                 
 
             {/* ------{JSON.stringify(Number(data.versionNo))}------
