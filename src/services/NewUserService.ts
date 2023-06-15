@@ -3,6 +3,13 @@ import { ROLE_ASSOCIATE } from "../helper/constants";
 
 const BASE_URL = 'http://localhost:9099/';
 
+const getRandomInt = (min: any, max: any) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  
+
 export const saveNewUser = (requestData: any, userToken: string) => {
     return axios.post(`${BASE_URL}user_add`, requestData)
         .then((response) => {
@@ -19,7 +26,7 @@ export const saveNewUser = (requestData: any, userToken: string) => {
                     // activeInactive: 'Yet to be started',
 
                     associate: {
-                        associateId:10,
+                        associateId: getRandomInt(100, 1000),
                         associateName: response.data.firstName + " " + response.data.lastName,
                         ibmId: response.data.employeeId,
                         projectId:5,

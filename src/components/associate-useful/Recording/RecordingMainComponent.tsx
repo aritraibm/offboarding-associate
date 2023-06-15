@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import Loader from '../../common/Loader';
 import RecordingService from '../../../services/hooks/RecordingService';
 import { ROLE_OFFBOARDING_MANAGER, ROLE_OFFBOARDING_REVIEWER } from '../../../helper/constants';
+import axios from 'axios';
 
 const RecordingMainComponent = () => {
   const userToken = useSelector(token);
@@ -35,6 +36,22 @@ const RecordingMainComponent = () => {
     //     );
     //     setLoader(false);
     //   });
+
+    const BASE_URL = 'http://localhost:9094/recording';
+
+    axios
+      .get(BASE_URL + '/get-all-recordings', {
+        headers: { Authorization: 'Bearer ' + userToken },
+      })
+      .then((response) => {
+        setRecordings(response.data);
+        console.log(
+          'in Recording list useEffect getall recordings ',
+          response.data
+        );
+      });
+
+
     setLoader(false);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const [editing, setEditing] = useState(false);
@@ -121,7 +138,7 @@ const RecordingMainComponent = () => {
         ) : (
           <Grid item xs={12}>
             <h2>Recording</h2>
-            {loader ? <Loader /> : <RecordingList recording={recordings} />}
+            {loader ? <Loader /> : <RecordingList recordings={recordings} />}
           </Grid>
         )}
       </Grid>
