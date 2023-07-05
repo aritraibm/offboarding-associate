@@ -23,18 +23,18 @@ const RecordingList = (props: any) => {
   useEffect(() => {
     const BASE_URL = 'http://localhost:9094/recording';
 
-    axios
-      .get(BASE_URL + '/get-all-recording', {
-        headers: { Authorization: 'Bearer ' + userToken },
-      })
-      .then((response) => {
-        setRecordings(response.data);
-        console.log(
-          'in Recording list useEffect getall recordings ',
-          response.data
-        );
-      });
-  }, [recordings, userToken]);
+    // axios
+    //   .get(BASE_URL + '/get-all-recordings', {
+    //     headers: { Authorization: 'Bearer ' + userToken },
+    //   })
+    //   .then((response) => {
+    //     setRecordings(response.data);
+    //     console.log(
+    //       'in Recording list useEffect getall recordings ',
+    //       response.data
+    //     );
+    //   });
+  }, []);
 
   return (
     <TableContainer style={{ margin: '0px', backgroundColor: 'white' }}>

@@ -21,18 +21,18 @@ export default function Offboarding() {
                 label={NEW_USER_TAB}
                 linkTo="/newUser"
               />
-              {/* <MenuGenerator
+              <MenuGenerator
                 label={RECORDINGS_TAB}
                 linkTo="/recording"
-              /> */}
-              <MenuGenerator
-                label={CHECKLIST}
-                linkTo="/offboarding-checklist"
-                state={{ forAssociate: { empId: user.empId } }}
               />
               <MenuGenerator
                 label={SAMPLE_DOCUMENTS_TAB}
                 linkTo="/sampleDocuments"
+              />
+              <MenuGenerator
+                label={CHECKLIST}
+                linkTo="/offboarding-checklist"
+                state={{ forAssociate: { empId: user.empId } }}
               />
               <MenuGenerator
                 label={UPLOAD_DOCUMENTS_TAB}
@@ -53,23 +53,23 @@ export default function Offboarding() {
               linkTo="/newUser"
             /> */}
             <MenuGenerator
-                label={CHECKLIST}
-                linkTo="/offboarding-checklist"
-                state={{ forAssociate: { empId: user.empId } }}
-              />
+              label={RECORDINGS_TAB}
+              linkTo="/recording"
+            />
             <MenuGenerator
               label={SAMPLE_DOCUMENTS_TAB}
               linkTo="/sampleDocuments"
             />
             <MenuGenerator
+                label={CHECKLIST}
+                linkTo="/offboarding-checklist"
+                state={{ forAssociate: { empId: user.empId } }}
+              />
+            <MenuGenerator
               label={UPLOAD_DOCUMENTS_TAB}
               linkTo="/uploadDocuments"
               state={{ forAssociate: { empId: user.empId } }}
             />
-            {/* <MenuGenerator
-              label={RECORDINGS_TAB}
-              linkTo="/recording"
-            /> */}
             
               <MenuGenerator
                 label={COMMENTS}

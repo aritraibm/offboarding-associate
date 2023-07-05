@@ -162,9 +162,6 @@ const NewUserComponent = () => {
     const randomPasword = generate({ length: 15 });
     const passWordStrength = validate(randomPasword);
 
-    console.log("randomPasword is :: >>>>>>>" + randomPasword);
-    console.log("passWordStrength is :: >>>>>>>" + passWordStrength);
-
     setFocus("password");
     setPassword(randomPasword);
 
@@ -173,120 +170,6 @@ const NewUserComponent = () => {
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
-
-  // const handleNewUser = (e: any) => {
-  //   e.preventDefault();
-  //   let error = {};
-  //   // if (newUserDetails.email === '') error = { ...error, errorEmail: true };
-
-  //   // if (!isEmail(newUserDetails.email)) {
-  //   //   error = { ...error, errorEmail: true };
-  //   // }
-
-  //   // if (newUserDetails.employeeId === '')
-  //   //   error = { ...error, errorEmployeeId: true };
-
-  //   // // if (newUserDetails.employeeId) {
-  //   // //   error = { ...error, errorEmployeeId: true };
-  //   // } 
-  //   // else if (newUserDetails.employeeId.length > 6) {
-  //   //   error = { ...error, errorEmployeeId: true };
-  //   // }
-
-  //   // if (
-  //   //   newUserDetails.reviewerName === '' &&
-  //   //   newUserDetails.role === assosiateRoleId?.id
-  //   // )
-  //   //   error = { ...error, errorReviewerName: true };
-
-  //   // if (
-  //   //   newUserDetails.managerName === '' &&
-  //   //   (newUserDetails.role === assosiateRoleId?.id ||
-  //   //     newUserDetails.role === reviewerRoleId?.id)
-  //   // )
-  //   //   error = { ...error, errorManagerName: true };
-  //   // if (newUserDetails.role === '') error = { ...error, errorRole: true };
-
-  //   // if (newUserDetails.userName === '')
-  //   //   error = { ...error, errorUserName: true };
-
-  //   // if (newUserDetails.FristName === '')
-  //   //   error = { ...error, errorFristName: true };
-  //   // if (newUserDetails.FristName)
-  //   // error = { ...error, errorFristName: true };
-
-  //   // if (newUserDetails.LastName === '')
-  //   //   error = { ...error, errorLastName: true };
-  //   // if (newUserDetails.LastName)
-  //   // error = { ...error, errorLastName: true };
-
-  //   // if (newUserDetails.password === '')
-  //   //   error = { ...error, errorPassword: true };
-  //   // if (newUserDetails.employeeId.length > 6) {
-  //   //   error = { ...error, errorEmployeeId: true };
-  //   // }
-  //   dispatch(
-  //     createNewUserDetails({
-  //       createNewUser: { ...newUserDetails, error },
-  //     })
-  //   );
-  //   // console.log('Error '+JSON.stringify(error));
-  //   if (JSON.stringify(error) === '{}') {
-  //     if (!newUserDetails.isGeneratedButtonDisabled) {
-  //       dispatch(
-  //         createNewUserDetails({
-  //           createNewUser: {
-  //             ...newUserDetails,
-  //             error: { errorGeneratebutton: true },
-  //           },
-  //         })
-  //       );
-  //     } else {
-  //       const requestData = {
-  //         employeeId: newUserDetails.employeeId,
-  //         email: newUserDetails.email,
-  //         // userName: newUserDetails.userName,
-  //         FristName: newUserDetails.FristName,
-  //         LastName: newUserDetails.LastName,
-  //         password: newUserDetails.password,
-  //         roleId: newUserDetails.role,
-  //         reviewerEmpId:
-  //           newUserDetails.role === assosiateRoleId?.id
-  //             ? newUserDetails.reviewerName
-  //             : 'N/A',
-  //         managerEmpId:
-  //           newUserDetails.role === assosiateRoleId?.id ||
-  //             newUserDetails.role === reviewerRoleId?.id
-  //             ? newUserDetails.managerName
-  //             : 'N/A',
-  //       };
-  //       axios
-  //         .post('http://localhost:9099/user_add', requestData)
-  //         .then((response) => {
-  //           if (response.data.role.name === ROLE_ASSOCIATE) {
-  //             const saveAssociateReq = {
-  //               associateName: response.data.userName,
-  //               ibmId: response.data.employeeId,
-  //               emailIbm: response.data.email,
-  //               FristName: response.data.FristName,
-  //               LastName: response.data.LastName,
-  //               activeInactive: 'Yet to be started',
-  //             };
-  //             const associateResponse = axios.post(
-  //               'http://localhost:9092/pru-associate/save-associate',
-  //               saveAssociateReq,
-  //               {
-  //                 headers: { Authorization: 'Bearer ' + userToken },
-  //               }
-  //             );
-  //             console.log(associateResponse);
-  //           }
-  //           setSnackbarOpen(true);
-  //           dispatch(resetCreateNewUserDetails());
-  //         });
-  //     }
-  //   } else console.log('Error');
-  // };
 
   const handleClickShowPassword = () => {
 
@@ -314,6 +197,12 @@ const NewUserComponent = () => {
     resolver: yupResolver(NewUserValidationSchema),
   });
 
+  const getRandomInt = (min: any, max: any) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+  const BASE_URL = 'http://localhost:9099/';
 
   const onSubmit = (data: any) => {
     const UIData = { ...data, 'userName': getValues('firstName') + " " + getValues('lastName') };
@@ -324,42 +213,98 @@ const NewUserComponent = () => {
     const apiData = mapNewUserModel_UItoAPI(UIData);
     console.log("REACT HOOK FORM apiData ---- >" + JSON.stringify(apiData));
     try {
-      saveNewUser(apiData, userToken);
-      resetForm();
-      setSnackbarOpen(true);
+
+      axios.post(`${BASE_URL}user_add`, apiData)
+        .then((response) => {
+            console.log("response is ::::: >>>>" + JSON.stringify(response));
+            // setSnakBarOpen(true);
+            
+            if (response.data.transactionStatus == "Error") {
+                alert("Hey! this emp id is already exist!");
+                //return false;
+            } else {
+                if (response.data.transactionData.role.name === ROLE_ASSOCIATE) {
+                    const saveAssociateReq = {
+                        // associateName: response.data.userName,
+                        // ibmId: response.data.employeeId,
+                        // emailIbm: response.data.email,
+                        // FristName: response.data.FristName,
+                        // LastName: response.data.LastName,
+                        // activeInactive: 'Yet to be started',
+
+                        associate: {
+                            associateId: getRandomInt(100, 1000),
+                            associateName: response.data.transactionData.firstName + " " + response.data.transactionData.lastName,
+                            ibmId: response.data.transactionData.employeeId,
+                            projectId: 5,
+                            engagementName: "engagementName",
+                            majorFunction: "majorFunction",
+                            band: "06G",
+                            primaryContact: "primaryContact",
+                            emailIbm: "associate2@ibm.com",
+                            emailClient: "associate2@prudential.com",
+                            xid: "x222222",
+                            clientManager: "DemoClientManager",
+                            endDate: "2024-07-22",
+                            location: "India",
+                            city: "Bangalore",
+                            billType: "billType",
+                            billCode: "billCode",
+                            teamOrRole: "teamOrRole",
+                            role: "Software Developer",
+                            asOnDate: "2022-07-22",
+                            clientExpDate: "2024-07-22",
+                            ibmDate: "2022-07-22",
+                            experienceWithClient: "experienceWithClient",
+                            careerExperience: "careerExperience",
+                            experienceWithIbm: "experienceWithIbm",
+                            skillset: "skillset",
+                            resourceCriticality: "resourceCriticality",
+                            atImmigrationVisaRisks: "atImmigrationVisaRisks",
+                            backupSuccessorResource: 1,
+                            keyContingencyGroup: "keyContingencyGroup",
+                            additionalContingency: "additionalContingency",
+                            visaType: "visaType",
+                            workPermitValidUntil: "workPermitValidUntil",
+                            extensionUpdates: "extensionUpdates",
+                            visaMaxOutDate: "2022-07-22",
+                            timeLeftInUs: "timeLeftInUs",
+                            h1bNominations: "h1bNominations",
+                            riskMitigationComments: "riskMitigationComments",
+                            planInCaseOfExtensionAmendmentRejection: "planInCaseOfExtensionAmendmentRejection",
+                            activeInactive: "Active"
+                        },
+                        associateSkill: [
+                            {
+                                associateSkillId: 2,
+                                associateId: 10,
+                                skillId: 3,
+                                skillRating: "skillRating"
+                            }
+                        ]
+                    };
+                    const associateResponse = axios.post(
+                        'http://localhost:9092/pru-associate/save-associate',
+                        saveAssociateReq,
+                        {
+                            headers: { Authorization: 'Bearer ' + userToken },
+                        }
+                    );
+                    console.log("associateResponse ::: >>>" + JSON.stringify(associateResponse));
+                }
+
+                resetForm();
+                setSnackbarOpen(true);
+            }
+        });
+    
     } catch {
       console.log("something went wrong!!!");
     }
 
-
-    // axios.post('http://localhost:9099/user_add', requestData)
-    //   .then((response) => {
-    //     console.log("response is ::::: >>>>" + JSON.stringify(response));
-    //     setSnakBarOpen(true);
-
-    //     if (response.data.role.name === ROLE_ASSOCIATE) {
-    //       const saveAssociateReq = {
-    //         associateName: response.data.userName,
-    //         ibmId: response.data.employeeId,
-    //         emailIbm: response.data.email,
-    //         FristName: response.data.FristName,
-    //         LastName: response.data.LastName,
-    //         activeInactive: 'Yet to be started',
-    //       };
-    //       const associateResponse = axios.post(
-    //         'http://localhost:9092/pru-associate/save-associate',
-    //         saveAssociateReq,
-    //         {
-    //           headers: { Authorization: 'Bearer ' + userToken },
-    //         }
-    //       );
-    //       console.log("associateResponse ::: >>>" + JSON.stringify(associateResponse));
-    //     }
-    //     // setSnackbarOpen(true);
-    //     // dispatch(resetCreateNewUserDetails());
-    //   });
-
   }
+
+   
 
   return (
     <div
@@ -393,7 +338,6 @@ const NewUserComponent = () => {
                   // value={employeeId}
                   error={!!errors?.employeeId}
                   {...register("employeeId")}
-                  // onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleInputChange(e, "employeeId")}
                   helperText={
                     errors.employeeId
                       ? errors?.employeeId.message
@@ -407,7 +351,7 @@ const NewUserComponent = () => {
                   // value={email}
                   error={!!errors?.email}
                   {...register("email")}
-                  placeholder="Please enter email, for exapmle 'xyz@ibm.com'"
+                  placeholder="Please enter email, for example 'xyz@ibm.com'"
                   //onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleInputChange(e, "email")}
                   helperText={
                     errors.email

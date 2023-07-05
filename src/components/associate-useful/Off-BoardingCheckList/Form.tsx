@@ -33,8 +33,8 @@ const Form = (props: any) => {
     onBoardingDate: sendInfo.onBoardingDate
       ? sendInfo.onBoardingDate
       : new Date(),
-    coordinatorName: userDetail.reviewer.reviewerName
-      ? userDetail.reviewer.reviewerName
+    coordinatorName: userDetail.reviewer?.reviewerName
+      ? userDetail.reviewer?.reviewerName
       : sendInfo.coordinatorName
         ? sendInfo.coordinatorName
         : '',
