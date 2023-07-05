@@ -26,13 +26,13 @@ export default function Offboarding() {
                 linkTo="/recording"
               />
               <MenuGenerator
+                label={SAMPLE_DOCUMENTS_TAB}
+                linkTo="/sampleDocuments"
+              />
+              <MenuGenerator
                 label={CHECKLIST}
                 linkTo="/offboarding-checklist"
                 state={{ forAssociate: { empId: user.empId } }}
-              />
-              <MenuGenerator
-                label={SAMPLE_DOCUMENTS_TAB}
-                linkTo="/sampleDocuments"
               />
               <MenuGenerator
                 label={UPLOAD_DOCUMENTS_TAB}

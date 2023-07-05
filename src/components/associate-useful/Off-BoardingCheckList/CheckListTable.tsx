@@ -17,7 +17,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 const CheckListTable = (props: any) => {
   const infoDetails = props.infoData;
   const OffBoardingCheckList = props.offBoardingData.checkListDetails;
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [page, setPage] = React.useState(0);
   const tableHeader = [
     'Off-Boarding Checklist',
