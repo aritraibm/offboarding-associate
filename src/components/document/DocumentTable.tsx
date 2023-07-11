@@ -69,18 +69,15 @@ const DocumentTable = ((props: any) => {
 
     const reviewerId = user.role === ROLE_ASSOCIATE ? '' : user.empId;
     var url = props.fetchDocumentURL ? props.fetchDocumentURL : '';
-    //console.log("::::::::::::::: >>>" + props.type + " :: " + url);
     if (props.type === 'REVIEWED') {
       url = url + `/${reviewerId}/employee/${id}`;
     } else {
       url = url + `/${id}`;
     }
-    console.log("::::::::::::::: >>>" + props.type + " :: " + url);
     axios
       .get(url, { headers: { Authorization: 'Bearer ' + userToken }, })
       .then((res: any) => {
-        console.log("ssssss >>>>>>>>>>>>>"+res.data);
-        setDocuments(res.data);
+        setDocuments(res.data.filter((e: { documentType: { id: number; }; }) => e.documentType.id != 0));
         const filteredObj = res.data.filter((obj: any) => obj.reviewed === true);
         if (filteredObj.length > 0) {
           setIsReviewed(true);

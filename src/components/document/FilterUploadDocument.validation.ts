@@ -9,6 +9,7 @@ export const SelectAssociateValidationSchema = yup.object().shape({
 
 export const FilterUploadDocumentValidationSchema = yup.object().shape({
     empId: yup.string(),
-    documentType: yup.string().required("Please select document type"),
+    //employeeId: yup.string().required("Please select the associate"),
+    // documentType: yup.string().required("Please select document type"),
     
 });

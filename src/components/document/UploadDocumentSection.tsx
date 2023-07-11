@@ -17,6 +17,9 @@ import { useForm } from 'react-hook-form';
 import { ROLE_ASSOCIATE, UIConstants } from '../../helper/constants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
+import { GlobalStoreType } from '../../helper/type';
+
+
 
 const UploadDocumentSection = (props: any) => {
   const BASE_URL = 'http://localhost:9003/';
@@ -24,6 +27,7 @@ const UploadDocumentSection = (props: any) => {
   const location = useLocation();
   const userToken = useSelector(token);
   const allDocumentTypes = useSelector((state: any) => state.finalDocumentTypeList);
+  const allAssociates = useSelector((state: GlobalStoreType) => state.finalAssociatesList);
   //const allUpdatedDocumentTypes = useSelector((state: any) => state.invokeDocumentTypeSaga);
   // console.log("allDocumentTypes :::::::::: >>" + JSON.stringify(allDocumentTypes));
   //console.log("allUpdatedDocumentTypes :::::::::: >>" + JSON.stringify(allUpdatedDocumentTypes));
@@ -41,6 +45,7 @@ const UploadDocumentSection = (props: any) => {
   const [options, setOptions] = useState<string[]>([]);
   const [assocaiteList, setAssocaiteList] = useState<any>([]);
   const [optionselect, setOptionselect] = useState('');
+  const [employeeId, setEmployeeId] = useState('');
 
   const [inputfile, setInputfile] = useState(false);
   const [isReviewed, setIsReviewed] = useState(false);
@@ -63,6 +68,11 @@ const UploadDocumentSection = (props: any) => {
     optionChanged(e.target.value);
   };
 
+  const handleAssociateName = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
+
+    setEmployeeId(e.target.value);
+  };
+
   // useEffect(() => {
   //   fetchDocumentTypes();
   //   fetchAllAssociates();
@@ -75,7 +85,7 @@ const UploadDocumentSection = (props: any) => {
     const jsonData = {
       document_type: optionselect,
       employeeId:
-        user.role === ROLE_ASSOCIATE ? user.empId : forAssociate.empId,
+        user.role === ROLE_ASSOCIATE ? user.empId : employeeId,
       role: user.role,
       reviewerId: user.role === ROLE_ASSOCIATE ? '' : user.empId,
     };
@@ -83,7 +93,7 @@ const UploadDocumentSection = (props: any) => {
 
     formdata.append('file', input.files[0], input.files[0].name);
     formdata.append('data', JSON.stringify(jsonData));
-    
+
     const uploadUrl = `${BASE_URL}files`;
 
     props.change("");
@@ -100,7 +110,7 @@ const UploadDocumentSection = (props: any) => {
         setSnakBarOpen(true);
         setUploadStatus(true);
 
-        props.change(user.role === ROLE_ASSOCIATE ? user.empId : forAssociate.empId )
+        props.change(user.role === ROLE_ASSOCIATE ? user.empId : forAssociate.empId)
 
         if (user.role === ROLE_ASSOCIATE) {
           // props.change('newName' )
@@ -115,7 +125,7 @@ const UploadDocumentSection = (props: any) => {
         setSnakBarOpen(true);
         setUploadStatus(false);
         console.log('Error while uploading', error);
-        props.change(user.role === ROLE_ASSOCIATE ? user.empId : forAssociate.empId )
+        props.change(user.role === ROLE_ASSOCIATE ? user.empId : forAssociate.empId)
       });
   };
 
@@ -236,7 +246,7 @@ const UploadDocumentSection = (props: any) => {
     setUpdateDialogStatus(false);
   };
 
-  
+
   const { register, handleSubmit, formState: { errors } } = useForm({
     mode: 'all',
     resolver: yupResolver(FilterUploadDocumentValidationSchema),
@@ -260,7 +270,28 @@ const UploadDocumentSection = (props: any) => {
 
         {/* <div className="border-2px"> */}
         <div className="col-md-12 container">
-          <div className="col-md-4 flex-column">
+          {user.role === ROLE_ASSOCIATE ?
+            '' :
+            <div className="col-md-3 flex-column">
+
+              <Dropdown
+                label={UIConstants.selectAnAssociate}
+                {...register("employeeId")}
+                //error={user.role != ROLE_ASSOCIATE ? !!errors?.employeeId : null}
+                onChange={handleAssociateName}
+                options={mapAPItoUIDocTypeDropdown(allAssociates, 'ibmId', 'associateName')}
+                selectAnOption
+              // disabled={user.role === ROLE_ASSOCIATE}
+              // helperText={user.role != ROLE_ASSOCIATE ?
+              //   errors.employeeId
+              //     ? errors?.employeeId.message
+              //     : null : null
+              // }
+              />
+            </div>
+          } &nbsp;
+          <div className="col-md-3 flex-column">
+
             <Dropdown
               label={UIConstants.selectDocumentType}
               {...register("documentType")}
@@ -274,7 +305,8 @@ const UploadDocumentSection = (props: any) => {
               }
             />
           </div>
-          <div className="col-md-4 flex-column text-center" data-text="Select your file!">
+
+          <div className="col-md-3 flex-column text-center" data-text="Select your file!">
             <label htmlFor="myfile">
               <input
                 className="input-field"
@@ -285,7 +317,8 @@ const UploadDocumentSection = (props: any) => {
               />
             </label>
           </div>
-          <div className="col-md-4 flex-column">
+
+          <div className="col-md-3 flex-column">
             <Button
               fullWidth
               variant="contained"
