@@ -9,6 +9,7 @@ import Loader from '../../common/Loader';
 import RecordingService from '../../../services/hooks/RecordingService';
 import { ROLE_OFFBOARDING_MANAGER, ROLE_OFFBOARDING_REVIEWER } from '../../../helper/constants';
 import axios from 'axios';
+import config from '../../../confi';
 
 const RecordingMainComponent = () => {
   const userToken = useSelector(token);
@@ -37,7 +38,7 @@ const RecordingMainComponent = () => {
     //     setLoader(false);
     //   });
 
-    const BASE_URL = 'http://localhost:9094/recording';
+    const BASE_URL = `${config.CLOUDGATEWAY_HOST}/recording`;
 
     axios
       .get(BASE_URL + '/get-all-recordings', {

@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { token, userDetails } from '../../../store';
 import { ROLE_OFFBOARDING_MANAGER, ROLE_OFFBOARDING_REVIEWER } from '../../../helper/constants';
+import config from '../../../confi';
 
 const tableHeader = ['Recording Description', 'Recording Link'];
 const RecordingList = (props: any) => {
@@ -21,7 +22,7 @@ const RecordingList = (props: any) => {
   const [recordings, setRecordings] = useState([]);
   
   useEffect(() => {
-    const BASE_URL = 'http://localhost:9094/recording';
+    const BASE_URL = `${config.CLOUDGATEWAY_HOST}/recording`;
 
     // axios
     //   .get(BASE_URL + '/get-all-recordings', {

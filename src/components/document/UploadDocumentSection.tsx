@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form';
 import { ROLE_ASSOCIATE, UIConstants } from '../../helper/constants';
 import { Dropdown } from '../core/Dropdown/Dropdown';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
+import config from '../../confi';
 
 const UploadDocumentSection = (props: any) => {
   const BASE_URL = 'http://localhost:9003/';
@@ -148,7 +149,8 @@ const UploadDocumentSection = (props: any) => {
   const fetchAllAssociates = () => {
 
     axios
-      .get("http://localhost:9092/pru-associate/get-all-associates", { headers: { Authorization: 'Bearer ' + userToken } })
+      .get(`${config.CLOUDGATEWAY_HOST}/pru-associate/get-all-associates`, 
+      { headers: { Authorization: 'Bearer ' + userToken } })
       .then((result: any) => {
         // console.log("result ==== >"+JSON.stringify(result));
 
