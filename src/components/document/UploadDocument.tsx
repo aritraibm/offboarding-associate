@@ -373,26 +373,26 @@ const UploadDocument = () => {
         forAssociate={forAssociate}
         ibmId={ibmId}
         onSyncDocuments={syncDocuments}
-        // ref={childRefNonReviewed}
+        ref={childRefNonReviewed}
         key={ibmId}
         type="NOTREVIEWED"
         title="Documents:"
         fetchDocumentURL="http://localhost:9003/files/employee"
       />
 
-      {/* {user.role !== ROLE_ASSOCIATE && (
+      {user.role !== ROLE_ASSOCIATE && (
         <DocumentTable
           forAssociate={forAssociate}
           options={options}
           ibmId={ibmId}
           onSyncDocuments={syncDocuments}
-          // ref={childRefReviewed}
+          ref={childRefReviewed}
           key={ibmId + 'reviewedSection'}
           type="REVIEWED"
           title="Reviewed Documents:"
           fetchDocumentURL="http://localhost:9003/files/reviewer"
         />
-      )} */}
+      )}
 
       <Dialog
         open={openUpdate}

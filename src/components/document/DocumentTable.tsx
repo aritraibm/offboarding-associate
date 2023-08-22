@@ -58,7 +58,7 @@ const DocumentTable = ((props: any) => {
   const getIdByRole = (): string | boolean => {
     // const id =
     //   user.role === ROLE_ASSOCIATE ? user.empId : props.forAssociate.empId;
-// alert(props.ibmId)
+    // alert(props.ibmId)
     if (!props.ibmId) return false;
     return user.role === ROLE_ASSOCIATE ? user.empId : props.ibmId;
   }
@@ -136,17 +136,29 @@ const DocumentTable = ((props: any) => {
   };
 
   const submitReviewed = () => {
-
     const id = getIdByRole();
     const reviewerId = user.role === ROLE_ASSOCIATE ? '' : user.empId;
+    // axios
+    //   .post(`http://localhost:9003/files/reviewer/${reviewerId}/employee/${id}`, { headers: { Authorization: 'Bearer ' + userToken }, })
+    //   .then((result) => {
+    //     setDialogStatus(false);
+    //     fetchDocuments();
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+
+
+
     axios
-      .put(`http://localhost:9003/files/reviewer/${reviewerId}/employee/${id}`, { headers: { Authorization: 'Bearer ' + userToken }, })
-      .then((result) => {
-        setDialogStatus(false);
-        fetchDocuments();
+      .post(`http://localhost:9003/files/reviewer/${reviewerId}/employee/${id}`, {}, {
+        headers: { Authorization: 'Bearer ' + userToken },
       })
-      .catch((err) => {
-        console.log(err);
+      .then((result: any) => {
+        if (result) {
+          setDialogStatus(false);
+          fetchDocuments();
+        }
       });
   };
 
@@ -172,6 +184,8 @@ const DocumentTable = ((props: any) => {
         console.error('There was an error!', error);
       });
   };
+
+
 
   return loader ? (
     <Loader />
@@ -220,8 +234,8 @@ const DocumentTable = ((props: any) => {
                           props.type === 'NOTREVIEWED')) && ( */}
                       {user.role !== ROLE_ASSOCIATE &&
                         <TableCell>Delete</TableCell>
+                        // )}
                       }
-                      {/* )} */}
                       <TableCell>Download</TableCell>
                     </TableRow>
                   </TableHead>
@@ -246,17 +260,20 @@ const DocumentTable = ((props: any) => {
                           props.type === 'REVIEWED') ||
                           (user.role === ROLE_ASSOCIATE &&
                             props.type === 'NOTREVIEWED')) && ( */}
-                        {user.role !== ROLE_ASSOCIATE &&
-                          <TableCell>
-                            <Button
-                              color="secondary"
-                              onClick={() => openDialog(doc)}
-                            >
-                              Delete
-                            </Button>
-                          </TableCell>
-                        }
-                        {/* )} */}
+                             {user.role !== ROLE_ASSOCIATE &&
+                            <TableCell>
+                              <Button
+                                disabled={
+                                  isReviewed
+                                }
+                                color="secondary"
+                                onClick={() => openDialog(doc)}
+                              >
+                                Delete
+                              </Button>
+                            </TableCell>
+                            }
+                           {/* )} */}
                         <TableCell>
                           <Button
                             color="primary"
@@ -273,10 +290,14 @@ const DocumentTable = ((props: any) => {
                         <TableRow>
                           <TableCell>
                             <Button
+                              // disabled={
+                              //   !(
+                              //     documents.length ===
+                              //     props.options.length - 1 && !isReviewed
+                              //   )
+                              // }
                               disabled={
-                                !(
-                                  documents.length ===
-                                  props.options.length - 1 && !isReviewed
+                                (isReviewed
                                 )
                               }
                               onClick={() => submitReviewed()}
