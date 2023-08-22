@@ -38,9 +38,10 @@ import { CommentValidationSchema, addCommentValidationSchema, addCommentDefaultV
 import { GlobalStoreType, ReplyMsgBody } from '../../helper/type';
 import { ReplyWrapper, ReplyLeftPadding, ListWrapper, TimeWrapper, UserWrapper} from "./CommentComponent.style";
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
+import config from '../../confi';
 
 const CommentComponent = (props: any) => {
-  const BASE_URL = 'http://localhost:9003/';
+  const BASE_URL = `${config.CLOUDGATEWAY_HOST}/`;
   const [options, setOptions] = useState<string[]>([]);
   const [optionselect, setOptionselect] = useState('');
   const [allAssoOptionSelect, setAllAssoOptionSelect] = useState('');
@@ -91,8 +92,6 @@ const CommentComponent = (props: any) => {
     // var myArray = 
     // [{"commentId":"646c9b03f9cd04710f9259f7","msgId":"CUPYJIY","versionNo":"1","empId":"0000A2","comments":"A1","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b1af9cd04710f9259f8","msgId":"FHQZYFH","versionNo":"1","empId":"0000A2","comments":"B1","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b2bf9cd04710f9259f9","msgId":"CUPYJIY","versionNo":"2","empId":"0000A2","comments":"A2","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9b5bf9cd04710f9259fb","msgId":"FHQZYFH","versionNo":"2","empId":"0000A2","comments":"B2","date":"2023-05-23","who":"ReviewerR2","role":"ROLE_OFFBOARDING_REVIEWER"},{"commentId":"646c9baaf9cd04710f9259fc","msgId":"CUPYJIY","versionNo":"3","empId":"0000A2","comments":"A3","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"},{"commentId":"646c9bb4f9cd04710f9259fd","msgId":"FHQZYFH","versionNo":"3","empId":"0000A2","comments":"B3","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"},{"commentId":"6475b11fdfa77820ef9b17c1","msgId":"CUPYJIY","versionNo":"4","empId":"0000A2","comments":"A4","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"},{"commentId":"6475d6dfdfa77820ef9b17c2","msgId":"CUPYJIY","versionNo":"5","empId":"0000A2","comments":"A5","date":"2023-05-23","who":"AssocteA2","role":"ROLE_ASSOCIATE"}];
 
-
-
     fetchAllAssociates();
     if (allAssociates.length === 0) {
       dispatch(invokeAssociatesSaga({ test: "test", id: 1 }));
@@ -107,7 +106,8 @@ const CommentComponent = (props: any) => {
     const role = user.role;
     ////console.log("role >>>>> " + role);
     axios
-      .get(BASE_URL + 'document', { headers: { Authorization: 'Bearer ' + userToken } })
+      .get( `${config.CLOUDGATEWAY_HOST}/document`,
+       { headers: { Authorization: 'Bearer ' + userToken } })
       .then((res: any) => {
         // //console.log("res >>>>> "+JSON.stringify(res));
         setOptions([...res.data]);
@@ -122,7 +122,7 @@ const CommentComponent = (props: any) => {
 
 
     axios
-      .get('http://localhost:9094/comment/' + empId, {
+    .get(`${config.CLOUDGATEWAY_HOST}/comment/` + empId, {
         headers: { Authorization: 'Bearer ' + userToken },
       })
       .then((result) => {
@@ -183,11 +183,12 @@ const CommentComponent = (props: any) => {
   const fetchAllAssociates = () => {
 
     axios
-      .get("http://localhost:9092/pru-associate/get-all-associates", { headers: { Authorization: 'Bearer ' + userToken } })
+    .get(`${config.CLOUDGATEWAY_HOST}/pru-associate/get-all-associates`, 
+    { headers: { Authorization: 'Bearer ' + userToken } })
       .then((result: any) => {
         // //console.log("result ==== >"+JSON.stringify(result));
 
-        //setAssocaiteList([...result.data]);
+        // setAssocaiteList([...result.data]);
         setAllAssoOptionSelect('1');
         //console.log("allAssoOptionSelect", allAssoOptionSelect)
         setLoader(false);
@@ -320,7 +321,7 @@ const CommentComponent = (props: any) => {
     //console.log("COMMENT SAVE DATA --->" + JSON.stringify(reqData))
 
     axios
-      .post('http://localhost:9094/comment/add-comment', reqData, {
+      .post(`${config.CLOUDGATEWAY_HOST}/comment/add-comment`, reqData, {
         headers: { Authorization: 'Bearer ' + userToken },
       })
       .then((result) => {
@@ -374,7 +375,7 @@ const CommentComponent = (props: any) => {
     // //console.log("COMMENT SAVE DATA --->" + JSON.stringify(reqData))
 
     axios
-      .post('http://localhost:9094/comment/add-comment', reqBody, {
+      .post(`${config.CLOUDGATEWAY_HOST}/comment/add-comment`, reqBody, {
         headers: { Authorization: 'Bearer ' + userToken },
       })
       .then((result) => {
@@ -390,7 +391,7 @@ const CommentComponent = (props: any) => {
   const callOnchangeAPI = (value: string) => {
     if (value !== null && value !== '') {
       axios
-        .get('http://localhost:9094/comment/' + value, {
+        .get(`${config.CLOUDGATEWAY_HOST}/comment/`  + value, {
           headers: { Authorization: 'Bearer ' + userToken },
         })
         .then((result) => {

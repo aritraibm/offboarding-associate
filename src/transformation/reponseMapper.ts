@@ -7,6 +7,7 @@ export const mapAPItoUIDocTypeDropdown = <T>(allDocType: T[], idSrc: string, nam
     ({
         id: item[idSrc],
         name: item[nameSrc],
+        
     })
     )
 } 

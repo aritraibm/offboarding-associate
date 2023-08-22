@@ -62,6 +62,7 @@ export interface TextareaType {
 export interface DropdownValues {
     id: string;
     name: string;
+    // firstName:string;
 }
 
 export interface LabelVisibilityTestCaseType {
@@ -78,6 +79,8 @@ export interface RegExTestCaseType {
 export interface AssociateDetailResponse {
     associateId: Number,
     associateName: String,
+    firstName: string,
+    lastName: string,
     ibmId: String,
     projectId: Number,
     engagementName: String,
@@ -193,11 +196,16 @@ interface EmpId {
     empId: string
 }
 export interface AllManagerType extends EmpId {
-    managerName: string
+    managerName: string;
+    firstName: string;
+    lastName: string;
+    
 }
 
 export interface AllReviewerType extends EmpId {
-    reviewerName: string
+    reviewerName: string;
+    firstName: string;
+    lastName: string;
 }
 
 export interface ReplyMsgBody{

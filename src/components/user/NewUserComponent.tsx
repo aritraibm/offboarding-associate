@@ -50,6 +50,7 @@ import { Dropdown } from '../core/Dropdown/Dropdown';
 import { saveNewUser } from '../../services/NewUserService';
 import { mapNewUserModel_UItoAPI } from '../../transformation/UserMapper';
 import { AllManagerType, AllRoleType, GlobalStoreType } from '../../helper/type';
+import config from '../../confi';
 
 
 const NewUserComponent = () => {
@@ -143,7 +144,13 @@ const NewUserComponent = () => {
 
   const handleUserDropdownChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: string) => {
     // do something
-    setUserRoleName(getRoleName(e.target.value)[0].name);
+    const selectedRoleId = e.target.value;
+
+    // Get the role name based on the selected role ID
+    const selectedRoleName = getRoleName(selectedRoleId)[0]?.name || '';
+  
+    // Update the state with the selected role name
+    setUserRoleName(selectedRoleName);
     // e.preventDefault();
   };
 
@@ -202,7 +209,7 @@ const NewUserComponent = () => {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-  const BASE_URL = 'http://localhost:9099/';
+  const BASE_URL = `${config.CLOUDGATEWAY_HOST}/`;
 
   const onSubmit = (data: any) => {
     const UIData = { ...data, 'userName': getValues('firstName') + " " + getValues('lastName') };
@@ -214,7 +221,9 @@ const NewUserComponent = () => {
     console.log("REACT HOOK FORM apiData ---- >" + JSON.stringify(apiData));
     try {
 
-      axios.post(`${BASE_URL}user_add`, apiData)
+      axios.post(`${BASE_URL}user/user_add`, apiData, {
+        headers: { Authorization: 'Bearer ' + userToken },
+      })
         .then((response) => {
             console.log("response is ::::: >>>>" + JSON.stringify(response));
             // setSnakBarOpen(true);
@@ -284,7 +293,7 @@ const NewUserComponent = () => {
                         ]
                     };
                     const associateResponse = axios.post(
-                        'http://localhost:9092/pru-associate/save-associate',
+                      `${config.CLOUDGATEWAY_HOST}/pru-associate/save-associate`,
                         saveAssociateReq,
                         {
                             headers: { Authorization: 'Bearer ' + userToken },
@@ -470,19 +479,20 @@ const NewUserComponent = () => {
                 {/* {newUserDetails.role === assosiateRoleId?.id && allReviewer && ( */}
                 <>
 
+                  {/* Render the reviewer dropdown based on the selected role */}
                   {userRoleName === "ROLE_ASSOCIATE" && (
-                    <Dropdown
-                      label={UIConstants.selectReviewer}
-                      {...register("reviewerEmpId")}
-                      error={!!errors?.reviewerEmpId}
-                      onChange={handleReviewerDropdownChange}
-                      options={mapAPItoUIDocTypeDropdown(allReviewer, 'empId', 'reviewerName')}
-                      selectAnOption
-                      helperText={
-                        errors.reviewerEmpId
-                          ? errors?.reviewerEmpId.message
-                          : null
-                      }
+                      <Dropdown
+                        label={UIConstants.selectReviewer}
+                        {...register("reviewerEmpId")}
+                        error={!!errors?.reviewerEmpId}
+                        onChange={handleReviewerDropdownChange}
+                        options={mapAPItoUIDocTypeDropdown(allReviewer, 'empId', 'firstName')}
+                        selectAnOption
+                        helperText={
+                          errors.reviewerEmpId
+                            ? errors?.reviewerEmpId.message
+                            : null
+                        }
                     />
                   )}
                   
@@ -498,7 +508,7 @@ const NewUserComponent = () => {
                       {...register("managerEmpId")}
                       error={!!errors?.managerEmpId}
                       onChange={handleManagerDropdownChange}
-                      options={mapAPItoUIDocTypeDropdown(allManager, 'empId', 'managerName')}
+                      options={mapAPItoUIDocTypeDropdown(allManager, 'empId', 'firstName')}
                       selectAnOption
                       helperText={
                         errors.managerEmpId

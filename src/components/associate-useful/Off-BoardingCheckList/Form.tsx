@@ -16,6 +16,7 @@ import {
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { token, userDetails } from '../../../store';
+import config from '../../../confi';
 
 const Form = (props: any) => {
   const userToken = useSelector(token);
@@ -80,7 +81,8 @@ const Form = (props: any) => {
     ) {
       axios
         .get(
-          'http://localhost:9094/offboarding_checklist/get-all-offboarding-checklist',
+          // 'http://localhost:9094/offboarding_checklist/get-all-offboarding-checklist',
+          `${config.CLOUDGATEWAY_HOST}/offboarding_checklist/get-all-offboarding-checklist`,
           { headers: { Authorization: 'Bearer ' + userToken } }
         )
         .then((result) => {

@@ -24,9 +24,10 @@ import axios from '../../config/interceptor';
 import './UploadDocument.css';
 import Loader from '../common/Loader';
 import { ROLE_ASSOCIATE, ROLE_OFFBOARDING_MANAGER, ROLE_OFFBOARDING_REVIEWER } from '../../helper/constants';
+import config from '../../confi';
 
 const SampleDocuments = () => {
-  const BASE_URL = 'http://localhost:9003/';
+  const BASE_URL = `${config.CLOUDGATEWAY_HOST}/`;
   const userToken = useSelector(token);
   const [documents, setDocuments] = useState([]);
   const user = useSelector(userDetails);
@@ -257,7 +258,7 @@ const SampleDocuments = () => {
           <div className="content-right">
             <div className="download-icon">
               <a
-                href="http://localhost:9003/files/sampledoc/zip"
+                href="BASE_URL + files/sampledoc/zip"
                 className="fa fa-download"
                 title="Download All"
               > </a>

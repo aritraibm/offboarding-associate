@@ -22,6 +22,7 @@ import { token, userDetails } from '../../store';
 import { useSelector } from 'react-redux';
 import Loader from '../common/Loader';
 import { ROLE_ASSOCIATE } from '../../helper/constants';
+import config from '../../confi';
 
 const DocumentTable = ((props: any) => {
   const userToken = useSelector(token);
@@ -105,7 +106,7 @@ const DocumentTable = ((props: any) => {
   const download = (id: any, name: any) => {
     const url = props.downloadURL
       ? props.downloadURL
-      : `http://localhost:9003/files/${id}`;
+      : `${config.CLOUDGATEWAY_HOST}/files/${id}`;
     axios
       .get(url, { headers: { Authorization: 'Bearer ' + userToken }, responseType: 'blob' })
       .then((result) => {
@@ -126,7 +127,7 @@ const DocumentTable = ((props: any) => {
   };
 
   const deleteDocs = (id: string) => {
-    const url = `http://localhost:9003/files/delete/${id}`;
+    const url = `${config.CLOUDGATEWAY_HOST}/files/delete/${id}`;
     axios
       .delete(url, { headers: { Authorization: 'Bearer ' + userToken }, })
       .then((result: any) => {
@@ -143,7 +144,7 @@ const DocumentTable = ((props: any) => {
     const id = getIdByRole();
     const reviewerId = user.role === ROLE_ASSOCIATE ? '' : user.empId;
     axios
-      .put(`http://localhost:9003/files/reviewer/${reviewerId}/employee/${id}`, { headers: { Authorization: 'Bearer ' + userToken }, })
+      .put(`${config.CLOUDGATEWAY_HOST}/files/reviewer/${reviewerId}/employee/${id}`, { headers: { Authorization: 'Bearer ' + userToken }, })
       .then((result) => {
         setDialogStatus(false);
         fetchDocuments();
@@ -157,7 +158,7 @@ const DocumentTable = ((props: any) => {
 
     const id = getIdByRole();
     const reviewerId = user.role === ROLE_ASSOCIATE ? '' : user.empId;
-    const url = `http://localhost:9003/files/reviewer/${reviewerId}/employee/${id}/zip`;
+    const url = `${config.CLOUDGATEWAY_HOST}/files/reviewer/${reviewerId}/employee/${id}/zip`;
     axios
       .get(url, { headers: { Authorization: 'Bearer ' + userToken }, responseType: 'blob' })
       .then((result: any) => {

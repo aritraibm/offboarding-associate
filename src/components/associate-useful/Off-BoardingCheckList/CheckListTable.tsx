@@ -41,11 +41,19 @@ const CheckListTable = (props: any) => {
     setTableValues((prevState: any) => {
       const newData = prevState.map((data: any) => {
         if (data.checkListId === id) {
-          if (keyName === 'date') return { ...data, date: event.target.value };
-          if (keyName === 'comment')
-            return { ...data, comment: event.target.value };
-          if (keyName === 'status')
+          if (keyName === 'date') 
+          return { ...data, date: event.target.value };
+          if (keyName === 'comment'){
+            if (event.target.value.trim() === '') {
+              // Comment is empty, show an error
+              return { ...data, comment: event.target.value, error: true };
+            } else {
+              return { ...data, comment: event.target.value, error: false };
+            }
+          }
+          if (keyName === 'status') {
             return { ...data, status: event.target.value };
+          }
         }
         return data;
       });
@@ -90,6 +98,7 @@ const CheckListTable = (props: any) => {
                 tableValues
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((tableValue: any) => {
+                    console.log("response is Table value::::: >>>>" + JSON.stringify(tableValue));
                     return (
                       <TableRow key={tableValue.checkListId}>
                         <TableCell style={{ width: '40rem' }}>
@@ -134,14 +143,12 @@ const CheckListTable = (props: any) => {
                         </TableCell>
                         <TableCell>
                           <Input
-                            value={tableValue.comment ? tableValue.comment : ''}
+
+                            value={tableValue.comment  }
                             onChange={(e) => {
-                              handleChange(
-                                e,
-                                tableValue.checkListId,
-                                'comment'
-                              );
+                              handleChange(e,tableValue.checkListId,'comment');
                             }}
+                            
                           />
                         </TableCell>
                       </TableRow>

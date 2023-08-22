@@ -27,10 +27,11 @@ import { Dropdown } from '../core/Dropdown/Dropdown';
 import UploadDocumentSection from './UploadDocumentSection';
 import { mapAPItoUIDocTypeDropdown } from '../../transformation/reponseMapper';
 import { GlobalStoreType } from '../../helper/type';
+import config from '../../confi';
 
 
 const UploadDocument = () => {
-  const BASE_URL = 'http://localhost:9003/';
+  const BASE_URL = `${config.CLOUDGATEWAY_HOST}/`;
   const userToken = useSelector(token);
   const location = useLocation();
   const allDocumentTypes = useSelector((state: GlobalStoreType) => state.finalDocumentTypeList);
@@ -353,7 +354,7 @@ const UploadDocument = () => {
                         errors.associateName
                           ? errors?.associateName.message
                           : null
-                      }
+                      } 
                     />
 
                   </div>
@@ -377,7 +378,7 @@ const UploadDocument = () => {
         key={ibmId}
         type="NOTREVIEWED"
         title="Documents:"
-        fetchDocumentURL="http://localhost:9003/files/employee"
+        fetchDocumentURL={BASE_URL+"files/employee"}
       />
 
       {/* {user.role !== ROLE_ASSOCIATE && (
@@ -390,7 +391,7 @@ const UploadDocument = () => {
           key={ibmId + 'reviewedSection'}
           type="REVIEWED"
           title="Reviewed Documents:"
-          fetchDocumentURL="http://localhost:9003/files/reviewer"
+          fetchDocumentURL={BASE_URL+"files/reviewer"}
         />
       )} */}
 
